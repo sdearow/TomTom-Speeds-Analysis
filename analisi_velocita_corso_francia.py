@@ -2,8 +2,6 @@
 """
 Analisi della Distribuzione delle Velocità — Corso Francia, Roma
 Dati TomTom Speed Profiles — Febbraio 2026
-
-Genera un report HTML completo con grafici e mappe interattive.
 """
 
 # ================================================================
@@ -11,7 +9,6 @@ Genera un report HTML completo con grafici e mappe interattive.
 # ================================================================
 
 import json
-import os
 import base64
 import io
 import warnings
@@ -24,15 +21,12 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
-from matplotlib.lines import Line2D
 import folium
-from folium.features import GeoJsonPopup, GeoJsonTooltip
 import branca.colormap as cm
 from shapely.geometry import shape
 
 warnings.filterwarnings("ignore")
 
-# — Paths —
 BASE_DIR = Path(__file__).resolve().parent
 DATA_FILES = {
     ("Feriali", "Centro"): BASE_DIR / "Corso Francia_Feriali" / "Corso Francia_Dir. Centro_1.geojson",
@@ -43,30 +37,19 @@ DATA_FILES = {
 OUTPUT_DIR = BASE_DIR / "output"
 MAPS_DIR = OUTPUT_DIR / "maps"
 
-# — Analysis parameters —
-SPEED_LIMIT = 50          # km/h (posted limit on Corso di Francia)
-NIGHT_HOURS = list(range(0, 6)) + [22, 23]  # 22:00–05:59
-AM_PEAK = [7, 8]          # 07:00–08:59
-PM_PEAK = [17, 18]        # 17:00–18:59
-MIDDAY = [12, 13]         # 12:00–13:59
-
-# Percentile indices inside the 19-element speedPercentiles array
-# p5=0, p10=1, p15=2, p20=3, p25=4, p30=5, p35=6, p40=7, p45=8,
-# p50=9, p55=10, p60=11, p65=12, p70=13, p75=14, p80=15, p85=16, p90=17, p95=18
+SPEED_LIMIT = 50
+NIGHT_HOURS = list(range(0, 6)) + [22, 23]
+AM_PEAK = [7, 8]
+PM_PEAK = [17, 18]
+MIDDAY = [12, 13]
 P85_IDX = 16
 P95_IDX = 18
-P15_IDX = 2
 
-# — Visual style —
 plt.rcParams.update({
-    "figure.dpi": 140,
-    "savefig.dpi": 140,
-    "font.family": "sans-serif",
-    "font.size": 10,
-    "axes.titlesize": 12,
-    "axes.labelsize": 10,
+    "figure.dpi": 140, "savefig.dpi": 140,
+    "font.family": "sans-serif", "font.size": 10,
+    "axes.titlesize": 12, "axes.labelsize": 10,
 })
-
 COLORS = {
     ("Feriali", "Centro"): "#1f77b4",
     ("Feriali", "GRA"):    "#ff7f0e",
@@ -74,107 +57,74 @@ COLORS = {
     ("Festivi", "GRA"):    "#d62728",
 }
 LABELS = {
-    ("Feriali", "Centro"): "Feriali → Centro",
-    ("Feriali", "GRA"):    "Feriali → GRA",
-    ("Festivi", "Centro"): "Festivi → Centro",
-    ("Festivi", "GRA"):    "Festivi → GRA",
+    ("Feriali", "Centro"): "Feriali \u2192 Centro",
+    ("Feriali", "GRA"):    "Feriali \u2192 GRA",
+    ("Festivi", "Centro"): "Festivi \u2192 Centro",
+    ("Festivi", "GRA"):    "Festivi \u2192 GRA",
 }
-
 HOUR_SHORT = [f"{h}" for h in range(24)]
 
 
 # ================================================================
-# SECTION 2 — DATA LOADING & PARSING
+# SECTION 2 — DATA LOADING (unchanged)
 # ================================================================
 
 def load_geojson(filepath):
-    """Load a single GeoJSON file and return parsed dict."""
     with open(filepath, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
 def parse_segments(data, day_type, direction):
-    """
-    Parse segment-level data from a GeoJSON FeatureCollection.
-
-    Returns
-    -------
-    seg_df : pd.DataFrame   — one row per (segment, hour)
-    sum_df : pd.DataFrame   — one row per hour (route-level summary)
-    header : dict            — raw header properties
-    """
     features = data["features"]
     header = features[0]["properties"]
     segments = features[1:]
-
-    # --- segment rows ---
     rows = []
     cumul = 0.0
     for idx, feat in enumerate(segments):
         props = feat["properties"]
         geom = shape(feat["geometry"])
-        seg_dist = props["distance"]       # metres
-
+        seg_dist = props["distance"]
         for tr in props["segmentTimeResults"]:
-            hour = tr["timeSet"] - 2       # timeSet 2 → hour 0, … 25 → hour 23
-            sp = tr["speedPercentiles"]     # 19 values
-
+            hour = tr["timeSet"] - 2
+            sp = tr["speedPercentiles"]
             rows.append({
-                "day_type":       day_type,
-                "direction":      direction,
-                "seg_idx":        idx,
-                "segmentId":      props["segmentId"],
-                "streetName":     props["streetName"],
-                "frc":            props["frc"],
-                "speedLimit":     props["speedLimit"],
-                "seg_distance":   seg_dist,
-                "cum_dist_start": cumul,
-                "cum_dist_mid":   cumul + seg_dist / 2,
-                "cum_dist_end":   cumul + seg_dist,
-                "hour":           hour,
+                "day_type": day_type, "direction": direction, "seg_idx": idx,
+                "segmentId": props["segmentId"], "streetName": props["streetName"],
+                "frc": props["frc"], "speedLimit": props["speedLimit"],
+                "seg_distance": seg_dist,
+                "cum_dist_start": cumul, "cum_dist_mid": cumul + seg_dist / 2,
+                "cum_dist_end": cumul + seg_dist,
+                "hour": hour,
                 "harm_avg_speed": tr["harmonicAverageSpeed"],
-                "avg_speed":      tr["averageSpeed"],
-                "median_speed":   tr["medianSpeed"],
-                "std_speed":      tr["standardDeviationSpeed"],
-                "avg_tt":         tr["averageTravelTime"],
-                "median_tt":      tr["medianTravelTime"],
-                "std_tt":         tr["travelTimeStandardDeviation"],
-                "tt_ratio":       tr["travelTimeRatio"],
-                "sample_size":    tr["sampleSize"],
-                "norm_sample":    tr["normalizedSampleSize"],
-                "p5":  sp[0],  "p15": sp[2],  "p25": sp[4],
-                "p50": sp[9],  "p75": sp[14], "p85": sp[16],
-                "p90": sp[17], "p95": sp[18],
-                "geometry":       geom,
+                "avg_speed": tr["averageSpeed"], "median_speed": tr["medianSpeed"],
+                "std_speed": tr["standardDeviationSpeed"],
+                "avg_tt": tr["averageTravelTime"], "median_tt": tr["medianTravelTime"],
+                "std_tt": tr["travelTimeStandardDeviation"],
+                "tt_ratio": tr["travelTimeRatio"],
+                "sample_size": tr["sampleSize"], "norm_sample": tr["normalizedSampleSize"],
+                "p5": sp[0], "p15": sp[2], "p25": sp[4], "p50": sp[9],
+                "p75": sp[14], "p85": sp[16], "p90": sp[17], "p95": sp[18],
+                "geometry": geom,
             })
-
         cumul += seg_dist
 
-    # --- route-level summaries ---
     sum_rows = []
     for s in header["summaries"]:
         hour = s["timeSet"] - 2
         ssp = s.get("speedPercentiles", [])
         sum_rows.append({
-            "day_type":       day_type,
-            "direction":      direction,
-            "hour":           hour,
-            "route_dist":     s["distance"],
+            "day_type": day_type, "direction": direction, "hour": hour,
+            "route_dist": s["distance"],
             "harm_avg_speed": s["harmonicAverageSpeed"],
-            "avg_tt":         s["averageTravelTime"],
-            "median_tt":      s["medianTravelTime"],
-            "pti":            s["planningTimeIndex"],
-            "route_p85":      ssp[P85_IDX] if len(ssp) > P85_IDX else np.nan,
-            "route_p95":      ssp[P95_IDX] if len(ssp) > P95_IDX else np.nan,
+            "avg_tt": s["averageTravelTime"], "median_tt": s["medianTravelTime"],
+            "pti": s["planningTimeIndex"],
+            "route_p85": ssp[P85_IDX] if len(ssp) > P85_IDX else np.nan,
+            "route_p95": ssp[P95_IDX] if len(ssp) > P95_IDX else np.nan,
         })
-
-    seg_df = pd.DataFrame(rows)
-    sum_df = pd.DataFrame(sum_rows)
-    return seg_df, sum_df, header
+    return pd.DataFrame(rows), pd.DataFrame(sum_rows), header
 
 
 def load_all_data():
-    """Load all four GeoJSON files, return combined DataFrames."""
     all_seg, all_sum = [], []
     headers = {}
     for (dt, dr), path in DATA_FILES.items():
@@ -183,71 +133,51 @@ def load_all_data():
         all_seg.append(seg_df)
         all_sum.append(sum_df)
         headers[(dt, dr)] = hdr
-
-    segments = pd.concat(all_seg, ignore_index=True)
-    summaries = pd.concat(all_sum, ignore_index=True)
-    return segments, summaries, headers
+    return pd.concat(all_seg, ignore_index=True), pd.concat(all_sum, ignore_index=True), headers
 
 
 # ================================================================
 # SECTION 3 — ANALYSIS FUNCTIONS
 # ================================================================
 
-def compute_exceedance(df, speed_col, limit=SPEED_LIMIT):
-    """
-    For each (day_type, direction, hour), compute the % of segments
-    where `speed_col` exceeds `limit`.
-    """
+def compute_exceedance_by_km(df, speed_col, limit=SPEED_LIMIT):
+    """% of ROUTE LENGTH (km) where speed_col > limit, weighted by seg_distance."""
     df = df.copy()
-    df["exceeds"] = df[speed_col] > limit
-    result = (
-        df.groupby(["day_type", "direction", "hour"])["exceeds"]
-        .mean() * 100
+    df["exceed_dist"] = np.where(df[speed_col] > limit, df["seg_distance"], 0.0)
+    grp = df.groupby(["day_type", "direction", "hour"]).agg(
+        exceed_m=("exceed_dist", "sum"), total_m=("seg_distance", "sum"),
     ).reset_index()
-    result.columns = ["day_type", "direction", "hour", "pct_exceed"]
-    return result
+    grp["pct_km_exceed"] = grp["exceed_m"] / grp["total_m"] * 100
+    return grp[["day_type", "direction", "hour", "pct_km_exceed"]]
 
 
 def hourly_means(df, value_col):
-    """Mean of `value_col` per (day_type, direction, hour)."""
-    return (
-        df.groupby(["day_type", "direction", "hour"])[value_col]
-        .mean()
-        .reset_index()
-    )
+    return df.groupby(["day_type", "direction", "hour"])[value_col].mean().reset_index()
 
 
 def segment_peak_stats(df):
-    """
-    For each segment, compute summary stats across key periods.
-    Returns a DataFrame with one row per (day_type, direction, seg_idx).
-    """
     def _agg(sub):
         return pd.Series({
-            "night_avg_speed":  sub.loc[sub["hour"].isin(NIGHT_HOURS), "avg_speed"].mean(),
-            "night_v85":        sub.loc[sub["hour"].isin(NIGHT_HOURS), "p85"].mean(),
-            "am_avg_speed":     sub.loc[sub["hour"].isin(AM_PEAK), "avg_speed"].mean(),
-            "am_v85":           sub.loc[sub["hour"].isin(AM_PEAK), "p85"].mean(),
-            "pm_avg_speed":     sub.loc[sub["hour"].isin(PM_PEAK), "avg_speed"].mean(),
-            "pm_v85":           sub.loc[sub["hour"].isin(PM_PEAK), "p85"].mean(),
-            "midday_avg_speed": sub.loc[sub["hour"].isin(MIDDAY), "avg_speed"].mean(),
-            "midday_v85":       sub.loc[sub["hour"].isin(MIDDAY), "p85"].mean(),
-            "all_avg_speed":    sub["avg_speed"].mean(),
-            "all_v85":          sub["p85"].mean(),
-            "all_std":          sub["std_speed"].mean(),
-            "max_v85":          sub["p85"].max(),
-            "max_avg_speed":    sub["avg_speed"].max(),
-            "cum_dist_mid":     sub["cum_dist_mid"].iloc[0],
-            "seg_distance":     sub["seg_distance"].iloc[0],
-            "streetName":       sub["streetName"].iloc[0],
-            "speedLimit":       sub["speedLimit"].iloc[0],
+            "night_avg_speed": sub.loc[sub["hour"].isin(NIGHT_HOURS), "avg_speed"].mean(),
+            "night_v85":       sub.loc[sub["hour"].isin(NIGHT_HOURS), "p85"].mean(),
+            "am_avg_speed":    sub.loc[sub["hour"].isin(AM_PEAK), "avg_speed"].mean(),
+            "am_v85":          sub.loc[sub["hour"].isin(AM_PEAK), "p85"].mean(),
+            "pm_avg_speed":    sub.loc[sub["hour"].isin(PM_PEAK), "avg_speed"].mean(),
+            "pm_v85":          sub.loc[sub["hour"].isin(PM_PEAK), "p85"].mean(),
+            "all_avg_speed":   sub["avg_speed"].mean(),
+            "all_v85":         sub["p85"].mean(),
+            "all_std":         sub["std_speed"].mean(),
+            "max_v85":         sub["p85"].max(),
+            "max_avg_speed":   sub["avg_speed"].max(),
+            "cum_dist_mid":    sub["cum_dist_mid"].iloc[0],
+            "cum_dist_start":  sub["cum_dist_start"].iloc[0],
+            "seg_distance":    sub["seg_distance"].iloc[0],
+            "streetName":      sub["streetName"].iloc[0],
+            "speedLimit":      sub["speedLimit"].iloc[0],
         })
-
-    return (
-        df.groupby(["day_type", "direction", "seg_idx"])
-        .apply(_agg, include_groups=False)
-        .reset_index()
-    )
+    return df.groupby(["day_type", "direction", "seg_idx"]).apply(
+        _agg, include_groups=False
+    ).reset_index()
 
 
 # ================================================================
@@ -255,7 +185,6 @@ def segment_peak_stats(df):
 # ================================================================
 
 def fig_to_base64(fig):
-    """Convert a matplotlib Figure to a base64-encoded PNG string."""
     buf = io.BytesIO()
     fig.savefig(buf, format="png", bbox_inches="tight", facecolor="white")
     plt.close(fig)
@@ -263,285 +192,271 @@ def fig_to_base64(fig):
     return base64.b64encode(buf.read()).decode("utf-8")
 
 
+# -- Mod 4/5: split Feriali / Festivi into two panels --
+
 def chart_speed_by_hour(summaries):
-    """Line chart: route-level harmonic average speed by hour."""
-    fig, ax = plt.subplots(figsize=(10, 5))
-    for key in LABELS:
-        sub = summaries[(summaries["day_type"] == key[0]) & (summaries["direction"] == key[1])]
-        sub = sub.sort_values("hour")
-        ax.plot(sub["hour"], sub["harm_avg_speed"],
-                color=COLORS[key], label=LABELS[key], linewidth=2, marker="o", markersize=3)
-    ax.axhline(SPEED_LIMIT, color="red", linestyle="--", linewidth=1, alpha=0.7, label=f"Limite {SPEED_LIMIT} km/h")
-    ax.set_xlabel("Ora del giorno")
-    ax.set_ylabel("Velocità media armonica (km/h)")
-    ax.set_title("Velocità Media di Percorrenza per Ora del Giorno")
-    ax.set_xticks(range(24))
-    ax.set_xticklabels(HOUR_SHORT, fontsize=8)
-    ax.legend(fontsize=8)
-    ax.grid(True, alpha=0.3)
-    ax.set_xlim(-0.5, 23.5)
+    """Two-panel: Feriali (left), Festivi (right)."""
+    fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
+    for ax, day_type in zip(axes, ["Feriali", "Festivi"]):
+        for direction in ["Centro", "GRA"]:
+            key = (day_type, direction)
+            sub = summaries[(summaries["day_type"] == day_type)
+                            & (summaries["direction"] == direction)].sort_values("hour")
+            ax.plot(sub["hour"], sub["harm_avg_speed"], color=COLORS[key],
+                    label=f"Dir. {direction}", linewidth=2, marker="o", markersize=3)
+        ax.axhline(SPEED_LIMIT, color="red", ls="--", lw=1, alpha=.7,
+                    label=f"Limite {SPEED_LIMIT} km/h")
+        ax.set_xlabel("Ora")
+        ax.set_title(f"Velocit\u00e0 Media Armonica \u2014 {day_type}")
+        ax.set_xticks(range(24)); ax.set_xticklabels(HOUR_SHORT, fontsize=7)
+        ax.legend(fontsize=8); ax.grid(True, alpha=.3); ax.set_xlim(-.5, 23.5)
+    axes[0].set_ylabel("Velocit\u00e0 media armonica (km/h)")
+    fig.suptitle("Velocit\u00e0 Media di Percorrenza per Ora", fontsize=13, y=1.02)
+    fig.tight_layout()
     return fig_to_base64(fig)
 
 
 def chart_v85_by_hour(segments):
-    """Line chart: average V85 across segments by hour."""
+    """Two-panel V85: Feriali (left), Festivi (right)."""
     hmeans = hourly_means(segments, "p85")
-    fig, ax = plt.subplots(figsize=(10, 5))
-    for key in LABELS:
-        sub = hmeans[(hmeans["day_type"] == key[0]) & (hmeans["direction"] == key[1])]
-        sub = sub.sort_values("hour")
-        ax.plot(sub["hour"], sub["p85"],
-                color=COLORS[key], label=LABELS[key], linewidth=2, marker="o", markersize=3)
-    ax.axhline(SPEED_LIMIT, color="red", linestyle="--", linewidth=1, alpha=0.7, label=f"Limite {SPEED_LIMIT} km/h")
-    ax.set_xlabel("Ora del giorno")
-    ax.set_ylabel("V85 medio dei segmenti (km/h)")
-    ax.set_title("85° Percentile della Velocità (V85) per Ora del Giorno")
-    ax.set_xticks(range(24))
-    ax.set_xticklabels(HOUR_SHORT, fontsize=8)
-    ax.legend(fontsize=8)
-    ax.grid(True, alpha=0.3)
-    ax.set_xlim(-0.5, 23.5)
+    fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
+    for ax, day_type in zip(axes, ["Feriali", "Festivi"]):
+        for direction in ["Centro", "GRA"]:
+            key = (day_type, direction)
+            sub = hmeans[(hmeans["day_type"] == day_type)
+                         & (hmeans["direction"] == direction)].sort_values("hour")
+            ax.plot(sub["hour"], sub["p85"], color=COLORS[key],
+                    label=f"Dir. {direction}", linewidth=2, marker="o", markersize=3)
+        ax.axhline(SPEED_LIMIT, color="red", ls="--", lw=1, alpha=.7,
+                    label=f"Limite {SPEED_LIMIT} km/h")
+        ax.set_xlabel("Ora")
+        ax.set_title(f"V85 Medio \u2014 {day_type}")
+        ax.set_xticks(range(24)); ax.set_xticklabels(HOUR_SHORT, fontsize=7)
+        ax.legend(fontsize=8); ax.grid(True, alpha=.3); ax.set_xlim(-.5, 23.5)
+    axes[0].set_ylabel("V85 medio dei segmenti (km/h)")
+    fig.suptitle("85\u00b0 Percentile della Velocit\u00e0 (V85) per Ora", fontsize=13, y=1.02)
+    fig.tight_layout()
     return fig_to_base64(fig)
 
 
-def chart_heatmaps(segments):
-    """
-    Speed heatmaps: hour (y) × segment position (x).
-    Returns dict of {label: base64_png}.
-    """
-    results = {}
-    for key in LABELS:
-        sub = segments[(segments["day_type"] == key[0]) & (segments["direction"] == key[1])]
-        n_segs = sub["seg_idx"].nunique()
-        pivot = sub.pivot_table(index="hour", columns="seg_idx", values="avg_speed", aggfunc="mean")
-        pivot = pivot.reindex(index=range(24))
+# -- Mod 6: heatmaps with progressive distance (pcolormesh) --
 
-        fig, ax = plt.subplots(figsize=(max(10, n_segs * 0.2), 7))
-        norm = mcolors.TwoSlopeNorm(vmin=15, vcenter=SPEED_LIMIT, vmax=90)
-        cmap = plt.cm.RdYlGn  # red=slow, green=fast
-        im = ax.imshow(pivot.values, aspect="auto", cmap=cmap, norm=norm,
-                        interpolation="nearest", origin="upper")
-        ax.set_xlabel("Segmento (posizione lungo il percorso)")
-        ax.set_ylabel("Ora del giorno")
-        ax.set_yticks(range(24))
-        ax.set_yticklabels(HOUR_SHORT, fontsize=7)
-        xtick_step = max(1, n_segs // 15)
-        ax.set_xticks(range(0, n_segs, xtick_step))
-        ax.set_title(f"Velocità Media per Segmento e Ora — {LABELS[key]}")
-        cbar = fig.colorbar(im, ax=ax, shrink=0.8, label="km/h")
+def _make_heatmap_progressive(sub, value_col, title, cmap, norm, fig_ax=None):
+    """Heatmap with progressive km on x-axis using pcolormesh."""
+    seg_first = sub.drop_duplicates("seg_idx").sort_values("seg_idx")
+    x_edges = np.concatenate([
+        seg_first["cum_dist_start"].values,
+        [seg_first["cum_dist_end"].values[-1]]
+    ]) / 1000.0
+    y_edges = np.arange(-0.5, 24.5, 1.0)
+
+    pivot = sub.pivot_table(index="hour", columns="seg_idx",
+                             values=value_col, aggfunc="mean")
+    pivot = pivot.reindex(index=range(24), columns=seg_first["seg_idx"].values)
+
+    if fig_ax is None:
+        fig, ax = plt.subplots(figsize=(12, 7))
+    else:
+        fig, ax = fig_ax
+
+    mesh = ax.pcolormesh(x_edges, y_edges, pivot.values,
+                          cmap=cmap, norm=norm, shading="flat")
+    ax.invert_yaxis()
+    ax.set_xlabel("Progressiva (km)")
+    ax.set_ylabel("Ora")
+    ax.set_yticks(range(24)); ax.set_yticklabels(HOUR_SHORT, fontsize=7)
+    max_km = x_edges[-1]
+    tick_iv = 0.25 if max_km < 2.0 else 0.5
+    xticks = np.arange(0, max_km + tick_iv, tick_iv)
+    ax.set_xticks(xticks)
+    ax.set_xticklabels([f"{x:.2f}" for x in xticks], fontsize=7)
+    ax.set_title(title)
+    fig.colorbar(mesh, ax=ax, shrink=0.75, label="km/h")
+    return fig
+
+
+def chart_heatmaps(segments):
+    """Speed heatmaps: hour (y) x progressive distance (x)."""
+    results = {}
+    norm = mcolors.TwoSlopeNorm(vmin=15, vcenter=SPEED_LIMIT, vmax=90)
+    cmap = plt.cm.RdYlGn
+    for key in LABELS:
+        sub = segments[(segments["day_type"] == key[0])
+                       & (segments["direction"] == key[1])]
+        title = f"Velocit\u00e0 Media per Progressiva e Ora \u2014 {LABELS[key]}"
+        fig = _make_heatmap_progressive(sub, "avg_speed", title, cmap, norm)
         results[LABELS[key]] = fig_to_base64(fig)
     return results
 
 
+# -- Mod 1/7: exceedance by km --
+
 def chart_exceedance(segments):
-    """Bar chart: % segments exceeding speed limit by hour."""
-    exc_avg = compute_exceedance(segments, "avg_speed")
-    exc_v85 = compute_exceedance(segments, "p85")
+    """% of route-km exceeding speed limit by hour."""
+    exc_avg = compute_exceedance_by_km(segments, "avg_speed")
+    exc_v85 = compute_exceedance_by_km(segments, "p85")
 
     fig, axes = plt.subplots(1, 2, figsize=(14, 5), sharey=True)
+    for key in LABELS:
+        sub = exc_avg[(exc_avg["day_type"] == key[0])
+                      & (exc_avg["direction"] == key[1])].sort_values("hour")
+        axes[0].plot(sub["hour"], sub["pct_km_exceed"], color=COLORS[key],
+                     label=LABELS[key], linewidth=2, marker="o", markersize=3)
+    axes[0].set_title("Km con Velocit\u00e0 Media > 50 km/h")
+    axes[0].set_xlabel("Ora")
+    axes[0].set_ylabel("% del percorso (km) oltre il limite")
+    axes[0].set_xticks(range(24)); axes[0].set_xticklabels(HOUR_SHORT, fontsize=7)
+    axes[0].legend(fontsize=7); axes[0].grid(True, alpha=.3)
+    axes[0].set_xlim(-.5, 23.5); axes[0].set_ylim(0, 105)
 
     for key in LABELS:
-        sub = exc_avg[(exc_avg["day_type"] == key[0]) & (exc_avg["direction"] == key[1])]
-        sub = sub.sort_values("hour")
-        axes[0].plot(sub["hour"], sub["pct_exceed"],
-                     color=COLORS[key], label=LABELS[key], linewidth=2, marker="o", markersize=3)
+        sub = exc_v85[(exc_v85["day_type"] == key[0])
+                      & (exc_v85["direction"] == key[1])].sort_values("hour")
+        axes[1].plot(sub["hour"], sub["pct_km_exceed"], color=COLORS[key],
+                     label=LABELS[key], linewidth=2, marker="o", markersize=3)
+    axes[1].set_title("Km con V85 > 50 km/h")
+    axes[1].set_xlabel("Ora")
+    axes[1].set_xticks(range(24)); axes[1].set_xticklabels(HOUR_SHORT, fontsize=7)
+    axes[1].legend(fontsize=7); axes[1].grid(True, alpha=.3)
+    axes[1].set_xlim(-.5, 23.5)
 
-    axes[0].set_title("Segmenti con Velocità Media > 50 km/h")
-    axes[0].set_xlabel("Ora del giorno")
-    axes[0].set_ylabel("% segmenti che superano il limite")
-    axes[0].set_xticks(range(24))
-    axes[0].set_xticklabels(HOUR_SHORT, fontsize=7)
-    axes[0].legend(fontsize=7)
-    axes[0].grid(True, alpha=0.3)
-    axes[0].set_xlim(-0.5, 23.5)
-    axes[0].set_ylim(0, 105)
-
-    for key in LABELS:
-        sub = exc_v85[(exc_v85["day_type"] == key[0]) & (exc_v85["direction"] == key[1])]
-        sub = sub.sort_values("hour")
-        axes[1].plot(sub["hour"], sub["pct_exceed"],
-                     color=COLORS[key], label=LABELS[key], linewidth=2, marker="o", markersize=3)
-
-    axes[1].set_title("Segmenti con V85 > 50 km/h")
-    axes[1].set_xlabel("Ora del giorno")
-    axes[1].set_xticks(range(24))
-    axes[1].set_xticklabels(HOUR_SHORT, fontsize=7)
-    axes[1].legend(fontsize=7)
-    axes[1].grid(True, alpha=0.3)
-    axes[1].set_xlim(-0.5, 23.5)
-
-    fig.suptitle("Tasso di Superamento del Limite di Velocità per Ora", fontsize=13, y=1.02)
+    fig.suptitle("Superamento del Limite (pesato per km)", fontsize=13, y=1.02)
     fig.tight_layout()
     return fig_to_base64(fig)
 
 
 def chart_v85_spatial(segments):
-    """V85 along the corridor at key time periods. One chart per direction."""
+    """V85 along corridor at key time periods, one chart per direction."""
     results = {}
     periods = {
-        "Notte (22–05)": NIGHT_HOURS,
-        "Punta mattina (07–08)": AM_PEAK,
-        "Mezzog. (12–13)": MIDDAY,
-        "Punta sera (17–18)": PM_PEAK,
+        "Notte (22\u201305)": NIGHT_HOURS,
+        "Punta mattina (07\u201308)": AM_PEAK,
+        "Mezzog. (12\u201313)": MIDDAY,
+        "Punta sera (17\u201318)": PM_PEAK,
     }
-    period_colors = ["#7570b3", "#d95f02", "#1b9e77", "#e7298a"]
-
+    pcols = ["#7570b3", "#d95f02", "#1b9e77", "#e7298a"]
     for direction in ["Centro", "GRA"]:
         fig, ax = plt.subplots(figsize=(12, 5))
-        sub = segments[(segments["day_type"] == "Feriali") & (segments["direction"] == direction)]
-
-        for (pname, phours), pcol in zip(periods.items(), period_colors):
+        sub = segments[(segments["day_type"] == "Feriali")
+                       & (segments["direction"] == direction)]
+        for (pname, phours), pcol in zip(periods.items(), pcols):
             psub = sub[sub["hour"].isin(phours)]
-            profile = psub.groupby("seg_idx").agg(
-                v85=("p85", "mean"),
-                dist=("cum_dist_mid", "first"),
+            prof = psub.groupby("seg_idx").agg(
+                v85=("p85", "mean"), dist=("cum_dist_mid", "first"),
             ).sort_values("dist")
-            ax.plot(profile["dist"], profile["v85"],
-                    color=pcol, label=pname, linewidth=1.8)
-
-        ax.axhline(SPEED_LIMIT, color="red", linestyle="--", linewidth=1, alpha=0.7)
-        ax.fill_between(ax.get_xlim(), SPEED_LIMIT, 100, alpha=0.05, color="red")
-        ax.set_xlabel("Distanza lungo il percorso (m)")
+            ax.plot(prof["dist"] / 1000, prof["v85"], color=pcol,
+                    label=pname, linewidth=1.8)
+        ax.axhline(SPEED_LIMIT, color="red", ls="--", lw=1, alpha=.7)
+        ax.set_xlabel("Progressiva (km)")
         ax.set_ylabel("V85 (km/h)")
-        ax.set_title(f"Profilo Spaziale V85 — Feriali Dir. {direction}")
-        ax.legend(fontsize=8)
-        ax.grid(True, alpha=0.3)
+        ax.set_title(f"Profilo Spaziale V85 \u2014 Feriali Dir. {direction}")
+        ax.legend(fontsize=8); ax.grid(True, alpha=.3)
         results[direction] = fig_to_base64(fig)
-
     return results
 
 
+# -- Mod 10: variability with progressive distance --
+
 def chart_speed_variability(segments):
-    """Heatmap of speed std deviation + spatial profile."""
+    """Std dev heatmaps (progressive km) + spatial profiles."""
     fig, axes = plt.subplots(2, 2, figsize=(14, 10))
-
-    for col_idx, direction in enumerate(["Centro", "GRA"]):
-        sub = segments[(segments["day_type"] == "Feriali") & (segments["direction"] == direction)]
-        n_segs = sub["seg_idx"].nunique()
-
-        # Heatmap
-        pivot = sub.pivot_table(index="hour", columns="seg_idx", values="std_speed", aggfunc="mean")
-        pivot = pivot.reindex(index=range(24))
-        ax = axes[0, col_idx]
-        im = ax.imshow(pivot.values, aspect="auto", cmap="YlOrRd",
-                        vmin=0, vmax=25, interpolation="nearest", origin="upper")
-        ax.set_ylabel("Ora")
-        ax.set_yticks(range(0, 24, 2))
-        ax.set_yticklabels([HOUR_SHORT[h] for h in range(0, 24, 2)], fontsize=7)
-        ax.set_xlabel("Segmento")
-        ax.set_title(f"Dev. Std. Velocità — Dir. {direction}")
-        fig.colorbar(im, ax=ax, shrink=0.7, label="km/h")
-
-        # Spatial profile (average across all hours)
-        ax2 = axes[1, col_idx]
-        profile = sub.groupby("seg_idx").agg(
-            std_mean=("std_speed", "mean"),
-            std_max=("std_speed", "max"),
+    norm = mcolors.Normalize(vmin=0, vmax=25)
+    cmap = plt.cm.YlOrRd
+    for ci, direction in enumerate(["Centro", "GRA"]):
+        sub = segments[(segments["day_type"] == "Feriali")
+                       & (segments["direction"] == direction)]
+        _make_heatmap_progressive(
+            sub, "std_speed",
+            f"Dev. Std. Velocit\u00e0 \u2014 Dir. {direction}",
+            cmap, norm, fig_ax=(fig, axes[0, ci]))
+        # spatial profile
+        ax2 = axes[1, ci]
+        prof = sub.groupby("seg_idx").agg(
+            std_mean=("std_speed", "mean"), std_max=("std_speed", "max"),
             dist=("cum_dist_mid", "first"),
         ).sort_values("dist")
-        ax2.fill_between(profile["dist"], 0, profile["std_max"], alpha=0.2, color="orange", label="Max orario")
-        ax2.plot(profile["dist"], profile["std_mean"], color="darkorange", linewidth=2, label="Media giornaliera")
-        ax2.set_xlabel("Distanza (m)")
-        ax2.set_ylabel("Dev. Std. (km/h)")
-        ax2.set_title(f"Variabilità Spaziale — Dir. {direction}")
-        ax2.legend(fontsize=8)
-        ax2.grid(True, alpha=0.3)
-
-    fig.suptitle("Variabilità delle Velocità (Dev. Std.) — Feriali", fontsize=13, y=1.01)
+        dkm = prof["dist"] / 1000
+        ax2.fill_between(dkm, 0, prof["std_max"], alpha=.2, color="orange",
+                         label="Max orario")
+        ax2.plot(dkm, prof["std_mean"], color="darkorange", lw=2,
+                 label="Media giornaliera")
+        ax2.set_xlabel("Progressiva (km)"); ax2.set_ylabel("Dev. Std. (km/h)")
+        ax2.set_title(f"Variabilit\u00e0 Spaziale \u2014 Dir. {direction}")
+        ax2.legend(fontsize=8); ax2.grid(True, alpha=.3)
+    fig.suptitle("Variabilit\u00e0 delle Velocit\u00e0 (Dev. Std.) \u2014 Feriali",
+                 fontsize=13, y=1.01)
     fig.tight_layout()
     return fig_to_base64(fig)
 
 
+# -- Mod 11: night analysis separated by direction --
+
 def chart_night_analysis(segments):
-    """Night vs day speed distributions + spatial profile."""
-    fig, axes = plt.subplots(1, 3, figsize=(16, 5))
-
-    # 1. Histogram: night vs day speeds (all directions, Feriali)
+    """Night analysis: separate histograms and spatial profiles per direction."""
+    fig, axes = plt.subplots(2, 2, figsize=(14, 10))
     fer = segments[segments["day_type"] == "Feriali"]
-    night = fer[fer["hour"].isin(NIGHT_HOURS)]["avg_speed"]
-    day = fer[~fer["hour"].isin(NIGHT_HOURS)]["avg_speed"]
-
-    axes[0].hist(day, bins=40, alpha=0.6, color="#1f77b4", label="Diurno (06–21)", density=True)
-    axes[0].hist(night, bins=40, alpha=0.6, color="#9467bd", label="Notturno (22–05)", density=True)
-    axes[0].axvline(SPEED_LIMIT, color="red", linestyle="--", linewidth=1, label=f"Limite {SPEED_LIMIT}")
-    axes[0].set_xlabel("Velocità media (km/h)")
-    axes[0].set_ylabel("Densità")
-    axes[0].set_title("Distribuzione Velocità: Notte vs Giorno")
-    axes[0].legend(fontsize=8)
-
-    # 2. Night V85 spatial profile per direction
-    for direction, col in [("Centro", "#1f77b4"), ("GRA", "#ff7f0e")]:
-        sub = fer[(fer["direction"] == direction) & (fer["hour"].isin(NIGHT_HOURS))]
-        profile = sub.groupby("seg_idx").agg(
-            v85=("p85", "mean"), dist=("cum_dist_mid", "first")
+    for ci, direction in enumerate(["Centro", "GRA"]):
+        sub_dir = fer[fer["direction"] == direction]
+        night = sub_dir[sub_dir["hour"].isin(NIGHT_HOURS)]["avg_speed"]
+        day = sub_dir[~sub_dir["hour"].isin(NIGHT_HOURS)]["avg_speed"]
+        # histogram
+        ax = axes[0, ci]
+        ax.hist(day, bins=40, alpha=.6, color="#1f77b4",
+                label="Diurno (06\u201321)", density=True)
+        ax.hist(night, bins=40, alpha=.6, color="#9467bd",
+                label="Notturno (22\u201305)", density=True)
+        ax.axvline(SPEED_LIMIT, color="red", ls="--", lw=1,
+                   label=f"Limite {SPEED_LIMIT}")
+        ax.set_xlabel("Velocit\u00e0 media (km/h)"); ax.set_ylabel("Densit\u00e0")
+        ax.set_title(f"Distribuzione Notte vs Giorno \u2014 Dir. {direction}")
+        ax.legend(fontsize=8)
+        # spatial profile
+        ax2 = axes[1, ci]
+        sub_n = sub_dir[sub_dir["hour"].isin(NIGHT_HOURS)]
+        prof = sub_n.groupby("seg_idx").agg(
+            v85=("p85", "mean"), avg=("avg_speed", "mean"),
+            dist=("cum_dist_mid", "first"),
         ).sort_values("dist")
-        axes[1].plot(profile["dist"], profile["v85"], color=col, linewidth=2, label=f"Dir. {direction}")
-
-    axes[1].axhline(SPEED_LIMIT, color="red", linestyle="--", linewidth=1, alpha=0.7)
-    axes[1].set_xlabel("Distanza (m)")
-    axes[1].set_ylabel("V85 notturno (km/h)")
-    axes[1].set_title("V85 Notturno lungo il Percorso (Feriali)")
-    axes[1].legend(fontsize=8)
-    axes[1].grid(True, alpha=0.3)
-
-    # 3. Night avg speed spatial profile per direction
-    for direction, col in [("Centro", "#1f77b4"), ("GRA", "#ff7f0e")]:
-        sub = fer[(fer["direction"] == direction) & (fer["hour"].isin(NIGHT_HOURS))]
-        profile = sub.groupby("seg_idx").agg(
-            avg=("avg_speed", "mean"), dist=("cum_dist_mid", "first")
-        ).sort_values("dist")
-        axes[2].plot(profile["dist"], profile["avg"], color=col, linewidth=2, label=f"Dir. {direction}")
-
-    axes[2].axhline(SPEED_LIMIT, color="red", linestyle="--", linewidth=1, alpha=0.7)
-    axes[2].set_xlabel("Distanza (m)")
-    axes[2].set_ylabel("Velocità media notturna (km/h)")
-    axes[2].set_title("Velocità Media Notturna lungo il Percorso (Feriali)")
-    axes[2].legend(fontsize=8)
-    axes[2].grid(True, alpha=0.3)
-
+        dkm = prof["dist"] / 1000
+        ax2.plot(dkm, prof["v85"], color="#9467bd", lw=2, label="V85 notturno")
+        ax2.plot(dkm, prof["avg"], color="#1f77b4", lw=2, label="Vel. media notturna")
+        ax2.axhline(SPEED_LIMIT, color="red", ls="--", lw=1, alpha=.7)
+        ax2.set_xlabel("Progressiva (km)"); ax2.set_ylabel("Velocit\u00e0 (km/h)")
+        ax2.set_title(f"Profilo Notturno \u2014 Dir. {direction}")
+        ax2.legend(fontsize=8); ax2.grid(True, alpha=.3)
+    fig.suptitle("Analisi delle Velocit\u00e0 Notturne (Feriali)", fontsize=13, y=1.01)
     fig.tight_layout()
     return fig_to_base64(fig)
 
 
 def chart_weekday_weekend(segments):
-    """Weekday vs weekend comparison charts."""
     fig, axes = plt.subplots(2, 2, figsize=(14, 10))
-
-    for col_idx, direction in enumerate(["Centro", "GRA"]):
-        # Row 0: Avg speed by hour
-        ax = axes[0, col_idx]
+    for ci, direction in enumerate(["Centro", "GRA"]):
+        ax = axes[0, ci]
         for dt, ls in [("Feriali", "-"), ("Festivi", "--")]:
-            sub = segments[(segments["day_type"] == dt) & (segments["direction"] == direction)]
-            hmean = sub.groupby("hour")["avg_speed"].mean().reset_index().sort_values("hour")
-            ax.plot(hmean["hour"], hmean["avg_speed"],
-                    color=COLORS[(dt, direction)], linestyle=ls, linewidth=2,
-                    label=f"{dt}", marker="o", markersize=3)
-        ax.axhline(SPEED_LIMIT, color="red", linestyle="--", linewidth=1, alpha=0.7)
-        ax.set_title(f"Velocità Media — Dir. {direction}")
-        ax.set_xlabel("Ora")
-        ax.set_ylabel("km/h")
-        ax.set_xticks(range(24))
-        ax.set_xticklabels(HOUR_SHORT, fontsize=7)
-        ax.legend(fontsize=8)
-        ax.grid(True, alpha=0.3)
+            sub = segments[(segments["day_type"] == dt)
+                           & (segments["direction"] == direction)]
+            hm = sub.groupby("hour")["avg_speed"].mean().reset_index().sort_values("hour")
+            ax.plot(hm["hour"], hm["avg_speed"], color=COLORS[(dt, direction)],
+                    ls=ls, lw=2, label=dt, marker="o", markersize=3)
+        ax.axhline(SPEED_LIMIT, color="red", ls="--", lw=1, alpha=.7)
+        ax.set_title(f"Velocit\u00e0 Media \u2014 Dir. {direction}")
+        ax.set_xlabel("Ora"); ax.set_ylabel("km/h")
+        ax.set_xticks(range(24)); ax.set_xticklabels(HOUR_SHORT, fontsize=7)
+        ax.legend(fontsize=8); ax.grid(True, alpha=.3)
 
-        # Row 1: V85 by hour
-        ax2 = axes[1, col_idx]
+        ax2 = axes[1, ci]
         for dt, ls in [("Feriali", "-"), ("Festivi", "--")]:
-            sub = segments[(segments["day_type"] == dt) & (segments["direction"] == direction)]
-            hmean = sub.groupby("hour")["p85"].mean().reset_index().sort_values("hour")
-            ax2.plot(hmean["hour"], hmean["p85"],
-                     color=COLORS[(dt, direction)], linestyle=ls, linewidth=2,
-                     label=f"{dt}", marker="o", markersize=3)
-        ax2.axhline(SPEED_LIMIT, color="red", linestyle="--", linewidth=1, alpha=0.7)
-        ax2.set_title(f"V85 — Dir. {direction}")
-        ax2.set_xlabel("Ora")
-        ax2.set_ylabel("km/h")
-        ax2.set_xticks(range(24))
-        ax2.set_xticklabels(HOUR_SHORT, fontsize=7)
-        ax2.legend(fontsize=8)
-        ax2.grid(True, alpha=0.3)
-
+            sub = segments[(segments["day_type"] == dt)
+                           & (segments["direction"] == direction)]
+            hm = sub.groupby("hour")["p85"].mean().reset_index().sort_values("hour")
+            ax2.plot(hm["hour"], hm["p85"], color=COLORS[(dt, direction)],
+                     ls=ls, lw=2, label=dt, marker="o", markersize=3)
+        ax2.axhline(SPEED_LIMIT, color="red", ls="--", lw=1, alpha=.7)
+        ax2.set_title(f"V85 \u2014 Dir. {direction}")
+        ax2.set_xlabel("Ora"); ax2.set_ylabel("km/h")
+        ax2.set_xticks(range(24)); ax2.set_xticklabels(HOUR_SHORT, fontsize=7)
+        ax2.legend(fontsize=8); ax2.grid(True, alpha=.3)
     fig.suptitle("Confronto Feriali vs Festivi", fontsize=13, y=1.01)
     fig.tight_layout()
     return fig_to_base64(fig)
@@ -551,104 +466,188 @@ def chart_weekday_weekend(segments):
 # SECTION 5 — MAP GENERATION
 # ================================================================
 
+def find_point_at_distance(seg_info, target_dist):
+    """Find geographic (lat, lon) at a given cumulative distance."""
+    for _, row in seg_info.iterrows():
+        if target_dist <= row["cum_dist_end"] + 0.01:
+            d = row["seg_distance"]
+            frac = (target_dist - row["cum_dist_start"]) / d if d > 0 else 0.0
+            frac = max(0.0, min(1.0, frac))
+            pt = row["geometry"].interpolate(frac, normalized=True)
+            return pt.y, pt.x
+    last_c = list(seg_info.iloc[-1]["geometry"].coords)[-1]
+    return last_c[1], last_c[0]
+
+
 def _seg_geodataframe(segments, day_type, direction, value_col, agg="mean"):
-    """Build a GeoDataFrame with one row per segment, aggregated across hours."""
-    sub = segments[(segments["day_type"] == day_type) & (segments["direction"] == direction)]
+    sub = segments[(segments["day_type"] == day_type)
+                   & (segments["direction"] == direction)]
     agg_dict = {
-        value_col: agg,
-        "geometry": "first",
-        "cum_dist_mid": "first",
-        "streetName": "first",
-        "speedLimit": "first",
-        "seg_distance": "first",
-        "avg_speed": "mean",
-        "p85": "mean",
-        "std_speed": "mean",
+        value_col: agg, "geometry": "first",
+        "cum_dist_mid": "first", "cum_dist_start": "first",
+        "streetName": "first", "speedLimit": "first", "seg_distance": "first",
+        "avg_speed": "mean", "p85": "mean", "std_speed": "mean",
     }
     grouped = sub.groupby("seg_idx").agg(agg_dict).reset_index()
-    gdf = gpd.GeoDataFrame(grouped, geometry="geometry", crs="EPSG:4326")
-    return gdf
+    return gpd.GeoDataFrame(grouped, geometry="geometry", crs="EPSG:4326")
 
 
-def make_folium_map(gdf, value_col, title, colormap_name="RdYlGn",
-                    vmin=None, vmax=None, reverse_cmap=False):
-    """Create a Folium map with segments colored by value_col."""
-    center_lat = gdf.geometry.centroid.y.mean()
-    center_lon = gdf.geometry.centroid.x.mean()
-    m = folium.Map(location=[center_lat, center_lon], zoom_start=15, tiles="CartoDB positron")
-
-    vals = gdf[value_col]
+def make_folium_map(gdf, value_col, title, vmin=None, vmax=None,
+                     reverse_cmap=False):
+    """Folium map with THICK coloured segments (weight=10)."""
+    clat = gdf.geometry.centroid.y.mean()
+    clon = gdf.geometry.centroid.x.mean()
+    m = folium.Map(location=[clat, clon], zoom_start=15,
+                   tiles="CartoDB positron")
     if vmin is None:
-        vmin = vals.min()
+        vmin = gdf[value_col].min()
     if vmax is None:
-        vmax = vals.max()
-
-    colormap = cm.LinearColormap(
-        colors=["green", "yellow", "red"] if not reverse_cmap else ["red", "yellow", "green"],
-        vmin=vmin, vmax=vmax,
-        caption=f"{title} (km/h)"
-    )
-
+        vmax = gdf[value_col].max()
+    colors = (["green", "yellow", "red"] if not reverse_cmap
+              else ["red", "yellow", "green"])
+    cmap = cm.LinearColormap(colors=colors, vmin=vmin, vmax=vmax,
+                              caption=f"{title} (km/h)")
     for _, row in gdf.iterrows():
-        coords = list(row.geometry.coords)
-        latlngs = [[c[1], c[0]] for c in coords]
-        color = colormap(row[value_col])
+        coords = [[c[1], c[0]] for c in row.geometry.coords]
         popup_html = (
             f"<b>{row['streetName']}</b><br>"
+            f"Progr.: {row['cum_dist_start']:.0f} m<br>"
             f"Vel. media: {row['avg_speed']:.1f} km/h<br>"
             f"V85: {row['p85']:.1f} km/h<br>"
             f"Dev. std: {row['std_speed']:.1f} km/h<br>"
             f"Limite: {row['speedLimit']} km/h<br>"
             f"Lungh.: {row['seg_distance']:.0f} m"
         )
-        folium.PolyLine(
-            latlngs, weight=6, color=color, opacity=0.85,
-            popup=folium.Popup(popup_html, max_width=250),
-        ).add_to(m)
-
-    colormap.add_to(m)
+        folium.PolyLine(coords, weight=10, color=cmap(row[value_col]),
+                        opacity=0.9,
+                        popup=folium.Popup(popup_html, max_width=280)).add_to(m)
+    cmap.add_to(m)
     return m
 
 
-def generate_maps(segments):
-    """Generate all Folium maps, save to files, return paths."""
+def create_progressive_map(segments, day_type, direction, interval_m=250):
+    """Folium map with progressive distance markers every interval_m."""
+    sub = segments[(segments["day_type"] == day_type)
+                   & (segments["direction"] == direction)]
+    si = sub.drop_duplicates("seg_idx").sort_values("seg_idx")
+    clat = si.geometry.apply(lambda g: g.centroid.y).mean()
+    clon = si.geometry.apply(lambda g: g.centroid.x).mean()
+    m = folium.Map(location=[clat, clon], zoom_start=15,
+                   tiles="CartoDB positron")
+    for _, row in si.iterrows():
+        coords = [[c[1], c[0]] for c in row["geometry"].coords]
+        folium.PolyLine(coords, weight=6, color="#1a237e", opacity=.8).add_to(m)
+    total_dist = si["cum_dist_end"].max()
+    for td in range(0, int(total_dist) + interval_m, interval_m):
+        if td > total_dist:
+            break
+        lat, lon = find_point_at_distance(si, td)
+        label = f"{td} m" if td < 1000 else f"{td/1000:.2f} km"
+        folium.Marker(
+            [lat, lon],
+            icon=folium.DivIcon(
+                html=(f'<div style="font-size:10px;font-weight:bold;background:white;'
+                      f'padding:2px 5px;border:1px solid #333;border-radius:3px;'
+                      f'white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);">'
+                      f'{label}</div>'),
+                icon_size=(70, 22), icon_anchor=(35, 11)),
+        ).add_to(m)
+    sc = list(si.iloc[0]["geometry"].coords)[0]
+    ec = list(si.iloc[-1]["geometry"].coords)[-1]
+    folium.Marker([sc[1], sc[0]], icon=folium.Icon(color="green"),
+                  popup="Inizio (0 m)").add_to(m)
+    folium.Marker([ec[1], ec[0]], icon=folium.Icon(color="red"),
+                  popup=f"Fine ({total_dist:.0f} m)").add_to(m)
+    return m
+
+
+def create_top_segments_map(segments, seg_stats, day_type, direction, n=10):
+    """Folium map highlighting top-N segments by max V85."""
+    sub = segments[(segments["day_type"] == day_type)
+                   & (segments["direction"] == direction)]
+    si = sub.drop_duplicates("seg_idx").sort_values("seg_idx")
+    top = seg_stats[
+        (seg_stats["day_type"] == day_type)
+        & (seg_stats["direction"] == direction)
+    ].nlargest(n, "max_v85")
+    top_set = set(top["seg_idx"].values)
+
+    clat = si.geometry.apply(lambda g: g.centroid.y).mean()
+    clon = si.geometry.apply(lambda g: g.centroid.x).mean()
+    m = folium.Map(location=[clat, clon], zoom_start=15,
+                   tiles="CartoDB positron")
+    for _, row in si.iterrows():
+        coords = [[c[1], c[0]] for c in row["geometry"].coords]
+        is_top = row["seg_idx"] in top_set
+        folium.PolyLine(
+            coords,
+            weight=10 if is_top else 4,
+            color="#e41a1c" if is_top else "#aaaaaa",
+            opacity=0.9 if is_top else 0.4,
+        ).add_to(m)
+    for rank, (_, row) in enumerate(top.iterrows(), 1):
+        match = si[si["seg_idx"] == row["seg_idx"]]
+        if match.empty:
+            continue
+        c = match.iloc[0]["geometry"].centroid
+        folium.Marker(
+            [c.y, c.x],
+            icon=folium.DivIcon(
+                html=(f'<div style="font-size:11px;background:#e41a1c;color:white;'
+                      f'padding:2px 6px;border-radius:50%;text-align:center;'
+                      f'width:24px;height:24px;line-height:20px;font-weight:bold;'
+                      f'box-shadow:1px 1px 3px rgba(0,0,0,.4);">{rank}</div>'),
+                icon_size=(24, 24), icon_anchor=(12, 12)),
+            popup=(f"<b>#{rank}</b><br>Progr.: {row['cum_dist_start']:.0f} m<br>"
+                   f"V85 max: {row['max_v85']:.0f} km/h<br>"
+                   f"Vel. media: {row['all_avg_speed']:.1f} km/h"),
+        ).add_to(m)
+    return m
+
+
+def generate_maps(segments, seg_stats):
     MAPS_DIR.mkdir(parents=True, exist_ok=True)
     map_files = {}
-
     configs = [
-        # (filename, day_type, direction, value_col, agg, title, cmap, vmin, vmax, reverse)
         ("v85_feriali_centro.html", "Feriali", "Centro", "p85", "mean",
-         "V85 Medio — Feriali Dir. Centro", "RdYlGn", 20, 80, False),
+         "V85 Medio \u2014 Feriali Dir. Centro", 20, 80, False),
         ("v85_feriali_gra.html", "Feriali", "GRA", "p85", "mean",
-         "V85 Medio — Feriali Dir. GRA", "RdYlGn", 20, 80, False),
+         "V85 Medio \u2014 Feriali Dir. GRA", 20, 80, False),
         ("v85_festivi_centro.html", "Festivi", "Centro", "p85", "mean",
-         "V85 Medio — Festivi Dir. Centro", "RdYlGn", 20, 80, False),
+         "V85 Medio \u2014 Festivi Dir. Centro", 20, 80, False),
         ("v85_festivi_gra.html", "Festivi", "GRA", "p85", "mean",
-         "V85 Medio — Festivi Dir. GRA", "RdYlGn", 20, 80, False),
+         "V85 Medio \u2014 Festivi Dir. GRA", 20, 80, False),
         ("std_feriali_centro.html", "Feriali", "Centro", "std_speed", "mean",
-         "Variabilità (Std Dev) — Feriali Dir. Centro", "YlOrRd", 5, 22, True),
+         "Variabilit\u00e0 \u2014 Feriali Dir. Centro", 5, 22, True),
         ("std_feriali_gra.html", "Feriali", "GRA", "std_speed", "mean",
-         "Variabilità (Std Dev) — Feriali Dir. GRA", "YlOrRd", 5, 22, True),
-        # Night speeds: filter night hours first
+         "Variabilit\u00e0 \u2014 Feriali Dir. GRA", 5, 22, True),
         ("night_v85_feriali_centro.html", "Feriali", "Centro", "p85", "mean",
-         "V85 Notturno — Feriali Dir. Centro", "RdYlGn", 30, 90, False),
+         "V85 Notturno \u2014 Feriali Dir. Centro", 30, 90, False),
         ("night_v85_feriali_gra.html", "Feriali", "GRA", "p85", "mean",
-         "V85 Notturno — Feriali Dir. GRA", "RdYlGn", 30, 90, False),
+         "V85 Notturno \u2014 Feriali Dir. GRA", 30, 90, False),
     ]
-
     for cfg in configs:
-        fname, dt, dr, vcol, agg, title, cmap_name, vmin, vmax, rev = cfg
-
-        if "night" in fname:
-            sub = segments[segments["hour"].isin(NIGHT_HOURS)]
-        else:
-            sub = segments
-
+        fname, dt, dr, vcol, agg, title, vmin, vmax, rev = cfg
+        sub = (segments[segments["hour"].isin(NIGHT_HOURS)]
+               if "night" in fname else segments)
         gdf = _seg_geodataframe(sub, dt, dr, vcol, agg)
-        m = make_folium_map(gdf, vcol, title, cmap_name, vmin, vmax, rev)
-        path = MAPS_DIR / fname
-        m.save(str(path))
-        map_files[fname] = str(path)
+        m = make_folium_map(gdf, vcol, title, vmin, vmax, rev)
+        m.save(str(MAPS_DIR / fname))
+        map_files[fname] = fname
+
+    # Progressive distance maps (one per direction)
+    for direction in ["Centro", "GRA"]:
+        m = create_progressive_map(segments, "Feriali", direction)
+        fname = f"progressive_{direction.lower()}.html"
+        m.save(str(MAPS_DIR / fname))
+        map_files[fname] = fname
+
+    # Top-10 V85 maps
+    for direction in ["Centro", "GRA"]:
+        m = create_top_segments_map(segments, seg_stats, "Feriali", direction)
+        fname = f"top10_v85_feriali_{direction.lower()}.html"
+        m.save(str(MAPS_DIR / fname))
+        map_files[fname] = fname
 
     return map_files
 
@@ -658,365 +657,367 @@ def generate_maps(segments):
 # ================================================================
 
 def build_summary_tables(segments, summaries, seg_stats):
-    """Build summary data for the report."""
     tables = {}
 
-    # Table 1: Route overview
+    # Overview — removed Distanza and N. Segmenti (mod 2)
     overview_rows = []
     for key in LABELS:
         dt, dr = key
-        sub_sum = summaries[(summaries["day_type"] == dt) & (summaries["direction"] == dr)]
-        sub_seg = segments[(segments["day_type"] == dt) & (segments["direction"] == dr)]
-        n_segs = sub_seg["seg_idx"].nunique()
-        route_dist = sub_sum["route_dist"].iloc[0]
-        mean_speed = sub_sum["harm_avg_speed"].mean()
-        peak_speed_am = sub_sum[sub_sum["hour"].isin(AM_PEAK)]["harm_avg_speed"].mean()
-        peak_speed_pm = sub_sum[sub_sum["hour"].isin(PM_PEAK)]["harm_avg_speed"].mean()
-        night_speed = sub_sum[sub_sum["hour"].isin(NIGHT_HOURS)]["harm_avg_speed"].mean()
-
+        ss = summaries[(summaries["day_type"] == dt)
+                       & (summaries["direction"] == dr)]
         overview_rows.append({
             "Percorso": LABELS[key],
-            "Distanza (m)": f"{route_dist:.0f}",
-            "N. Segmenti": n_segs,
-            "Vel. Media 24h (km/h)": f"{mean_speed:.1f}",
-            "Vel. Punta AM (km/h)": f"{peak_speed_am:.1f}",
-            "Vel. Punta PM (km/h)": f"{peak_speed_pm:.1f}",
-            "Vel. Notturna (km/h)": f"{night_speed:.1f}",
+            "Vel. Media 24h (km/h)": f"{ss['harm_avg_speed'].mean():.1f}",
+            "Vel. Punta AM (km/h)":  f"{ss[ss['hour'].isin(AM_PEAK)]['harm_avg_speed'].mean():.1f}",
+            "Vel. Punta PM (km/h)":  f"{ss[ss['hour'].isin(PM_PEAK)]['harm_avg_speed'].mean():.1f}",
+            "Vel. Notturna (km/h)":  f"{ss[ss['hour'].isin(NIGHT_HOURS)]['harm_avg_speed'].mean():.1f}",
         })
     tables["overview"] = pd.DataFrame(overview_rows)
 
-    # Table 2: Speed exceedance summary
+    # Exceedance — weighted by km (mod 3)
     exc_rows = []
     for key in LABELS:
         dt, dr = key
-        sub = segments[(segments["day_type"] == dt) & (segments["direction"] == dr)]
-        pct_avg_exceed = (sub["avg_speed"] > SPEED_LIMIT).mean() * 100
-        pct_v85_exceed = (sub["p85"] > SPEED_LIMIT).mean() * 100
-        max_v85 = sub["p85"].max()
-        max_avg = sub["avg_speed"].max()
+        sub = segments[(segments["day_type"] == dt)
+                       & (segments["direction"] == dr)]
+        total_m = sub.drop_duplicates("seg_idx")["seg_distance"].sum()
+
+        def _pct(col):
+            vals = []
+            for h in range(24):
+                hs = sub[sub["hour"] == h]
+                vals.append(hs.loc[hs[col] > SPEED_LIMIT, "seg_distance"].sum()
+                            / total_m * 100)
+            return np.mean(vals)
+
         exc_rows.append({
             "Percorso": LABELS[key],
-            "% osserv. Vel.Media > 50": f"{pct_avg_exceed:.1f}%",
-            "% osserv. V85 > 50": f"{pct_v85_exceed:.1f}%",
-            "V85 massimo (km/h)": f"{max_v85:.0f}",
-            "Vel. Media massima (km/h)": f"{max_avg:.1f}",
+            "% km Vel.Media > 50 (media 24h)": f"{_pct('avg_speed'):.1f}%",
+            "% km V85 > 50 (media 24h)":       f"{_pct('p85'):.1f}%",
+            "V85 massimo (km/h)":              f"{sub['p85'].max():.0f}",
+            "Vel. Media max (km/h)":           f"{sub['avg_speed'].max():.1f}",
         })
     tables["exceedance"] = pd.DataFrame(exc_rows)
 
-    # Table 3: Top 5 fastest segments (by max V85) — Feriali Centro
-    st = seg_stats[
-        (seg_stats["day_type"] == "Feriali") & (seg_stats["direction"] == "Centro")
-    ].nlargest(5, "max_v85")
-    tables["top_fast_centro"] = st[["seg_idx", "streetName", "max_v85", "all_avg_speed", "all_std", "speedLimit"]].copy()
-    tables["top_fast_centro"].columns = ["Seg.", "Via", "V85 Max (km/h)", "Vel. Media (km/h)", "Dev. Std. (km/h)", "Limite"]
-
-    st2 = seg_stats[
-        (seg_stats["day_type"] == "Feriali") & (seg_stats["direction"] == "GRA")
-    ].nlargest(5, "max_v85")
-    tables["top_fast_gra"] = st2[["seg_idx", "streetName", "max_v85", "all_avg_speed", "all_std", "speedLimit"]].copy()
-    tables["top_fast_gra"].columns = ["Seg.", "Via", "V85 Max (km/h)", "Vel. Media (km/h)", "Dev. Std. (km/h)", "Limite"]
+    # Top 10 — with progressive numbering, no Seg./Via (mod 9)
+    for direction in ["Centro", "GRA"]:
+        st = seg_stats[
+            (seg_stats["day_type"] == "Feriali")
+            & (seg_stats["direction"] == direction)
+        ].nlargest(10, "max_v85").reset_index(drop=True)
+        tbl = pd.DataFrame({
+            "#": range(1, len(st) + 1),
+            "Progressiva (m)": st["cum_dist_start"].apply(lambda x: f"{x:.0f}"),
+            "V85 Max (km/h)":  st["max_v85"].apply(lambda x: f"{x:.0f}"),
+            "Vel. Media (km/h)": st["all_avg_speed"].apply(lambda x: f"{x:.1f}"),
+            "Dev. Std. (km/h)":  st["all_std"].apply(lambda x: f"{x:.1f}"),
+            "Limite (km/h)":     st["speedLimit"].apply(lambda x: f"{x:.0f}"),
+        })
+        tables[f"top_fast_{direction.lower()}"] = tbl
 
     return tables
 
 
 def df_to_html_table(df):
-    """Convert a DataFrame to a styled HTML table string."""
     return df.to_html(index=False, classes="data-table", border=0)
 
 
-def generate_html_report(charts, map_files, tables, segments):
-    """Assemble the full HTML report."""
+def _iframe(fname, title):
+    return (f'<h3>{title}</h3>'
+            f'<iframe src="maps/{fname}" width="100%" height="500" '
+            f'frameborder="0" style="border:1px solid #ddd;border-radius:4px;'
+            f'margin-bottom:20px;"></iframe>')
 
-    map_iframes = ""
-    map_sections = [
-        ("v85_feriali_centro.html", "V85 Medio — Feriali Dir. Centro"),
-        ("v85_feriali_gra.html", "V85 Medio — Feriali Dir. GRA"),
-        ("v85_festivi_centro.html", "V85 Medio — Festivi Dir. Centro"),
-        ("v85_festivi_gra.html", "V85 Medio — Festivi Dir. GRA"),
-        ("std_feriali_centro.html", "Variabilità Velocità — Feriali Dir. Centro"),
-        ("std_feriali_gra.html", "Variabilità Velocità — Feriali Dir. GRA"),
-        ("night_v85_feriali_centro.html", "V85 Notturno — Feriali Dir. Centro"),
-        ("night_v85_feriali_gra.html", "V85 Notturno — Feriali Dir. GRA"),
-    ]
-    for fname, mtitle in map_sections:
-        map_iframes += f"""
-        <h3>{mtitle}</h3>
-        <iframe src="maps/{fname}" width="100%" height="500" frameborder="0"
-                style="border:1px solid #ddd; border-radius:4px; margin-bottom:20px;"></iframe>
-        """
 
-    # Heatmap images
-    heatmap_imgs = ""
-    for label, b64 in charts["heatmaps"].items():
-        heatmap_imgs += f"""
-        <h3>{label}</h3>
-        <img src="data:image/png;base64,{b64}" alt="{label}" style="max-width:100%;">
-        """
-
-    v85_spatial_imgs = ""
-    for direction, b64 in charts["v85_spatial"].items():
-        v85_spatial_imgs += f"""
-        <h3>Dir. {direction}</h3>
-        <img src="data:image/png;base64,{b64}" alt="V85 Spatial {direction}" style="max-width:100%;">
-        """
+def generate_html_report(charts, map_files, tables):
+    heatmap_imgs = "".join(
+        f'<h3>{lab}</h3><img src="data:image/png;base64,{b64}" style="max-width:100%;">'
+        for lab, b64 in charts["heatmaps"].items()
+    )
+    v85_spatial_imgs = "".join(
+        f'<h3>Dir. {d}</h3><img src="data:image/png;base64,{b64}" style="max-width:100%;">'
+        for d, b64 in charts["v85_spatial"].items()
+    )
+    progressive_iframes = (
+        _iframe("progressive_centro.html", "Progressive \u2014 Dir. Centro")
+        + _iframe("progressive_gra.html", "Progressive \u2014 Dir. GRA")
+    )
+    top10_centro_iframe = _iframe("top10_v85_feriali_centro.html",
+                                   "Mappa Top 10 \u2014 Dir. Centro")
+    top10_gra_iframe = _iframe("top10_v85_feriali_gra.html",
+                                "Mappa Top 10 \u2014 Dir. GRA")
+    main_map_iframes = "".join(
+        _iframe(f, t) for f, t in [
+            ("v85_feriali_centro.html", "V85 Medio \u2014 Feriali Dir. Centro"),
+            ("v85_feriali_gra.html",    "V85 Medio \u2014 Feriali Dir. GRA"),
+            ("v85_festivi_centro.html", "V85 Medio \u2014 Festivi Dir. Centro"),
+            ("v85_festivi_gra.html",    "V85 Medio \u2014 Festivi Dir. GRA"),
+            ("std_feriali_centro.html", "Variabilit\u00e0 \u2014 Feriali Dir. Centro"),
+            ("std_feriali_gra.html",    "Variabilit\u00e0 \u2014 Feriali Dir. GRA"),
+            ("night_v85_feriali_centro.html", "V85 Notturno \u2014 Feriali Dir. Centro"),
+            ("night_v85_feriali_gra.html",    "V85 Notturno \u2014 Feriali Dir. GRA"),
+        ]
+    )
 
     html = f"""<!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Analisi Velocità — Corso Francia, Roma</title>
-    <style>
-        * {{ margin: 0; padding: 0; box-sizing: border-box; }}
-        body {{
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6; color: #333; background: #f9f9f9;
-            max-width: 1200px; margin: 0 auto; padding: 20px;
-        }}
-        header {{
-            background: linear-gradient(135deg, #1a237e, #283593);
-            color: white; padding: 40px; border-radius: 8px;
-            margin-bottom: 30px; text-align: center;
-        }}
-        header h1 {{ font-size: 2em; margin-bottom: 8px; }}
-        header h2 {{ font-size: 1.3em; font-weight: 300; opacity: 0.9; }}
-        header p {{ margin-top: 12px; opacity: 0.8; font-size: 0.95em; }}
-        nav {{
-            background: white; padding: 20px 30px; border-radius: 8px;
-            margin-bottom: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }}
-        nav h3 {{ margin-bottom: 10px; color: #1a237e; }}
-        nav ol {{ padding-left: 20px; }}
-        nav li {{ margin-bottom: 4px; }}
-        nav a {{ color: #1565c0; text-decoration: none; }}
-        nav a:hover {{ text-decoration: underline; }}
-        section {{
-            background: white; padding: 30px; border-radius: 8px;
-            margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }}
-        h2 {{ color: #1a237e; border-bottom: 2px solid #e8eaf6; padding-bottom: 8px; margin-bottom: 20px; }}
-        h3 {{ color: #283593; margin: 20px 0 10px 0; }}
-        img {{ max-width: 100%; height: auto; border-radius: 4px; margin: 10px 0; }}
-        .data-table {{
-            width: 100%; border-collapse: collapse; margin: 15px 0;
-            font-size: 0.9em;
-        }}
-        .data-table th {{
-            background: #1a237e; color: white; padding: 10px 12px;
-            text-align: left; font-weight: 600;
-        }}
-        .data-table td {{ padding: 8px 12px; border-bottom: 1px solid #e0e0e0; }}
-        .data-table tr:nth-child(even) {{ background: #f5f5f5; }}
-        .data-table tr:hover {{ background: #e8eaf6; }}
-        .insight-box {{
-            background: #e8f5e9; border-left: 4px solid #4caf50;
-            padding: 15px 20px; margin: 15px 0; border-radius: 0 4px 4px 0;
-        }}
-        .warning-box {{
-            background: #fff3e0; border-left: 4px solid #ff9800;
-            padding: 15px 20px; margin: 15px 0; border-radius: 0 4px 4px 0;
-        }}
-        .critical-box {{
-            background: #ffebee; border-left: 4px solid #f44336;
-            padding: 15px 20px; margin: 15px 0; border-radius: 0 4px 4px 0;
-        }}
-        .chart-caption {{
-            text-align: center; font-style: italic; color: #666;
-            font-size: 0.9em; margin-top: -5px; margin-bottom: 20px;
-        }}
-        footer {{
-            text-align: center; padding: 20px; color: #999; font-size: 0.85em;
-        }}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analisi Velocit\u00e0 \u2014 Corso Francia, Roma</title>
+<style>
+*{{margin:0;padding:0;box-sizing:border-box}}
+body{{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;line-height:1.6;
+  color:#333;background:#f9f9f9;max-width:1200px;margin:0 auto;padding:20px}}
+header{{background:linear-gradient(135deg,#1a237e,#283593);color:#fff;
+  padding:40px;border-radius:8px;margin-bottom:30px;text-align:center}}
+header h1{{font-size:2em;margin-bottom:8px}}
+header h2{{font-size:1.3em;font-weight:300;opacity:.9}}
+header p{{margin-top:12px;opacity:.8;font-size:.95em}}
+nav{{background:#fff;padding:20px 30px;border-radius:8px;margin-bottom:30px;
+  box-shadow:0 2px 4px rgba(0,0,0,.1)}}
+nav h3{{margin-bottom:10px;color:#1a237e}}
+nav ol{{padding-left:20px}} nav li{{margin-bottom:4px}}
+nav a{{color:#1565c0;text-decoration:none}} nav a:hover{{text-decoration:underline}}
+section{{background:#fff;padding:30px;border-radius:8px;margin-bottom:20px;
+  box-shadow:0 2px 4px rgba(0,0,0,.1)}}
+h2{{color:#1a237e;border-bottom:2px solid #e8eaf6;padding-bottom:8px;margin-bottom:20px}}
+h3{{color:#283593;margin:20px 0 10px 0}}
+img{{max-width:100%;height:auto;border-radius:4px;margin:10px 0}}
+.data-table{{width:100%;border-collapse:collapse;margin:15px 0;font-size:.9em}}
+.data-table th{{background:#1a237e;color:#fff;padding:10px 12px;text-align:left;font-weight:600}}
+.data-table td{{padding:8px 12px;border-bottom:1px solid #e0e0e0}}
+.data-table tr:nth-child(even){{background:#f5f5f5}}
+.data-table tr:hover{{background:#e8eaf6}}
+.insight-box{{background:#e8f5e9;border-left:4px solid #4caf50;padding:15px 20px;
+  margin:15px 0;border-radius:0 4px 4px 0}}
+.warning-box{{background:#fff3e0;border-left:4px solid #ff9800;padding:15px 20px;
+  margin:15px 0;border-radius:0 4px 4px 0}}
+.method-box{{background:#e3f2fd;border-left:4px solid #1976d2;padding:15px 20px;
+  margin:15px 0;border-radius:0 4px 4px 0}}
+.chart-caption{{text-align:center;font-style:italic;color:#666;font-size:.9em;
+  margin-top:-5px;margin-bottom:20px}}
+footer{{text-align:center;padding:20px;color:#999;font-size:.85em}}
+</style>
 </head>
 <body>
 
 <header>
-    <h1>Analisi della Distribuzione delle Velocit&agrave;</h1>
-    <h2>Corso Francia &mdash; Roma</h2>
-    <p>Dati TomTom Speed Profiles &bull; Periodo: 1–15 Febbraio 2026<br>
-       Report generato automaticamente</p>
+<h1>Analisi della Distribuzione delle Velocit&agrave;</h1>
+<h2>Corso Francia &mdash; Roma</h2>
+<p>Dati TomTom Speed Profiles &bull; Periodo: 1&ndash;15 Febbraio 2026</p>
 </header>
 
 <nav>
-    <h3>Indice</h3>
-    <ol>
-        <li><a href="#intro">Introduzione e Metodologia</a></li>
-        <li><a href="#overview">Panoramica dei Dati</a></li>
-        <li><a href="#temporal">Profili Temporali di Velocit&agrave;</a></li>
-        <li><a href="#exceedance">Superamento del Limite di Velocit&agrave;</a></li>
-        <li><a href="#v85">Analisi V85 (85&deg; Percentile)</a></li>
-        <li><a href="#variability">Variabilit&agrave; delle Velocit&agrave;</a></li>
-        <li><a href="#spatial">Profili Spaziali nelle Ore di Punta</a></li>
-        <li><a href="#night">Analisi delle Velocit&agrave; Notturne</a></li>
-        <li><a href="#comparison">Confronto Feriali vs Festivi</a></li>
-        <li><a href="#maps">Mappe Interattive</a></li>
-        <li><a href="#conclusions">Conclusioni e Raccomandazioni</a></li>
-    </ol>
+<h3>Indice</h3>
+<ol>
+<li><a href="#intro">Introduzione e Metodologia</a></li>
+<li><a href="#overview">Panoramica dei Dati</a></li>
+<li><a href="#temporal">Profili Temporali di Velocit&agrave;</a></li>
+<li><a href="#exceedance">Superamento del Limite di Velocit&agrave;</a></li>
+<li><a href="#v85">Analisi V85 (85&deg; Percentile)</a></li>
+<li><a href="#variability">Variabilit&agrave; delle Velocit&agrave;</a></li>
+<li><a href="#night">Analisi delle Velocit&agrave; Notturne</a></li>
+<li><a href="#comparison">Confronto Feriali vs Festivi</a></li>
+<li><a href="#maps">Mappe Interattive</a></li>
+<li><a href="#conclusions">Conclusioni e Raccomandazioni</a></li>
+</ol>
 </nav>
 
-<!-- 1. INTRODUCTION -->
+<!-- 1 INTRODUCTION -->
 <section id="intro">
-    <h2>1. Introduzione e Metodologia</h2>
-    <p>Il presente report analizza la distribuzione delle velocit&agrave; veicolari lungo
-    <strong>Corso di Francia</strong> a Roma, utilizzando i dati TomTom Speed Profiles relativi
-    al periodo <strong>1–15 febbraio 2026</strong>.</p>
+<h2>1. Introduzione e Metodologia</h2>
+<p>Il presente report analizza la distribuzione delle velocit&agrave; veicolari lungo
+<strong>Corso di Francia</strong> a Roma, utilizzando i dati TomTom Speed Profiles
+relativi al periodo <strong>1&ndash;15 febbraio 2026</strong>.</p>
+<p>L&rsquo;analisi si basa su quattro dataset:</p>
+<ul>
+<li><strong>Giorni Feriali</strong> (lun&ndash;ven) &mdash; Direzione Centro e Direzione GRA</li>
+<li><strong>Giorni Festivi</strong> (sab&ndash;dom) &mdash; Direzione Centro e Direzione GRA</li>
+</ul>
+<p>Metriche principali:</p>
+<ul>
+<li><strong>Velocit&agrave; media armonica</strong> &mdash; calcolata da TomTom come media armonica
+    ponderata sulla lunghezza di tutti i segmenti, rappresentativa della velocit&agrave;
+    effettiva di percorrenza.</li>
+<li><strong>V85 (85&deg; percentile)</strong> &mdash; velocit&agrave; non superata dall&rsquo;85%
+    dei veicoli. TomTom fornisce 19 percentili (dal 5&deg; al 95&deg;); il V85 corrisponde
+    al 17&deg; valore dell&rsquo;array.</li>
+<li><strong>Deviazione standard</strong> &mdash; dispersione delle velocit&agrave; individuali,
+    fornita direttamente da TomTom per ogni segmento e ora.</li>
+<li><strong>Tasso di superamento</strong> &mdash; percentuale dei <em>km di percorso</em>
+    (non dei segmenti) con velocit&agrave; superiore al limite. Ogni segmento &egrave; pesato
+    in proporzione alla propria lunghezza.</li>
+</ul>
+<p>Limite di velocit&agrave;: <strong>50 km/h</strong> (alcuni tratti terminali su Viale
+Maresciallo Pilsudski: 40 km/h).</p>
 
-    <p>L'analisi si basa su quattro dataset distinti che coprono:</p>
-    <ul>
-        <li><strong>Giorni Feriali</strong> (luned&igrave;–venerd&igrave;) — Direzione Centro e Direzione GRA</li>
-        <li><strong>Giorni Festivi</strong> (sabato–domenica) — Direzione Centro e Direzione GRA</li>
-    </ul>
-
-    <p>Le metriche principali analizzate includono:</p>
-    <ul>
-        <li><strong>Velocit&agrave; media armonica</strong> — rappresentativa della velocit&agrave; di percorrenza</li>
-        <li><strong>V85 (85&deg; percentile)</strong> — la velocit&agrave; non superata dall'85% dei veicoli, metrica chiave per la sicurezza stradale</li>
-        <li><strong>Deviazione standard</strong> — misura della dispersione delle velocit&agrave;</li>
-        <li><strong>Tasso di superamento</strong> — percentuale di segmenti con velocit&agrave; superiore al limite di 50 km/h</li>
-    </ul>
-
-    <p>Il limite di velocit&agrave; vigente su Corso di Francia &egrave; di <strong>50 km/h</strong>,
-    con alcuni segmenti terminali (Viale Maresciallo Pilsudski) con limite di 40 km/h.</p>
+<h3>Riferimento Spaziale: Progressive Chilometriche</h3>
+<p>Tutti i grafici spaziali utilizzano la <em>progressiva chilometrica</em>: la distanza
+(in km) dall&rsquo;inizio del percorso. Le due direzioni hanno punti di partenza diversi,
+quindi le progressive sono specifiche per ciascuna direzione. Le mappe seguenti mostrano
+la corrispondenza tra progressive e posizione geografica.</p>
+{progressive_iframes}
 </section>
 
-<!-- 2. OVERVIEW -->
+<!-- 2 OVERVIEW -->
 <section id="overview">
-    <h2>2. Panoramica dei Dati</h2>
-    <p>La tabella seguente riassume le caratteristiche principali di ciascun percorso analizzato.</p>
-    {df_to_html_table(tables['overview'])}
+<h2>2. Panoramica dei Dati</h2>
+<div class="method-box">
+<strong>Nota metodologica:</strong> le velocit&agrave; sono le <em>medie armoniche a livello
+di percorso</em> calcolate da TomTom. La media armonica pondera ogni segmento in base alla
+propria lunghezza, risultando rappresentativa della velocit&agrave; effettiva di percorrenza.
+I valori per le fasce orarie sono la media dei valori orari ricadenti nella fascia
+(punta AM: 07&ndash;08, punta PM: 17&ndash;18, notturna: 22&ndash;05).
+</div>
+{df_to_html_table(tables['overview'])}
 
-    <h3>Riepilogo Superamento Limiti</h3>
-    {df_to_html_table(tables['exceedance'])}
+<h3>Riepilogo Superamento Limiti (pesato per km)</h3>
+<div class="method-box">
+<strong>Nota metodologica:</strong> per ogni ora si sommano le lunghezze dei segmenti con
+velocit&agrave; superiore a 50 km/h e si dividono per la lunghezza totale del percorso.
+Il valore riportato &egrave; la media delle 24 ore.
+</div>
+{df_to_html_table(tables['exceedance'])}
 </section>
 
-<!-- 3. TEMPORAL PROFILES -->
+<!-- 3 TEMPORAL -->
 <section id="temporal">
-    <h2>3. Profili Temporali di Velocit&agrave;</h2>
+<h2>3. Profili Temporali di Velocit&agrave;</h2>
+<h3>Velocit&agrave; Media Armonica per Ora</h3>
+<img src="data:image/png;base64,{charts['speed_by_hour']}">
+<p class="chart-caption">Velocit&agrave; media armonica dell&rsquo;intero itinerario per ora.
+Pannello sinistro: feriali; pannello destro: festivi.</p>
 
-    <h3>Velocit&agrave; Media Armonica per Ora del Giorno</h3>
-    <img src="data:image/png;base64,{charts['speed_by_hour']}" alt="Velocità media per ora">
-    <p class="chart-caption">Figura 1 — Velocit&agrave; media armonica di percorrenza dell'intero itinerario per ogni ora del giorno.</p>
+<h3>V85 Medio per Ora</h3>
+<img src="data:image/png;base64,{charts['v85_by_hour']}">
+<p class="chart-caption">85&deg; percentile mediato su tutti i segmenti per ora.
+Pannello sinistro: feriali; pannello destro: festivi.</p>
 
-    <h3>V85 Medio per Ora del Giorno</h3>
-    <img src="data:image/png;base64,{charts['v85_by_hour']}" alt="V85 per ora">
-    <p class="chart-caption">Figura 2 — 85&deg; percentile della velocit&agrave; mediato su tutti i segmenti per ogni ora.</p>
-
-    <h3>Mappe di Calore: Velocit&agrave; per Segmento e Ora</h3>
-    {heatmap_imgs}
-    <p class="chart-caption">Figure 3–6 — Mappe di calore della velocit&agrave; media per ciascun segmento (asse x) e ora (asse y).
-    Il verde indica velocit&agrave; elevate (flusso libero), il rosso velocit&agrave; ridotte (congestione).</p>
+<h3>Mappe di Calore: Velocit&agrave; per Progressiva e Ora</h3>
+<p>L&rsquo;asse orizzontale riporta la progressiva chilometrica; la larghezza di ciascuna cella
+&egrave; proporzionale alla lunghezza effettiva del segmento. Si veda la mappa delle
+progressive (Sezione 1) per il riferimento geografico.</p>
+{heatmap_imgs}
+<p class="chart-caption">Verde = flusso libero (velocit&agrave; elevate);
+rosso = congestione (velocit&agrave; ridotte).</p>
 </section>
 
-<!-- 4. EXCEEDANCE -->
+<!-- 4 EXCEEDANCE -->
 <section id="exceedance">
-    <h2>4. Superamento del Limite di Velocit&agrave;</h2>
-    <img src="data:image/png;base64,{charts['exceedance']}" alt="Tasso di superamento">
-    <p class="chart-caption">Figura 7 — Percentuale di segmenti con velocit&agrave; superiore a 50 km/h per ora del giorno.
-    Pannello sinistro: velocit&agrave; media; pannello destro: V85.</p>
+<h2>4. Superamento del Limite di Velocit&agrave;</h2>
+<p>Per ogni ora si calcola la percentuale della <em>lunghezza del percorso</em> (km) in cui
+la velocit&agrave; supera 50 km/h. Ogni segmento &egrave; pesato in proporzione alla propria
+lunghezza.</p>
+<img src="data:image/png;base64,{charts['exceedance']}">
+<p class="chart-caption">% dei km di percorso oltre il limite per ora.
+Sinistra: velocit&agrave; media; destra: V85.</p>
 </section>
 
-<!-- 5. V85 ANALYSIS -->
+<!-- 5 V85 -->
 <section id="v85">
-    <h2>5. Analisi V85 (85&deg; Percentile)</h2>
-    <p>Il V85 &egrave; la velocit&agrave; non superata dall'85% degli utenti. Viene utilizzato
-    come parametro di riferimento per la verifica dell'adeguatezza del limite di velocit&agrave;
-    e per la progettazione stradale.</p>
+<h2>5. Analisi V85 (85&deg; Percentile)</h2>
+<div class="method-box">
+<strong>Metodologia V85:</strong><br>
+Il V85 &egrave; la velocit&agrave; al di sotto della quale viaggia l&rsquo;85% dei veicoli.
+TomTom fornisce per ogni segmento e ora un array di 19 percentili (5&deg;&ndash;95&deg;,
+passo 5); il V85 &egrave; il 17&deg; valore (indice 16).<br><br>
+<strong>Profili spaziali:</strong> per ogni fascia oraria (notte 22&ndash;05, punta AM
+07&ndash;08, mezzogiorno 12&ndash;13, punta PM 17&ndash;18) si calcola la media del V85 delle
+ore della fascia e si riporta in funzione della progressiva chilometrica.<br><br>
+<strong>Tabelle top 10:</strong> per ogni segmento si prende il V85 massimo tra le 24 ore.
+I 10 segmenti con il valore pi&ugrave; elevato sono in tabella, con la progressiva (m) per
+la localizzazione sulla mappa.
+</div>
 
-    {v85_spatial_imgs}
-    <p class="chart-caption">Figure 8–9 — Profilo spaziale del V85 lungo il percorso nelle diverse fasce orarie (Feriali).</p>
+{v85_spatial_imgs}
+<p class="chart-caption">Profilo spaziale V85 nelle diverse fasce orarie (Feriali).
+La linea rossa tratteggiata indica il limite di 50 km/h.</p>
 
-    <h3>Segmenti con V85 pi&ugrave; Elevato — Dir. Centro (Feriali)</h3>
-    {df_to_html_table(tables['top_fast_centro'])}
+<h3>Top 10 Tratti con V85 pi&ugrave; Elevato &mdash; Dir. Centro (Feriali)</h3>
+{df_to_html_table(tables['top_fast_centro'])}
+{top10_centro_iframe}
 
-    <h3>Segmenti con V85 pi&ugrave; Elevato — Dir. GRA (Feriali)</h3>
-    {df_to_html_table(tables['top_fast_gra'])}
+<h3>Top 10 Tratti con V85 pi&ugrave; Elevato &mdash; Dir. GRA (Feriali)</h3>
+{df_to_html_table(tables['top_fast_gra'])}
+{top10_gra_iframe}
 </section>
 
-<!-- 6. VARIABILITY -->
+<!-- 6 VARIABILITY -->
 <section id="variability">
-    <h2>6. Variabilit&agrave; delle Velocit&agrave;</h2>
-    <p>Un'elevata variabilit&agrave; delle velocit&agrave; (deviazione standard) indica segmenti
-    dove convivono veicoli a velocit&agrave; molto diverse, condizione che aumenta il rischio
-    di incidenti.</p>
-
-    <img src="data:image/png;base64,{charts['variability']}" alt="Variabilità velocità">
-    <p class="chart-caption">Figure 10–13 — Mappe di calore (sopra) e profili spaziali (sotto) della deviazione standard
-    della velocit&agrave; per le due direzioni (Feriali).</p>
+<h2>6. Variabilit&agrave; delle Velocit&agrave;</h2>
+<div class="method-box">
+<strong>Metodologia:</strong> la deviazione standard &egrave; fornita direttamente da TomTom
+per ogni segmento e fascia oraria. Misura la dispersione delle velocit&agrave; individuali
+attorno alla media.<br><br>
+Un&rsquo;elevata deviazione standard indica che nello stesso tratto convivono veicoli a
+velocit&agrave; molto diverse, aumentando il rischio di incidenti.<br><br>
+<strong>Mappe di calore:</strong> deviazione standard per progressiva (asse x) e ora (asse y).
+La larghezza delle celle &egrave; proporzionale alla lunghezza del segmento.
+Si veda la mappa delle progressive (Sezione 1) per il riferimento geografico.<br><br>
+<strong>Profili spaziali:</strong> linea continua = media giornaliera della dev. std.;
+area ombreggiata = valore massimo nell&rsquo;ora peggiore.
+</div>
+<img src="data:image/png;base64,{charts['variability']}">
+<p class="chart-caption">Mappe di calore (sopra) e profili spaziali (sotto) della deviazione
+standard per le due direzioni (Feriali).</p>
 </section>
 
-<!-- 7. SPATIAL PROFILES (V85 already covered) -->
-<section id="spatial">
-    <h2>7. Profili Spaziali nelle Ore di Punta</h2>
-    <p>I profili spaziali del V85 nelle ore di punta sono mostrati nella Sezione 5 sopra.
-    In questa sezione si evidenziano le differenze tra le fasce orarie:</p>
-    <ul>
-        <li><strong>Notte (22–05)</strong>: velocit&agrave; generalmente pi&ugrave; elevate per il minor traffico</li>
-        <li><strong>Punta mattina (07–08)</strong>: rallentamenti nella direzione Centro</li>
-        <li><strong>Mezzog. (12–13)</strong>: condizioni intermedie</li>
-        <li><strong>Punta sera (17–18)</strong>: rallentamenti nella direzione GRA</li>
-    </ul>
-</section>
-
-<!-- 8. NIGHT ANALYSIS -->
+<!-- 7 NIGHT -->
 <section id="night">
-    <h2>8. Analisi delle Velocit&agrave; Notturne</h2>
-    <p>Le ore notturne (22:00–05:59) presentano volumi di traffico ridotti e velocit&agrave;
-    tendenzialmente pi&ugrave; elevate. Questa condizione, combinata con la ridotta visibilit&agrave;,
-    pu&ograve; rappresentare un fattore di rischio significativo.</p>
-
-    <img src="data:image/png;base64,{charts['night']}" alt="Analisi notturna">
-    <p class="chart-caption">Figure 14–16 — Distribuzione delle velocit&agrave; diurne vs notturne (sinistra);
-    profilo V85 notturno (centro); profilo velocit&agrave; media notturna (destra).</p>
+<h2>7. Analisi delle Velocit&agrave; Notturne</h2>
+<p>Le ore notturne (22:00&ndash;05:59) presentano volumi ridotti e velocit&agrave; pi&ugrave;
+elevate. I grafici sono separati per direzione perch&eacute; le progressive corrispondono
+a posizioni geografiche diverse.</p>
+<img src="data:image/png;base64,{charts['night']}">
+<p class="chart-caption">Riga superiore: distribuzione diurna vs notturna.
+Riga inferiore: profilo spaziale V85 e velocit&agrave; media notturna (Feriali).</p>
 </section>
 
-<!-- 9. WEEKDAY vs WEEKEND -->
+<!-- 8 COMPARISON -->
 <section id="comparison">
-    <h2>9. Confronto Feriali vs Festivi</h2>
-    <img src="data:image/png;base64,{charts['weekday_weekend']}" alt="Confronto feriali-festivi">
-    <p class="chart-caption">Figure 17–20 — Confronto delle velocit&agrave; medie (sopra) e V85 (sotto)
-    tra giorni feriali e festivi per le due direzioni.</p>
+<h2>8. Confronto Feriali vs Festivi</h2>
+<img src="data:image/png;base64,{charts['weekday_weekend']}">
+<p class="chart-caption">Velocit&agrave; medie (sopra) e V85 (sotto) feriali vs festivi.</p>
 </section>
 
-<!-- 10. MAPS -->
+<!-- 9 MAPS -->
 <section id="maps">
-    <h2>10. Mappe Interattive</h2>
-    <p>Le mappe seguenti mostrano la distribuzione spaziale delle velocit&agrave; lungo Corso Francia.
-    Cliccare su ciascun segmento per visualizzare le statistiche dettagliate.</p>
-    {map_iframes}
+<h2>9. Mappe Interattive</h2>
+<p>Cliccare su ciascun segmento per le statistiche dettagliate.
+Lo spessore delle linee &egrave; stato aumentato per evidenziare
+i tratti con velocit&agrave; pi&ugrave; elevate.</p>
+{main_map_iframes}
 </section>
 
-<!-- 11. CONCLUSIONS -->
+<!-- 10 CONCLUSIONS -->
 <section id="conclusions">
-    <h2>11. Conclusioni e Raccomandazioni</h2>
-    <div class="insight-box">
-        <strong>Risultati Principali:</strong>
-        <ul>
-            <li>L'analisi copre circa 2.2–2.6 km di Corso Francia in entrambe le direzioni</li>
-            <li>Il limite di velocit&agrave; di 50 km/h viene frequentemente superato, specialmente nelle ore notturne</li>
-            <li>Il V85 supera il limite in una percentuale significativa di segmenti in tutte le fasce orarie</li>
-            <li>La direzione GRA e la direzione Centro mostrano profili di velocit&agrave; asimmetrici nelle ore di punta</li>
-        </ul>
-    </div>
-    <div class="warning-box">
-        <strong>Aree di Attenzione:</strong>
-        <ul>
-            <li>I segmenti con elevata variabilit&agrave; di velocit&agrave; richiedono particolare attenzione per la sicurezza</li>
-            <li>Le velocit&agrave; notturne significativamente superiori al limite suggeriscono la necessit&agrave; di misure di moderazione del traffico</li>
-            <li>I giorni festivi presentano velocit&agrave; generalmente pi&ugrave; elevate rispetto ai feriali</li>
-        </ul>
-    </div>
-    <p><em>Nota: questo report &egrave; stato generato automaticamente a partire dai dati TomTom Speed Profiles.
-    Si raccomanda un'interpretazione contestualizzata dei risultati da parte di tecnici qualificati.</em></p>
+<h2>10. Conclusioni e Raccomandazioni</h2>
+<div class="insight-box">
+<strong>Risultati Principali:</strong>
+<ul>
+<li>L&rsquo;analisi copre circa 2.2&ndash;2.6 km di Corso Francia in entrambe le direzioni</li>
+<li>Il limite di 50 km/h viene frequentemente superato, specialmente di notte</li>
+<li>Il V85 supera il limite in una percentuale significativa dei km in tutte le fasce orarie</li>
+<li>Le due direzioni mostrano profili asimmetrici nelle ore di punta</li>
+</ul>
+</div>
+<div class="warning-box">
+<strong>Aree di Attenzione:</strong>
+<ul>
+<li>I tratti con elevata variabilit&agrave; di velocit&agrave; richiedono attenzione per la sicurezza</li>
+<li>Le velocit&agrave; notturne suggeriscono la necessit&agrave; di misure di moderazione</li>
+<li>I festivi presentano velocit&agrave; generalmente pi&ugrave; elevate dei feriali</li>
+</ul>
+</div>
+<p><em>Report generato automaticamente dai dati TomTom Speed Profiles.
+Si raccomanda un&rsquo;interpretazione contestualizzata da parte di tecnici qualificati.</em></p>
 </section>
 
 <footer>
-    <p>Report generato con dati TomTom Speed Profiles &mdash; Corso Francia, Roma &mdash; Febbraio 2026</p>
+<p>TomTom Speed Profiles &mdash; Corso Francia, Roma &mdash; Febbraio 2026</p>
 </footer>
-
-</body>
-</html>"""
-
+</body></html>"""
     return html
 
 
@@ -1031,49 +1032,46 @@ def main():
     print("Calcolo statistiche per segmento...")
     seg_stats = segment_peak_stats(segments)
 
-    print("Creazione directory output...")
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     MAPS_DIR.mkdir(parents=True, exist_ok=True)
 
     print("Generazione grafici...")
     charts = {}
     charts["speed_by_hour"] = chart_speed_by_hour(summaries)
-    print("  - Velocità media per ora")
+    print("  - Velocita media per ora (Feriali/Festivi)")
     charts["v85_by_hour"] = chart_v85_by_hour(segments)
-    print("  - V85 per ora")
+    print("  - V85 per ora (Feriali/Festivi)")
     charts["heatmaps"] = chart_heatmaps(segments)
-    print("  - Mappe di calore")
+    print("  - Mappe di calore (progressive)")
     charts["exceedance"] = chart_exceedance(segments)
-    print("  - Superamento limiti")
+    print("  - Superamento limiti (per km)")
     charts["v85_spatial"] = chart_v85_spatial(segments)
     print("  - Profili spaziali V85")
     charts["variability"] = chart_speed_variability(segments)
-    print("  - Variabilità velocità")
+    print("  - Variabilita velocita (progressive)")
     charts["night"] = chart_night_analysis(segments)
-    print("  - Analisi notturna")
+    print("  - Analisi notturna (per direzione)")
     charts["weekday_weekend"] = chart_weekday_weekend(segments)
     print("  - Confronto feriali/festivi")
 
     print("Generazione mappe interattive...")
-    map_files = generate_maps(segments)
+    map_files = generate_maps(segments, seg_stats)
     print(f"  - {len(map_files)} mappe generate")
 
-    print("Costruzione tabelle di sintesi...")
+    print("Costruzione tabelle...")
     tables = build_summary_tables(segments, summaries, seg_stats)
 
     print("Assemblaggio report HTML...")
-    html = generate_html_report(charts, map_files, tables, segments)
+    html = generate_html_report(charts, map_files, tables)
     report_path = OUTPUT_DIR / "report_corso_francia.html"
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(html)
 
-    # Also export segment data as CSV for further analysis
     csv_path = OUTPUT_DIR / "dati_segmenti.csv"
     segments.drop(columns=["geometry"]).to_csv(csv_path, index=False)
-    print(f"  - Dati CSV esportati: {csv_path}")
-
-    print(f"\nReport completato: {report_path}")
-    print(f"Mappe interattive: {MAPS_DIR}")
+    print(f"  - CSV: {csv_path}")
+    print(f"\nReport: {report_path}")
+    print(f"Mappe:  {MAPS_DIR}")
 
 
 if __name__ == "__main__":
