@@ -63,6 +63,15 @@ output/
         night_v85_feriali_gra.html       # V85 notturno Feriali Dir. GRA
         top10_v85_feriali_centro.html    # Top 10 segmenti V85 Dir. Centro
         top10_v85_feriali_gra.html       # Top 10 segmenti V85 Dir. GRA
+    static_maps/
+        avg_speed_24h_feriali_centro.png     # Vel. media 24h Dir. Centro
+        avg_speed_24h_feriali_gra.png        # Vel. media 24h Dir. GRA
+        v85_24h_feriali_centro.png           # V85 24h Dir. Centro
+        v85_24h_feriali_gra.png              # V85 24h Dir. GRA
+        avg_speed_night_feriali_centro.png   # Vel. media notturna Dir. Centro
+        avg_speed_night_feriali_gra.png      # Vel. media notturna Dir. GRA
+        v85_night_feriali_centro.png         # V85 notturno Dir. Centro
+        v85_night_feriali_gra.png            # V85 notturno Dir. GRA
 ```
 
 Per consultare il report, aprire `output/report_corso_francia.html` in un browser.
@@ -108,6 +117,28 @@ Sovrapposizione dei profili orari feriali (linea continua) e festivi (linea trat
 
 ### 10. Conclusioni e Raccomandazioni
 Sintesi dei risultati principali e aree di attenzione.
+
+## Mappe Statiche (`output/static_maps/`)
+
+8 mappe PNG ad alta risoluzione (150 DPI) che mostrano la distribuzione delle velocita lungo il corridoio stradale in coordinate geografiche (lat/lon). Ogni segmento e colorato con una scala divergente verde-giallo-rosso centrata sul limite di 50 km/h:
+
+| Mappa | Metrica | Ore | Direzione |
+|-------|---------|-----|-----------|
+| `avg_speed_24h_feriali_centro.png` | Velocita media | Tutte (0-23) | Centro |
+| `avg_speed_24h_feriali_gra.png` | Velocita media | Tutte (0-23) | GRA |
+| `v85_24h_feriali_centro.png` | V85 | Tutte (0-23) | Centro |
+| `v85_24h_feriali_gra.png` | V85 | Tutte (0-23) | GRA |
+| `avg_speed_night_feriali_centro.png` | Velocita media | Notturne (22-05) | Centro |
+| `avg_speed_night_feriali_gra.png` | Velocita media | Notturne (22-05) | GRA |
+| `v85_night_feriali_centro.png` | V85 | Notturne (22-05) | Centro |
+| `v85_night_feriali_gra.png` | V85 | Notturne (22-05) | GRA |
+
+Ciascuna mappa include:
+- Segmenti stradali colorati per velocita (verde = sotto il limite, rosso = sopra)
+- Marcatori progressivi ogni 500 m per localizzazione spaziale
+- Indicatori di inizio (triangolo verde) e fine (triangolo rosso) del percorso
+- Barra colori con linea tratteggiata al limite di 50 km/h
+- Riepilogo statistico (media, max, min) nell'angolo inferiore
 
 ## Metodologia
 
