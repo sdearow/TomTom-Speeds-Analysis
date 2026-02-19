@@ -25,6 +25,10 @@ import folium
 import branca.colormap as cm
 import contextily as cx
 from shapely.geometry import shape
+from docx import Document
+from docx.shared import Inches, Pt, Cm, RGBColor
+from docx.enum.text import WD_ALIGN_PARAGRAPH
+from docx.enum.table import WD_TABLE_ALIGNMENT
 
 warnings.filterwarnings("ignore")
 
@@ -1263,6 +1267,378 @@ Si raccomanda un&rsquo;interpretazione contestualizzata da parte di tecnici qual
 
 
 # ================================================================
+# SECTION 6b — WORD REPORT
+# ================================================================
+
+def _b64_to_stream(b64_str):
+    """Decode a base64 PNG string into a BytesIO stream for python-docx."""
+    return io.BytesIO(base64.b64decode(b64_str))
+
+
+def _add_table_to_doc(doc, df):
+    """Insert a pandas DataFrame as a styled Word table."""
+    table = doc.add_table(rows=1, cols=len(df.columns), style="Light Grid Accent 1")
+    table.alignment = WD_TABLE_ALIGNMENT.CENTER
+    for j, col in enumerate(df.columns):
+        cell = table.rows[0].cells[j]
+        cell.text = str(col)
+        for par in cell.paragraphs:
+            par.alignment = WD_ALIGN_PARAGRAPH.CENTER
+            for run in par.runs:
+                run.bold = True
+                run.font.size = Pt(8)
+    for _, row_data in df.iterrows():
+        row_cells = table.add_row().cells
+        for j, col in enumerate(df.columns):
+            row_cells[j].text = str(row_data[col])
+            for par in row_cells[j].paragraphs:
+                par.alignment = WD_ALIGN_PARAGRAPH.CENTER
+                for run in par.runs:
+                    run.font.size = Pt(8)
+
+
+def _add_method_box(doc, text):
+    """Add a method-note paragraph with distinct formatting."""
+    p = doc.add_paragraph()
+    p.paragraph_format.left_indent = Cm(0.5)
+    p.paragraph_format.space_before = Pt(6)
+    p.paragraph_format.space_after = Pt(6)
+    run = p.add_run(text)
+    run.italic = True
+    run.font.size = Pt(9)
+    run.font.color.rgb = RGBColor(0x19, 0x76, 0xD2)
+
+
+def _add_caption(doc, text):
+    """Add a centered italic caption below a figure."""
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = p.add_run(text)
+    run.italic = True
+    run.font.size = Pt(9)
+    run.font.color.rgb = RGBColor(0x66, 0x66, 0x66)
+
+
+def generate_word_report(charts, tables, static_map_paths):
+    """Generate a Word (.docx) version of the report."""
+    doc = Document()
+
+    # --- Page setup ---
+    section = doc.sections[0]
+    section.page_width = Cm(21.0)
+    section.page_height = Cm(29.7)
+    section.left_margin = Cm(2.0)
+    section.right_margin = Cm(2.0)
+    section.top_margin = Cm(2.0)
+    section.bottom_margin = Cm(2.0)
+    img_width = Inches(6.5)
+
+    # --- Styles ---
+    style_normal = doc.styles["Normal"]
+    style_normal.font.name = "Calibri"
+    style_normal.font.size = Pt(10)
+
+    # ===== TITLE PAGE =====
+    doc.add_paragraph()  # spacer
+    doc.add_paragraph()
+    title_p = doc.add_paragraph()
+    title_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = title_p.add_run("Analisi della Distribuzione delle Velocit\u00e0")
+    run.bold = True
+    run.font.size = Pt(24)
+    run.font.color.rgb = RGBColor(0x1A, 0x23, 0x7E)
+
+    sub_p = doc.add_paragraph()
+    sub_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = sub_p.add_run("Corso Francia \u2014 Roma")
+    run.bold = True
+    run.font.size = Pt(18)
+    run.font.color.rgb = RGBColor(0x28, 0x35, 0x93)
+
+    date_p = doc.add_paragraph()
+    date_p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = date_p.add_run("Dati TomTom Speed Profiles \u2022 Periodo: 1\u201315 Febbraio 2026")
+    run.font.size = Pt(12)
+    run.font.color.rgb = RGBColor(0x66, 0x66, 0x66)
+
+    doc.add_page_break()
+
+    # ===== TABLE OF CONTENTS (manual) =====
+    doc.add_heading("Indice", level=1)
+    toc_items = [
+        "1. Introduzione e Metodologia",
+        "2. Panoramica dei Dati",
+        "3. Profili Temporali di Velocit\u00e0",
+        "4. Superamento del Limite di Velocit\u00e0",
+        "5. Analisi V85 (85\u00b0 Percentile)",
+        "6. Variabilit\u00e0 delle Velocit\u00e0",
+        "7. Analisi delle Velocit\u00e0 Notturne",
+        "8. Confronto Feriali vs Festivi",
+        "9. Mappe Statiche delle Velocit\u00e0",
+        "10. Conclusioni e Raccomandazioni",
+    ]
+    for item in toc_items:
+        doc.add_paragraph(item, style="List Number")
+    doc.add_page_break()
+
+    # ===== 1. INTRODUCTION =====
+    doc.add_heading("1. Introduzione e Metodologia", level=1)
+
+    doc.add_paragraph(
+        "Il presente report analizza la distribuzione delle velocit\u00e0 veicolari lungo "
+        "Corso di Francia a Roma, utilizzando i dati TomTom Speed Profiles "
+        "relativi al periodo 1\u201315 febbraio 2026."
+    )
+
+    doc.add_paragraph("L\u2019analisi si basa su quattro dataset:")
+    for item in [
+        "Giorni Feriali (lun\u2013ven) \u2014 Direzione Centro e Direzione GRA",
+        "Giorni Festivi (sab\u2013dom) \u2014 Direzione Centro e Direzione GRA",
+    ]:
+        doc.add_paragraph(item, style="List Bullet")
+
+    doc.add_paragraph("Metriche principali:")
+    metrics = [
+        ("Velocit\u00e0 media armonica", "calcolata da TomTom come media armonica "
+         "ponderata sulla lunghezza di tutti i segmenti, rappresentativa della velocit\u00e0 "
+         "effettiva di percorrenza."),
+        ("V85 (85\u00b0 percentile)", "velocit\u00e0 non superata dall\u201985% "
+         "dei veicoli. TomTom fornisce 19 percentili (dal 5\u00b0 al 95\u00b0); il V85 corrisponde "
+         "al 17\u00b0 valore dell\u2019array."),
+        ("Deviazione standard", "dispersione delle velocit\u00e0 individuali, "
+         "fornita direttamente da TomTom per ogni segmento e ora."),
+        ("Tasso di superamento", "percentuale dei km di percorso "
+         "(non dei segmenti) con velocit\u00e0 superiore al limite. Ogni segmento \u00e8 pesato "
+         "in proporzione alla propria lunghezza."),
+    ]
+    for name, desc in metrics:
+        p = doc.add_paragraph(style="List Bullet")
+        run = p.add_run(f"{name}: ")
+        run.bold = True
+        p.add_run(desc)
+
+    doc.add_paragraph(
+        "Limite di velocit\u00e0: 50 km/h (alcuni tratti terminali su Viale "
+        "Maresciallo Pilsudski: 40 km/h)."
+    )
+
+    doc.add_heading("Riferimento Spaziale: Progressive Chilometriche", level=2)
+    doc.add_paragraph(
+        "Tutti i grafici spaziali utilizzano la progressiva chilometrica: la distanza "
+        "(in km) dall\u2019inizio del percorso. Le due direzioni hanno punti di partenza diversi, "
+        "quindi le progressive sono specifiche per ciascuna direzione."
+    )
+
+    # ===== 2. OVERVIEW =====
+    doc.add_heading("2. Panoramica dei Dati", level=1)
+
+    _add_method_box(doc,
+        "Nota metodologica: le velocit\u00e0 sono le medie armoniche a livello "
+        "di percorso calcolate da TomTom. La media armonica pondera ogni segmento in base alla "
+        "propria lunghezza. I valori per le fasce orarie sono la media dei valori orari "
+        "ricadenti nella fascia (punta AM: 07\u201308, punta PM: 17\u201318, notturna: 22\u201305)."
+    )
+
+    _add_table_to_doc(doc, tables["overview"])
+    doc.add_paragraph()
+
+    doc.add_heading("Riepilogo Superamento Limiti (pesato per km)", level=2)
+    _add_method_box(doc,
+        "Nota metodologica: per ogni ora si sommano le lunghezze dei segmenti con "
+        "velocit\u00e0 superiore a 50 km/h e si dividono per la lunghezza totale del percorso. "
+        "Il valore riportato \u00e8 la media delle 24 ore."
+    )
+    _add_table_to_doc(doc, tables["exceedance"])
+
+    # ===== 3. TEMPORAL PROFILES =====
+    doc.add_page_break()
+    doc.add_heading("3. Profili Temporali di Velocit\u00e0", level=1)
+
+    doc.add_heading("Velocit\u00e0 Media Armonica per Ora", level=2)
+    doc.add_picture(_b64_to_stream(charts["speed_by_hour"]), width=img_width)
+    _add_caption(doc,
+        "Velocit\u00e0 media armonica dell\u2019intero itinerario per ora. "
+        "Pannello sinistro: feriali; pannello destro: festivi.")
+
+    doc.add_heading("V85 Medio per Ora", level=2)
+    doc.add_picture(_b64_to_stream(charts["v85_by_hour"]), width=img_width)
+    _add_caption(doc,
+        "85\u00b0 percentile mediato su tutti i segmenti per ora. "
+        "Pannello sinistro: feriali; pannello destro: festivi.")
+
+    doc.add_heading("Mappe di Calore: Velocit\u00e0 per Progressiva e Ora", level=2)
+    doc.add_paragraph(
+        "L\u2019asse orizzontale riporta la progressiva chilometrica; la larghezza di ciascuna cella "
+        "\u00e8 proporzionale alla lunghezza effettiva del segmento."
+    )
+    for label, b64 in charts["heatmaps"].items():
+        doc.add_heading(label, level=3)
+        doc.add_picture(_b64_to_stream(b64), width=img_width)
+    _add_caption(doc,
+        "Verde = flusso libero (velocit\u00e0 elevate); rosso = congestione (velocit\u00e0 ridotte).")
+
+    # ===== 4. EXCEEDANCE =====
+    doc.add_page_break()
+    doc.add_heading("4. Superamento del Limite di Velocit\u00e0", level=1)
+    doc.add_paragraph(
+        "Per ogni ora si calcola la percentuale della lunghezza del percorso (km) in cui "
+        "la velocit\u00e0 supera 50 km/h. Ogni segmento \u00e8 pesato in proporzione alla propria "
+        "lunghezza."
+    )
+    doc.add_picture(_b64_to_stream(charts["exceedance"]), width=img_width)
+    _add_caption(doc,
+        "% dei km di percorso oltre il limite per ora. Sinistra: velocit\u00e0 media; destra: V85.")
+
+    # ===== 5. V85 ANALYSIS =====
+    doc.add_page_break()
+    doc.add_heading("5. Analisi V85 (85\u00b0 Percentile)", level=1)
+
+    _add_method_box(doc,
+        "Metodologia V85: il V85 \u00e8 la velocit\u00e0 al di sotto della quale viaggia l\u201985% dei veicoli. "
+        "TomTom fornisce per ogni segmento e ora un array di 19 percentili (5\u00b0\u201395\u00b0, "
+        "passo 5); il V85 \u00e8 il 17\u00b0 valore (indice 16).\n\n"
+        "Profili spaziali: per ogni fascia oraria (notte 22\u201305, punta AM "
+        "07\u201308, mezzogiorno 12\u201313, punta PM 17\u201318) si calcola la media del V85 delle "
+        "ore della fascia e si riporta in funzione della progressiva chilometrica.\n\n"
+        "Tabelle top 10: per ogni segmento si prende il V85 massimo tra le 24 ore. "
+        "I 10 segmenti con il valore pi\u00f9 elevato sono in tabella."
+    )
+
+    for direction, b64 in charts["v85_spatial"].items():
+        doc.add_heading(f"Profilo Spaziale V85 \u2014 Dir. {direction}", level=2)
+        doc.add_picture(_b64_to_stream(b64), width=img_width)
+    _add_caption(doc,
+        "Profilo spaziale V85 nelle diverse fasce orarie (Feriali). "
+        "La linea rossa tratteggiata indica il limite di 50 km/h.")
+
+    doc.add_heading("Top 10 Tratti con V85 pi\u00f9 Elevato \u2014 Dir. Centro (Feriali)", level=2)
+    _add_table_to_doc(doc, tables["top_fast_centro"])
+    doc.add_paragraph()
+
+    doc.add_heading("Top 10 Tratti con V85 pi\u00f9 Elevato \u2014 Dir. GRA (Feriali)", level=2)
+    _add_table_to_doc(doc, tables["top_fast_gra"])
+
+    # ===== 6. VARIABILITY =====
+    doc.add_page_break()
+    doc.add_heading("6. Variabilit\u00e0 delle Velocit\u00e0", level=1)
+
+    _add_method_box(doc,
+        "Metodologia: la deviazione standard \u00e8 fornita direttamente da TomTom "
+        "per ogni segmento e fascia oraria. Misura la dispersione delle velocit\u00e0 individuali "
+        "attorno alla media. Un\u2019elevata deviazione standard indica che nello stesso tratto "
+        "convivono veicoli a velocit\u00e0 molto diverse, aumentando il rischio di incidenti.\n\n"
+        "Mappe di calore: deviazione standard per progressiva (asse x) e ora (asse y). "
+        "Profili spaziali: linea continua = media giornaliera; area ombreggiata = massimo orario."
+    )
+
+    doc.add_picture(_b64_to_stream(charts["variability"]), width=img_width)
+    _add_caption(doc,
+        "Mappe di calore (sopra) e profili spaziali (sotto) della deviazione "
+        "standard per le due direzioni (Feriali).")
+
+    # ===== 7. NIGHT =====
+    doc.add_page_break()
+    doc.add_heading("7. Analisi delle Velocit\u00e0 Notturne", level=1)
+    doc.add_paragraph(
+        "Le ore notturne (22:00\u201305:59) presentano volumi ridotti e velocit\u00e0 pi\u00f9 "
+        "elevate. I grafici sono separati per direzione perch\u00e9 le progressive corrispondono "
+        "a posizioni geografiche diverse."
+    )
+    doc.add_picture(_b64_to_stream(charts["night"]), width=img_width)
+    _add_caption(doc,
+        "Riga superiore: distribuzione diurna vs notturna. "
+        "Riga inferiore: profilo spaziale V85 e velocit\u00e0 media notturna (Feriali).")
+
+    # ===== 8. WEEKDAY vs WEEKEND =====
+    doc.add_page_break()
+    doc.add_heading("8. Confronto Feriali vs Festivi", level=1)
+    doc.add_picture(_b64_to_stream(charts["weekday_weekend"]), width=img_width)
+    _add_caption(doc,
+        "Velocit\u00e0 medie (sopra) e V85 (sotto) feriali vs festivi.")
+
+    # ===== 9. STATIC MAPS =====
+    doc.add_page_break()
+    doc.add_heading("9. Mappe Statiche delle Velocit\u00e0", level=1)
+    doc.add_paragraph(
+        "Le mappe seguenti mostrano la distribuzione spaziale delle velocit\u00e0 "
+        "lungo Corso Francia. Il colore dei segmenti indica la velocit\u00e0: "
+        "verde = velocit\u00e0 ridotta, giallo = limite di 50 km/h, rosso = velocit\u00e0 elevata."
+    )
+
+    # Categorize static maps
+    map_groups = {
+        "Velocit\u00e0 Media (24h)": "avg_speed_24h",
+        "V85 (24h)": "v85_24h",
+        "Velocit\u00e0 Media Notturna": "avg_speed_night",
+        "V85 Notturno": "v85_night",
+        "V85 Massimo (ora peggiore)": "max_v85",
+    }
+    for group_label, prefix in map_groups.items():
+        doc.add_heading(group_label, level=2)
+        # Side-by-side version
+        sbs_path = STATIC_MAPS_DIR / f"{prefix}_feriali_sidebyside.png"
+        if sbs_path.exists():
+            doc.add_picture(str(sbs_path), width=img_width)
+            _add_caption(doc, f"{group_label} \u2014 Confronto Dir. Centro e Dir. GRA (Feriali)")
+        # Individual maps
+        for direction in ["Centro", "GRA"]:
+            indiv_path = STATIC_MAPS_DIR / f"{prefix}_feriali_{direction.lower()}.png"
+            if indiv_path.exists():
+                doc.add_heading(f"Dir. {direction}", level=3)
+                doc.add_picture(str(indiv_path), width=img_width)
+
+    # ===== 10. CONCLUSIONS =====
+    doc.add_page_break()
+    doc.add_heading("10. Conclusioni e Raccomandazioni", level=1)
+
+    p = doc.add_paragraph()
+    run = p.add_run("Risultati Principali:")
+    run.bold = True
+    run.font.color.rgb = RGBColor(0x2E, 0x7D, 0x32)
+    for item in [
+        "L\u2019analisi copre circa 2.2\u20132.6 km di Corso Francia in entrambe le direzioni",
+        "Il limite di 50 km/h viene frequentemente superato, specialmente di notte",
+        "Il V85 supera il limite in una percentuale significativa dei km in tutte le fasce orarie",
+        "Le due direzioni mostrano profili asimmetrici nelle ore di punta",
+    ]:
+        doc.add_paragraph(item, style="List Bullet")
+
+    doc.add_paragraph()
+    p = doc.add_paragraph()
+    run = p.add_run("Aree di Attenzione:")
+    run.bold = True
+    run.font.color.rgb = RGBColor(0xFF, 0x98, 0x00)
+    for item in [
+        "I tratti con elevata variabilit\u00e0 di velocit\u00e0 richiedono attenzione per la sicurezza",
+        "Le velocit\u00e0 notturne suggeriscono la necessit\u00e0 di misure di moderazione",
+        "I festivi presentano velocit\u00e0 generalmente pi\u00f9 elevate dei feriali",
+    ]:
+        doc.add_paragraph(item, style="List Bullet")
+
+    doc.add_paragraph()
+    p = doc.add_paragraph()
+    run = p.add_run(
+        "Report generato automaticamente dai dati TomTom Speed Profiles. "
+        "Si raccomanda un\u2019interpretazione contestualizzata da parte di tecnici qualificati."
+    )
+    run.italic = True
+    run.font.size = Pt(9)
+
+    # --- Footer line ---
+    doc.add_paragraph()
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    run = p.add_run("TomTom Speed Profiles \u2014 Corso Francia, Roma \u2014 Febbraio 2026")
+    run.font.size = Pt(9)
+    run.font.color.rgb = RGBColor(0x99, 0x99, 0x99)
+
+    # --- Save ---
+    docx_path = OUTPUT_DIR / "report_corso_francia.docx"
+    doc.save(str(docx_path))
+    return str(docx_path)
+
+
+# ================================================================
 # SECTION 7 — MAIN
 # ================================================================
 
@@ -1312,11 +1688,16 @@ def main():
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(html)
 
+    print("Assemblaggio report Word (.docx)...")
+    docx_path = generate_word_report(charts, tables, static_map_paths)
+    print(f"  - DOCX: {docx_path}")
+
     csv_path = OUTPUT_DIR / "dati_segmenti.csv"
     segments.drop(columns=["geometry"]).to_csv(csv_path, index=False)
     print(f"  - CSV: {csv_path}")
-    print(f"\nReport: {report_path}")
-    print(f"Mappe:  {MAPS_DIR}")
+    print(f"\nReport HTML: {report_path}")
+    print(f"Report DOCX: {docx_path}")
+    print(f"Mappe:       {MAPS_DIR}")
 
 
 if __name__ == "__main__":
