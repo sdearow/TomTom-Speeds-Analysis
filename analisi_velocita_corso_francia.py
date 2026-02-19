@@ -490,15 +490,29 @@ def _build_speed_gdf(segments, day_type, direction, value_col,
     return gpd.GeoDataFrame(agg, geometry="geometry", crs="EPSG:4326")
 
 
-def _add_basemap(ax, gdf_3857):
-    """Add contextily basemap tiles to an axis with data in EPSG:3857."""
+def _add_basemap(ax, crs="EPSG:4326"):
+    """Add contextily basemap tiles. Works with EPSG:4326 or EPSG:3857."""
     try:
-        cx.add_basemap(ax, source=cx.providers.CartoDB.Positron, zoom=16)
+        cx.add_basemap(ax, crs=crs, source=cx.providers.CartoDB.Positron,
+                        zoom=16, attribution=False)
+        return True
     except Exception:
-        try:
-            cx.add_basemap(ax, source=cx.providers.OpenStreetMap.Mapnik, zoom=16)
-        except Exception:
-            ax.set_facecolor("#f0f0f0")
+        pass
+    try:
+        cx.add_basemap(ax, crs=crs, source=cx.providers.OpenStreetMap.Mapnik,
+                        zoom=16, attribution=False)
+        return True
+    except Exception:
+        pass
+    # Offline fallback: cartographic styling
+    ax.set_facecolor("#eef0f4")
+    ax.grid(True, alpha=0.25, linestyle="--", color="#888", zorder=0)
+    ax.tick_params(labelsize=7, colors="#555")
+    ax.ticklabel_format(useOffset=False, style="plain")
+    for spine in ax.spines.values():
+        spine.set_edgecolor("#999")
+        spine.set_linewidth(0.8)
+    return False
 
 
 def _annotate_segments(ax, gdf, value_col):
@@ -549,25 +563,28 @@ def generate_static_speed_map(segments, day_type, direction, value_col,
     gdf = _build_speed_gdf(segments, day_type, direction, value_col,
                             hour_filter, agg_func=agg_func)
 
-    # Reproject to Web Mercator for basemap tiles
-    gdf_3857 = gdf.to_crs(epsg=3857)
-
     fig, ax = plt.subplots(figsize=(10, 12))
 
     vmin, vmax = 20, 80
     norm = mcolors.TwoSlopeNorm(vmin=vmin, vcenter=SPEED_LIMIT, vmax=vmax)
     cmap = plt.cm.RdYlGn_r
 
-    # Plot on 3857 projection
-    gdf_3857.plot(ax=ax, color="white", linewidth=8, zorder=1, alpha=0.7)
-    gdf_3857.plot(ax=ax, column=value_col, cmap=cmap, norm=norm,
-                  linewidth=5, legend=False, zorder=2)
+    # Road-bed shadow + coloured speed data in EPSG:4326
+    gdf.plot(ax=ax, color="#d0d0d0", linewidth=9, zorder=1, alpha=0.8)
+    gdf.plot(ax=ax, column=value_col, cmap=cmap, norm=norm,
+             linewidth=5, legend=False, zorder=2)
 
-    # Add basemap tiles
-    _add_basemap(ax, gdf_3857)
+    # Add basemap tiles (contextily handles reprojection internally)
+    has_tiles = _add_basemap(ax, crs="EPSG:4326")
 
-    # Progressive annotations (need 3857 coords)
-    _annotate_segments(ax, gdf_3857, value_col)
+    if has_tiles:
+        ax.set_axis_off()
+    else:
+        ax.set_xlabel("Longitudine", fontsize=9)
+        ax.set_ylabel("Latitudine", fontsize=9)
+
+    # Progressive annotations
+    _annotate_segments(ax, gdf, value_col)
 
     # Colour bar
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
@@ -579,7 +596,6 @@ def generate_static_speed_map(segments, day_type, direction, value_col,
                  transform=cbar.ax.get_yaxis_transform(),
                  va="center", fontsize=8, color="black")
 
-    ax.set_axis_off()
     ax.set_title(title, fontsize=13, fontweight="bold", pad=12)
     fig.tight_layout()
 
@@ -598,8 +614,6 @@ def generate_static_speed_map_sidebyside(segments, day_type, value_col,
                                    hour_filter, agg_func=agg_func)
     gdf_gra = _build_speed_gdf(segments, day_type, "GRA", value_col,
                                 hour_filter, agg_func=agg_func)
-    gdf_centro_3857 = gdf_centro.to_crs(epsg=3857)
-    gdf_gra_3857 = gdf_gra.to_crs(epsg=3857)
 
     fig, axes = plt.subplots(1, 2, figsize=(20, 12))
 
@@ -607,16 +621,17 @@ def generate_static_speed_map_sidebyside(segments, day_type, value_col,
     norm = mcolors.TwoSlopeNorm(vmin=vmin, vcenter=SPEED_LIMIT, vmax=vmax)
     cmap = plt.cm.RdYlGn_r
 
-    for ax, gdf_proj, dir_label in [
-        (axes[0], gdf_centro_3857, "Centro"),
-        (axes[1], gdf_gra_3857, "GRA"),
+    for ax, gdf_orig, dir_label in [
+        (axes[0], gdf_centro, "Centro"),
+        (axes[1], gdf_gra, "GRA"),
     ]:
-        gdf_proj.plot(ax=ax, color="white", linewidth=8, zorder=1, alpha=0.7)
-        gdf_proj.plot(ax=ax, column=value_col, cmap=cmap, norm=norm,
+        gdf_orig.plot(ax=ax, color="#d0d0d0", linewidth=9, zorder=1, alpha=0.8)
+        gdf_orig.plot(ax=ax, column=value_col, cmap=cmap, norm=norm,
                       linewidth=5, legend=False, zorder=2)
-        _add_basemap(ax, gdf_proj)
-        _annotate_segments(ax, gdf_proj, value_col)
-        ax.set_axis_off()
+        has_tiles = _add_basemap(ax, crs="EPSG:4326")
+        _annotate_segments(ax, gdf_orig, value_col)
+        if has_tiles:
+            ax.set_axis_off()
         ax.set_title(f"Dir. {dir_label}", fontsize=12, fontweight="bold")
 
     # Shared colour bar
