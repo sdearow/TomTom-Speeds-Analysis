@@ -23,6 +23,7 @@ import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 import folium
 import branca.colormap as cm
+import contextily as cx
 from shapely.geometry import shape
 
 warnings.filterwarnings("ignore")
@@ -469,14 +470,15 @@ def chart_weekday_weekend(segments):
 STATIC_MAPS_DIR = OUTPUT_DIR / "static_maps"
 
 
-def _build_speed_gdf(segments, day_type, direction, value_col, hour_filter=None):
+def _build_speed_gdf(segments, day_type, direction, value_col,
+                     hour_filter=None, agg_func="mean"):
     """Aggregate segment speeds and return a GeoDataFrame in EPSG:4326."""
     sub = segments[(segments["day_type"] == day_type)
                    & (segments["direction"] == direction)]
     if hour_filter is not None:
         sub = sub[sub["hour"].isin(hour_filter)]
     agg = sub.groupby("seg_idx").agg({
-        value_col: "mean", "geometry": "first",
+        value_col: agg_func, "geometry": "first",
         "cum_dist_start": "first", "cum_dist_mid": "first",
         "seg_distance": "first", "streetName": "first",
         "speedLimit": "first",
@@ -484,25 +486,19 @@ def _build_speed_gdf(segments, day_type, direction, value_col, hour_filter=None)
     return gpd.GeoDataFrame(agg, geometry="geometry", crs="EPSG:4326")
 
 
-def generate_static_speed_map(segments, day_type, direction, value_col,
-                               hour_filter=None, title="", fname="map.png"):
-    """Render a static matplotlib map with coloured road segments."""
-    gdf = _build_speed_gdf(segments, day_type, direction, value_col,
-                            hour_filter)
+def _add_basemap(ax, gdf_3857):
+    """Add contextily basemap tiles to an axis with data in EPSG:3857."""
+    try:
+        cx.add_basemap(ax, source=cx.providers.CartoDB.Positron, zoom=16)
+    except Exception:
+        try:
+            cx.add_basemap(ax, source=cx.providers.OpenStreetMap.Mapnik, zoom=16)
+        except Exception:
+            ax.set_facecolor("#f0f0f0")
 
-    fig, ax = plt.subplots(figsize=(10, 12))
 
-    # Colour scale: green (slow/safe) → yellow (limit) → red (fast/exceeding)
-    vmin, vmax = 20, 80
-    norm = mcolors.TwoSlopeNorm(vmin=vmin, vcenter=SPEED_LIMIT, vmax=vmax)
-    cmap = plt.cm.RdYlGn_r
-
-    # Draw a faint "shadow" behind segments for visual contrast
-    gdf.plot(ax=ax, color="#cccccc", linewidth=7, zorder=1)
-    gdf.plot(ax=ax, column=value_col, cmap=cmap, norm=norm,
-             linewidth=5, legend=False, zorder=2)
-
-    # Progressive annotations every ~500 m
+def _annotate_segments(ax, gdf, value_col):
+    """Add progressive markers, start/end markers, and stats to a map axis."""
     total_dist = gdf["cum_dist_start"].max() + gdf["seg_distance"].max()
     interval = 500 if total_dist > 1500 else 250
     for target_m in range(0, int(total_dist) + interval, interval):
@@ -524,13 +520,50 @@ def generate_static_speed_map(segments, day_type, direction, value_col,
                     zorder=5)
         ax.plot(pt.x, pt.y, "o", color="#1a237e", markersize=4, zorder=5)
 
-    # Start / end markers
     start_pt = list(gdf.iloc[0]["geometry"].coords)[0]
     end_pt = list(gdf.iloc[-1]["geometry"].coords)[-1]
     ax.plot(start_pt[0], start_pt[1], "^", color="green", markersize=10,
             zorder=6, label="Inizio")
     ax.plot(end_pt[0], end_pt[1], "v", color="red", markersize=10,
             zorder=6, label="Fine")
+
+    vals = gdf[value_col]
+    metric_label = "V85" if "p85" in value_col or "max_p85" in value_col else "Vel. media"
+    stats_text = (f"{metric_label}: media={vals.mean():.1f}, "
+                  f"max={vals.max():.1f}, min={vals.min():.1f} km/h")
+    ax.text(0.02, 0.02, stats_text, transform=ax.transAxes, fontsize=8,
+            va="bottom", ha="left",
+            bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="gray",
+                      alpha=0.9))
+    ax.legend(loc="upper right", fontsize=8)
+
+
+def generate_static_speed_map(segments, day_type, direction, value_col,
+                               hour_filter=None, title="", fname="map.png",
+                               agg_func="mean"):
+    """Render a static matplotlib map with coloured segments on a basemap."""
+    gdf = _build_speed_gdf(segments, day_type, direction, value_col,
+                            hour_filter, agg_func=agg_func)
+
+    # Reproject to Web Mercator for basemap tiles
+    gdf_3857 = gdf.to_crs(epsg=3857)
+
+    fig, ax = plt.subplots(figsize=(10, 12))
+
+    vmin, vmax = 20, 80
+    norm = mcolors.TwoSlopeNorm(vmin=vmin, vcenter=SPEED_LIMIT, vmax=vmax)
+    cmap = plt.cm.RdYlGn_r
+
+    # Plot on 3857 projection
+    gdf_3857.plot(ax=ax, color="white", linewidth=8, zorder=1, alpha=0.7)
+    gdf_3857.plot(ax=ax, column=value_col, cmap=cmap, norm=norm,
+                  linewidth=5, legend=False, zorder=2)
+
+    # Add basemap tiles
+    _add_basemap(ax, gdf_3857)
+
+    # Progressive annotations (need 3857 coords)
+    _annotate_segments(ax, gdf_3857, value_col)
 
     # Colour bar
     sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
@@ -542,26 +575,57 @@ def generate_static_speed_map(segments, day_type, direction, value_col,
                  transform=cbar.ax.get_yaxis_transform(),
                  va="center", fontsize=8, color="black")
 
-    # Axis styling — show lat/lon grid for geographic reference
-    ax.set_xlabel("Longitudine", fontsize=9)
-    ax.set_ylabel("Latitudine", fontsize=9)
-    ax.tick_params(labelsize=7)
-    ax.ticklabel_format(useOffset=False, style="plain")
-    ax.grid(True, alpha=0.15, linestyle="--")
-    ax.set_facecolor("#f5f5f5")
-
-    # Summary stats as text
-    vals = gdf[value_col]
-    metric_label = "V85" if value_col == "p85" else "Vel. media"
-    stats_text = (f"{metric_label}: media={vals.mean():.1f}, "
-                  f"max={vals.max():.1f}, min={vals.min():.1f} km/h")
-    ax.text(0.02, 0.02, stats_text, transform=ax.transAxes, fontsize=8,
-            va="bottom", ha="left",
-            bbox=dict(boxstyle="round,pad=0.3", fc="white", ec="gray",
-                      alpha=0.9))
-
+    ax.set_axis_off()
     ax.set_title(title, fontsize=13, fontweight="bold", pad=12)
-    ax.legend(loc="upper right", fontsize=8)
+    fig.tight_layout()
+
+    out_path = STATIC_MAPS_DIR / fname
+    fig.savefig(str(out_path), dpi=150, bbox_inches="tight", facecolor="white")
+    plt.close(fig)
+    return str(out_path)
+
+
+def generate_static_speed_map_sidebyside(segments, day_type, value_col,
+                                          hour_filter=None, title="",
+                                          fname="map_sidebyside.png",
+                                          agg_func="mean"):
+    """Side-by-side static map: Dir. Centro (left) and Dir. GRA (right)."""
+    gdf_centro = _build_speed_gdf(segments, day_type, "Centro", value_col,
+                                   hour_filter, agg_func=agg_func)
+    gdf_gra = _build_speed_gdf(segments, day_type, "GRA", value_col,
+                                hour_filter, agg_func=agg_func)
+    gdf_centro_3857 = gdf_centro.to_crs(epsg=3857)
+    gdf_gra_3857 = gdf_gra.to_crs(epsg=3857)
+
+    fig, axes = plt.subplots(1, 2, figsize=(20, 12))
+
+    vmin, vmax = 20, 80
+    norm = mcolors.TwoSlopeNorm(vmin=vmin, vcenter=SPEED_LIMIT, vmax=vmax)
+    cmap = plt.cm.RdYlGn_r
+
+    for ax, gdf_proj, dir_label in [
+        (axes[0], gdf_centro_3857, "Centro"),
+        (axes[1], gdf_gra_3857, "GRA"),
+    ]:
+        gdf_proj.plot(ax=ax, color="white", linewidth=8, zorder=1, alpha=0.7)
+        gdf_proj.plot(ax=ax, column=value_col, cmap=cmap, norm=norm,
+                      linewidth=5, legend=False, zorder=2)
+        _add_basemap(ax, gdf_proj)
+        _annotate_segments(ax, gdf_proj, value_col)
+        ax.set_axis_off()
+        ax.set_title(f"Dir. {dir_label}", fontsize=12, fontweight="bold")
+
+    # Shared colour bar
+    sm = plt.cm.ScalarMappable(cmap=cmap, norm=norm)
+    sm.set_array([])
+    cbar = fig.colorbar(sm, ax=axes.tolist(), shrink=0.5, pad=0.02, aspect=30)
+    cbar.set_label("km/h", fontsize=10)
+    cbar.ax.axhline(y=SPEED_LIMIT, color="black", linewidth=1.5, linestyle="--")
+    cbar.ax.text(1.3, SPEED_LIMIT, f"Limite {SPEED_LIMIT}",
+                 transform=cbar.ax.get_yaxis_transform(),
+                 va="center", fontsize=8, color="black")
+
+    fig.suptitle(title, fontsize=14, fontweight="bold", y=1.01)
     fig.tight_layout()
 
     out_path = STATIC_MAPS_DIR / fname
@@ -571,26 +635,59 @@ def generate_static_speed_map(segments, day_type, direction, value_col,
 
 
 def generate_all_static_maps(segments):
-    """Generate 8 static speed maps (4 metrics x 2 directions) for Feriali."""
+    """Generate static speed maps: individual, side-by-side, and max V85."""
     STATIC_MAPS_DIR.mkdir(parents=True, exist_ok=True)
     configs = [
-        # (value_col, hour_filter, label_metric, file_prefix)
-        ("avg_speed", None,        "Velocit\u00e0 Media (24h)",      "avg_speed_24h"),
-        ("p85",       None,        "V85 (24h)",                      "v85_24h"),
-        ("avg_speed", NIGHT_HOURS, "Velocit\u00e0 Media Notturna",   "avg_speed_night"),
-        ("p85",       NIGHT_HOURS, "V85 Notturno",                   "v85_night"),
+        # (value_col, hour_filter, label_metric, file_prefix, agg_func)
+        ("avg_speed", None,        "Velocit\u00e0 Media (24h)",      "avg_speed_24h", "mean"),
+        ("p85",       None,        "V85 (24h)",                      "v85_24h",       "mean"),
+        ("avg_speed", NIGHT_HOURS, "Velocit\u00e0 Media Notturna",   "avg_speed_night", "mean"),
+        ("p85",       NIGHT_HOURS, "V85 Notturno",                   "v85_night",     "mean"),
     ]
     paths = []
+
+    # --- Individual maps (one per direction) ---
     for direction in ["Centro", "GRA"]:
-        for vcol, hfilter, label, prefix in configs:
+        for vcol, hfilter, label, prefix, agg in configs:
             period = "22\u201305" if hfilter is not None else "tutte le ore"
             title = f"{label} \u2014 Feriali Dir. {direction} ({period})"
             fname = f"{prefix}_feriali_{direction.lower()}.png"
             p = generate_static_speed_map(
                 segments, "Feriali", direction, vcol,
-                hour_filter=hfilter, title=title, fname=fname)
+                hour_filter=hfilter, title=title, fname=fname, agg_func=agg)
             paths.append(p)
             print(f"  - {fname}")
+
+    # --- Side-by-side maps (both directions) ---
+    for vcol, hfilter, label, prefix, agg in configs:
+        period = "22\u201305" if hfilter is not None else "tutte le ore"
+        title = f"{label} \u2014 Feriali ({period})"
+        fname = f"{prefix}_feriali_sidebyside.png"
+        p = generate_static_speed_map_sidebyside(
+            segments, "Feriali", vcol,
+            hour_filter=hfilter, title=title, fname=fname, agg_func=agg)
+        paths.append(p)
+        print(f"  - {fname}")
+
+    # --- Max V85 maps (max across all hours per segment) ---
+    for direction in ["Centro", "GRA"]:
+        title = f"V85 Massimo (ora peggiore) \u2014 Feriali Dir. {direction}"
+        fname = f"max_v85_feriali_{direction.lower()}.png"
+        p = generate_static_speed_map(
+            segments, "Feriali", direction, "p85",
+            hour_filter=None, title=title, fname=fname, agg_func="max")
+        paths.append(p)
+        print(f"  - {fname}")
+
+    # --- Max V85 side-by-side ---
+    title = "V85 Massimo (ora peggiore) \u2014 Feriali"
+    fname = "max_v85_feriali_sidebyside.png"
+    p = generate_static_speed_map_sidebyside(
+        segments, "Feriali", "p85",
+        hour_filter=None, title=title, fname=fname, agg_func="max")
+    paths.append(p)
+    print(f"  - {fname}")
+
     return paths
 
 
@@ -781,6 +878,16 @@ def generate_maps(segments, seg_stats):
         m.save(str(MAPS_DIR / fname))
         map_files[fname] = fname
 
+    # Max V85 maps (maximum V85 across all hours per segment)
+    for direction in ["Centro", "GRA"]:
+        gdf = _seg_geodataframe(segments, "Feriali", direction, "p85", agg="max")
+        m = make_folium_map(gdf, "p85",
+                            f"V85 Massimo (ora peggiore) \u2014 Feriali Dir. {direction}",
+                            vmin=20, vmax=90, reverse_cmap=False)
+        fname = f"max_v85_feriali_{direction.lower()}.html"
+        m.save(str(MAPS_DIR / fname))
+        map_files[fname] = fname
+
     return map_files
 
 
@@ -884,6 +991,8 @@ def generate_html_report(charts, map_files, tables):
             ("v85_feriali_gra.html",    "V85 Medio \u2014 Feriali Dir. GRA"),
             ("v85_festivi_centro.html", "V85 Medio \u2014 Festivi Dir. Centro"),
             ("v85_festivi_gra.html",    "V85 Medio \u2014 Festivi Dir. GRA"),
+            ("max_v85_feriali_centro.html", "V85 Massimo (ora peggiore) \u2014 Feriali Dir. Centro"),
+            ("max_v85_feriali_gra.html",    "V85 Massimo (ora peggiore) \u2014 Feriali Dir. GRA"),
             ("std_feriali_centro.html", "Variabilit\u00e0 \u2014 Feriali Dir. Centro"),
             ("std_feriali_gra.html",    "Variabilit\u00e0 \u2014 Feriali Dir. GRA"),
             ("night_v85_feriali_centro.html", "V85 Notturno \u2014 Feriali Dir. Centro"),
