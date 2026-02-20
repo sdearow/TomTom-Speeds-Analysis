@@ -281,7 +281,7 @@ def build_tables_ridotto(segments, summaries):
 # BLOCK D — TRATTE WITHOUT INTERSECTION SEGMENTS
 # ================================================================
 
-def detect_intersection_segments(segments, direction, threshold_ratio=0.80):
+def detect_intersection_segments(segments, direction, threshold_ratio=0.85):
     """Flag segments whose mean V85 drops below threshold_ratio * corridor median.
     These are likely signalised intersections causing forced slowdowns.
     """
@@ -327,6 +327,95 @@ def compute_tratte_no_intersections(segments, n_bkps=5):
         seg_hours = sub.pivot_table(
             index="seg_idx", columns="hour", values="p85", aggfunc="mean")
         signal = seg_hours.loc[seg_clean["seg_idx"].tolist()].values
+
+        min_sz = max(2, min(3, len(seg_clean) // (n_bkps + 1)))
+        algo = rpt.Binseg(model="l2", min_size=min_sz).fit(signal)
+        bkps = algo.predict(n_bkps=n_bkps)
+
+        # Build tratte from clean segments
+        start, tratta_ranges = 0, []
+        for t_id, end in enumerate(bkps, 1):
+            sl = seg_clean.iloc[start:end]
+            t_segs = set(sl["seg_idx"].tolist())
+            tratta_ranges.append((t_id, t_segs))
+            for _, r in sl.iterrows():
+                tratte_seg_map[(direction, int(r["seg_idx"]))] = t_id
+            start = end
+
+        # Re-assign intersections to nearest tratta
+        for iseg in sorted(intersections):
+            ir = seg[seg["seg_idx"] == iseg]
+            if ir.empty:
+                continue
+            idist = ir["cum_dist_start"].iloc[0]
+            best_t, best_d = 1, float("inf")
+            for t_id, t_segs in tratta_ranges:
+                tr = seg[seg["seg_idx"].isin(t_segs)]
+                if tr.empty:
+                    continue
+                d = abs(idist - tr["cum_dist_start"].mean())
+                if d < best_d:
+                    best_d, best_t = d, t_id
+            tratte_seg_map[(direction, int(iseg))] = best_t
+            tratta_ranges[best_t - 1][1].add(iseg)
+
+        # Summary rows (stats from clean segments only)
+        for t_id, t_segs in tratta_ranges:
+            sl = seg[seg["seg_idx"].isin(t_segs)].sort_values("cum_dist_start")
+            if sl.empty:
+                continue
+            sl_c = sl[~sl["seg_idx"].isin(intersections)]
+            if sl_c.empty:
+                sl_c = sl
+            w = sl_c["seg_distance"].values
+            v85_avg = np.average(sl_c["v85_mean"], weights=w)
+            v85_std = np.sqrt(np.average((sl_c["v85_mean"] - v85_avg) ** 2, weights=w))
+            cv = v85_std / v85_avg * 100 if v85_avg > 0 else 0
+            tratte_rows.append({
+                "direction": direction, "tratta": t_id,
+                "cum_dist_start": sl["cum_dist_start"].iloc[0],
+                "cum_dist_end": sl["cum_dist_end"].iloc[-1],
+                "length_km": (sl["cum_dist_end"].iloc[-1] - sl["cum_dist_start"].iloc[0]) / 1000,
+                "v85_mean": round(v85_avg, 1),
+                "v85_min": round(sl_c["v85_mean"].min(), 1),
+                "v85_max": round(sl_c["v85_mean"].max(), 1),
+                "v85_cv": round(cv, 1),
+                "n_segments": len(sl),
+                "n_intersections": len(sl[sl["seg_idx"].isin(intersections)]),
+            })
+
+    return pd.DataFrame(tratte_rows), tratte_seg_map, intersection_info
+
+
+def compute_tratte_no_intersections_mean(segments, n_bkps=5):
+    """Like compute_tratte_no_intersections but uses only the 24h V85 mean
+    (univariate signal) instead of the full 24-hour profile for segmentation.
+    """
+    day_type = "Inv. Feriale"
+    c = segments[(segments["carriage"] == "Centrale")
+                 & (segments["day_type"] == day_type)]
+
+    tratte_rows, tratte_seg_map = [], {}
+    intersection_info = {}
+
+    for direction in ["Ostia", "Centro"]:
+        sub = c[c["direction"] == direction]
+        intersections = detect_intersection_segments(segments, direction)
+        intersection_info[direction] = intersections
+
+        seg = sub.groupby("seg_idx").agg(
+            cum_dist_start=("cum_dist_start", "first"),
+            cum_dist_end=("cum_dist_end", "first"),
+            seg_distance=("seg_distance", "first"),
+            speedLimit=("speedLimit", "first"),
+            v85_mean=("p85", "mean"),
+            avg_speed=("avg_speed", "mean"),
+        ).sort_values("cum_dist_start").reset_index()
+
+        seg_clean = seg[~seg["seg_idx"].isin(intersections)].reset_index(drop=True)
+
+        # Univariate signal: only the 24h V85 mean per segment
+        signal = seg_clean["v85_mean"].values.reshape(-1, 1)
 
         min_sz = max(2, min(3, len(seg_clean) // (n_bkps + 1)))
         algo = rpt.Binseg(model="l2", min_size=min_sz).fit(signal)
@@ -1113,12 +1202,39 @@ def main():
     RIDOTTO_MAPS.mkdir(parents=True, exist_ok=True)
     RIDOTTO_STATIC.mkdir(parents=True, exist_ok=True)
 
-    print("3. Tratte (senza intersezioni)...")
+    print("3. Tratte (senza intersezioni, profilo 24h)...")
     tratte_df, tratte_seg_map, inter_info = compute_tratte_no_intersections(segments)
     for d in ["Ostia", "Centro"]:
         td = tratte_df[tratte_df["direction"] == d]
         ni = len(inter_info.get(d, set()))
-        print(f"   Dir. {d}: {len(td)} tratte, {ni} intersezioni escluse")
+        print(f"   Dir. {d}: {len(td)} tratte, {ni} intersezioni escluse (soglia 85%)")
+
+    print("3b. Tratte (senza intersezioni, media 24h)...")
+    tratte_df_mean, tratte_seg_map_mean, inter_info_mean = compute_tratte_no_intersections_mean(segments)
+    for d in ["Ostia", "Centro"]:
+        td_m = tratte_df_mean[tratte_df_mean["direction"] == d]
+        print(f"   Dir. {d}: {len(td_m)} tratte (media 24h)")
+
+    # Print comparison between the two methods
+    print("\n   --- Confronto metodi di segmentazione ---")
+    for d in ["Ostia", "Centro"]:
+        td_24h = tratte_df[tratte_df["direction"] == d].reset_index(drop=True)
+        td_avg = tratte_df_mean[tratte_df_mean["direction"] == d].reset_index(drop=True)
+        print(f"\n   Dir. {d}:")
+        print(f"   {'Tratta':<8} {'Profilo 24h':>30}  {'Media 24h':>30}")
+        print(f"   {'':8} {'V85 (km-range) CV':>30}  {'V85 (km-range) CV':>30}")
+        n = max(len(td_24h), len(td_avg))
+        for i in range(n):
+            left = ""
+            if i < len(td_24h):
+                r = td_24h.iloc[i]
+                left = f"{r['v85_mean']:5.1f} ({r['length_km']:.2f}km {r['v85_min']:.0f}-{r['v85_max']:.0f}) {r['v85_cv']:.1f}%"
+            right = ""
+            if i < len(td_avg):
+                r2 = td_avg.iloc[i]
+                right = f"{r2['v85_mean']:5.1f} ({r2['length_km']:.2f}km {r2['v85_min']:.0f}-{r2['v85_max']:.0f}) {r2['v85_cv']:.1f}%"
+            print(f"   T{i+1:<6} {left:>30}  {right:>30}")
+    print()
 
     print("4. Grafici (senza linee limite)...")
     charts = {}
