@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_eb60e68b667494088c11f298cd84d1fe {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+</head>
+<body>
+    
+    <div style="position:fixed;bottom:30px;left:10px;z-index:9999;background:white;padding:10px 14px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.3);font-family:sans-serif;font-size:12px;max-width:320px;line-height:1.5;"><b style="color:#1a237e;">V85 Notturno — Feriali Dir. Centro (22–05)</b><br>V85: media=77.6, max=101.2, min=56.2 km/h<br><span style="color:#c00;">&#9644;</span> Limite 50 km/h</div>
+    
+            <div class="folium-map" id="map_eb60e68b667494088c11f298cd84d1fe" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_eb60e68b667494088c11f298cd84d1fe = L.map(
+                "map_eb60e68b667494088c11f298cd84d1fe",
+                {
+                    center: [41.9376757869819, 12.471216721817502],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 15,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_37df6d859906d47d233707a9bd4f7fc7 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_37df6d859906d47d233707a9bd4f7fc7.addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+            var poly_line_2de6178393cab4a2341ea1944880089d = L.polyline(
+                [[41.94753, 12.46972], [41.9474, 12.46969]],
+                {"bubblingMouseEvents": true, "color": "#ffca00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ffca00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_0d28823989499cf20e0abaa5605e5fff = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_46d2018d890d4fbc19aa309d067b6622 = $(`<div id="html_46d2018d890d4fbc19aa309d067b6622" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 0 m<br>Vel. media: 40.4 km/h<br>V85: 56.2 km/h<br>Dev. std: 15.5 km/h<br>Limite: 50 km/h<br>Lungh.: 15 m</div>`)[0];
+                popup_0d28823989499cf20e0abaa5605e5fff.setContent(html_46d2018d890d4fbc19aa309d067b6622);
+            
+        
+
+        poly_line_2de6178393cab4a2341ea1944880089d.bindPopup(popup_0d28823989499cf20e0abaa5605e5fff)
+        ;
+
+        
+    
+    
+            var poly_line_485075eaee1678a18ebd3f6d023b280f = L.polyline(
+                [[41.9474, 12.46969], [41.94732, 12.46968], [41.94725, 12.46966]],
+                {"bubblingMouseEvents": true, "color": "#ffc200ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ffc200ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_bf573a1f60649a2d5605c94017f1a8fe = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_850a82fbe868b16d8aaa7374d9d1ef5e = $(`<div id="html_850a82fbe868b16d8aaa7374d9d1ef5e" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 15 m<br>Vel. media: 38.4 km/h<br>V85: 57.2 km/h<br>Dev. std: 18.2 km/h<br>Limite: 50 km/h<br>Lungh.: 16 m</div>`)[0];
+                popup_bf573a1f60649a2d5605c94017f1a8fe.setContent(html_850a82fbe868b16d8aaa7374d9d1ef5e);
+            
+        
+
+        poly_line_485075eaee1678a18ebd3f6d023b280f.bindPopup(popup_bf573a1f60649a2d5605c94017f1a8fe)
+        ;
+
+        
+    
+    
+            var poly_line_051411d658e64bcdacc204d3d8e66b53 = L.polyline(
+                [[41.94725, 12.46966], [41.94715, 12.46964], [41.94697, 12.4696]],
+                {"bubblingMouseEvents": true, "color": "#ffb400ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ffb400ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_915168b574f33fec94c3a303e9eb2aa1 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ae1f2ea701ce6e95fb20b88c61baf9d3 = $(`<div id="html_ae1f2ea701ce6e95fb20b88c61baf9d3" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 31 m<br>Vel. media: 35.6 km/h<br>V85: 58.9 km/h<br>Dev. std: 22.4 km/h<br>Limite: 50 km/h<br>Lungh.: 31 m</div>`)[0];
+                popup_915168b574f33fec94c3a303e9eb2aa1.setContent(html_ae1f2ea701ce6e95fb20b88c61baf9d3);
+            
+        
+
+        poly_line_051411d658e64bcdacc204d3d8e66b53.bindPopup(popup_915168b574f33fec94c3a303e9eb2aa1)
+        ;
+
+        
+    
+    
+            var poly_line_12fb74215ab0f4975ac42eae86b90f5f = L.polyline(
+                [[41.94697, 12.4696], [41.94689, 12.46958]],
+                {"bubblingMouseEvents": true, "color": "#ffb400ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ffb400ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_df332b77545d293b3c660e395e1f6275 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_4787acaa17fe674e2f5a0866cdb67e13 = $(`<div id="html_4787acaa17fe674e2f5a0866cdb67e13" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 62 m<br>Vel. media: 38.5 km/h<br>V85: 58.9 km/h<br>Dev. std: 18.2 km/h<br>Limite: 50 km/h<br>Lungh.: 10 m</div>`)[0];
+                popup_df332b77545d293b3c660e395e1f6275.setContent(html_4787acaa17fe674e2f5a0866cdb67e13);
+            
+        
+
+        poly_line_12fb74215ab0f4975ac42eae86b90f5f.bindPopup(popup_df332b77545d293b3c660e395e1f6275)
+        ;
+
+        
+    
+    
+            var poly_line_d362a7cdc4926ece5ce7106e7bb5ffd4 = L.polyline(
+                [[41.94689, 12.46958], [41.94682, 12.46956], [41.94671, 12.46952], [41.94661, 12.46949], [41.94638, 12.46941]],
+                {"bubblingMouseEvents": true, "color": "#ff9c00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff9c00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_d5783e9b7333f37f554dfcc3d88c1713 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_1a4a7928919e9d818477d98b983acc00 = $(`<div id="html_1a4a7928919e9d818477d98b983acc00" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 72 m<br>Vel. media: 43.7 km/h<br>V85: 61.6 km/h<br>Dev. std: 17.0 km/h<br>Limite: 50 km/h<br>Lungh.: 57 m</div>`)[0];
+                popup_d5783e9b7333f37f554dfcc3d88c1713.setContent(html_1a4a7928919e9d818477d98b983acc00);
+            
+        
+
+        poly_line_d362a7cdc4926ece5ce7106e7bb5ffd4.bindPopup(popup_d5783e9b7333f37f554dfcc3d88c1713)
+        ;
+
+        
+    
+    
+            var poly_line_6b9848a3d0e26affd850da74bf445223 = L.polyline(
+                [[41.94638, 12.46941], [41.9461, 12.46932]],
+                {"bubblingMouseEvents": true, "color": "#ff7a00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff7a00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_578036a9bfafcd2b1232023917f64564 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_30c799df62ee90c7a94bb3e25d1a446d = $(`<div id="html_30c799df62ee90c7a94bb3e25d1a446d" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 130 m<br>Vel. media: 49.5 km/h<br>V85: 65.6 km/h<br>Dev. std: 17.0 km/h<br>Limite: 50 km/h<br>Lungh.: 33 m</div>`)[0];
+                popup_578036a9bfafcd2b1232023917f64564.setContent(html_30c799df62ee90c7a94bb3e25d1a446d);
+            
+        
+
+        poly_line_6b9848a3d0e26affd850da74bf445223.bindPopup(popup_578036a9bfafcd2b1232023917f64564)
+        ;
+
+        
+    
+    
+            var poly_line_db2b35f9b5daa18ddf8128443b5e91a5 = L.polyline(
+                [[41.9461, 12.46932], [41.94594, 12.46927], [41.94583, 12.46923]],
+                {"bubblingMouseEvents": true, "color": "#ff6c00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff6c00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_ff76aec1f4f3f48c8e628016e2e7be4c = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_3c4a5cbd2361d27f1c0aa0c0f95dbb56 = $(`<div id="html_3c4a5cbd2361d27f1c0aa0c0f95dbb56" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 163 m<br>Vel. media: 51.8 km/h<br>V85: 67.2 km/h<br>Dev. std: 16.6 km/h<br>Limite: 50 km/h<br>Lungh.: 31 m</div>`)[0];
+                popup_ff76aec1f4f3f48c8e628016e2e7be4c.setContent(html_3c4a5cbd2361d27f1c0aa0c0f95dbb56);
+            
+        
+
+        poly_line_db2b35f9b5daa18ddf8128443b5e91a5.bindPopup(popup_ff76aec1f4f3f48c8e628016e2e7be4c)
+        ;
+
+        
+    
+    
+            var poly_line_c9cd5f4d5653f109b3eebf8dd1069720 = L.polyline(
+                [[41.94583, 12.46923], [41.94572, 12.4692], [41.94559, 12.46917], [41.94548, 12.46915], [41.94535, 12.46913], [41.9452, 12.46912], [41.94495, 12.46913]],
+                {"bubblingMouseEvents": true, "color": "#ff5b00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff5b00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_bed1c691f23e6b51b9210bcc02a53e44 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_db41764328bc3361d67d24dd91424659 = $(`<div id="html_db41764328bc3361d67d24dd91424659" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 194 m<br>Vel. media: 47.5 km/h<br>V85: 69.2 km/h<br>Dev. std: 22.7 km/h<br>Limite: 50 km/h<br>Lungh.: 98 m</div>`)[0];
+                popup_bed1c691f23e6b51b9210bcc02a53e44.setContent(html_db41764328bc3361d67d24dd91424659);
+            
+        
+
+        poly_line_c9cd5f4d5653f109b3eebf8dd1069720.bindPopup(popup_bed1c691f23e6b51b9210bcc02a53e44)
+        ;
+
+        
+    
+    
+            var poly_line_16cebe41f90aef065d9fc7979eb1dad5 = L.polyline(
+                [[41.94495, 12.46913], [41.9449, 12.46913], [41.94485, 12.46913]],
+                {"bubblingMouseEvents": true, "color": "#ff4f00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff4f00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_6ba4f434d2fd74a16e519b2ba1493f27 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_8f7ff527491bb40b24aa54ae6a4cd90a = $(`<div id="html_8f7ff527491bb40b24aa54ae6a4cd90a" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 291 m<br>Vel. media: 51.2 km/h<br>V85: 70.6 km/h<br>Dev. std: 19.6 km/h<br>Limite: 50 km/h<br>Lungh.: 12 m</div>`)[0];
+                popup_6ba4f434d2fd74a16e519b2ba1493f27.setContent(html_8f7ff527491bb40b24aa54ae6a4cd90a);
+            
+        
+
+        poly_line_16cebe41f90aef065d9fc7979eb1dad5.bindPopup(popup_6ba4f434d2fd74a16e519b2ba1493f27)
+        ;
+
+        
+    
+    
+            var poly_line_4b379dcb4ba7ebc7e8165006804077bd = L.polyline(
+                [[41.94485, 12.46913], [41.94477, 12.46914], [41.94473, 12.46915], [41.94469, 12.46915]],
+                {"bubblingMouseEvents": true, "color": "#ff4c00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff4c00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_90d6a52f0a0dd89fbfdb98f393046dcd = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_8146d27e61e76c5cd7a543aa9e97eb81 = $(`<div id="html_8146d27e61e76c5cd7a543aa9e97eb81" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 303 m<br>Vel. media: 52.8 km/h<br>V85: 71.0 km/h<br>Dev. std: 18.1 km/h<br>Limite: 50 km/h<br>Lungh.: 17 m</div>`)[0];
+                popup_90d6a52f0a0dd89fbfdb98f393046dcd.setContent(html_8146d27e61e76c5cd7a543aa9e97eb81);
+            
+        
+
+        poly_line_4b379dcb4ba7ebc7e8165006804077bd.bindPopup(popup_90d6a52f0a0dd89fbfdb98f393046dcd)
+        ;
+
+        
+    
+    
+            var poly_line_48f65a89ccbe5b5bdc178658efcc57c5 = L.polyline(
+                [[41.94469, 12.46915], [41.94464, 12.46916], [41.9446, 12.46917], [41.94452, 12.46919]],
+                {"bubblingMouseEvents": true, "color": "#ff5200ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff5200ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_610c8c11341054a0583d1474af2351f4 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ecd322fe79a212791c84334bd852c1cc = $(`<div id="html_ecd322fe79a212791c84334bd852c1cc" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 321 m<br>Vel. media: 51.7 km/h<br>V85: 70.4 km/h<br>Dev. std: 18.4 km/h<br>Limite: 50 km/h<br>Lungh.: 19 m</div>`)[0];
+                popup_610c8c11341054a0583d1474af2351f4.setContent(html_ecd322fe79a212791c84334bd852c1cc);
+            
+        
+
+        poly_line_48f65a89ccbe5b5bdc178658efcc57c5.bindPopup(popup_610c8c11341054a0583d1474af2351f4)
+        ;
+
+        
+    
+    
+            var poly_line_a2f6f1f86df9d941229761e62592e4cf = L.polyline(
+                [[41.94452, 12.46919], [41.94446, 12.46921], [41.94437, 12.46924], [41.94419, 12.4693], [41.94402, 12.46937], [41.94393, 12.46941], [41.94378, 12.46949], [41.94368, 12.46955], [41.94355, 12.46963], [41.94348, 12.46969]],
+                {"bubblingMouseEvents": true, "color": "#ff4b00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff4b00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_51e46bfb472bd184bf4dd5ab10d3cd1c = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ce28e78cdd7bfb0330c9989894e95c66 = $(`<div id="html_ce28e78cdd7bfb0330c9989894e95c66" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 340 m<br>Vel. media: 52.6 km/h<br>V85: 71.1 km/h<br>Dev. std: 19.7 km/h<br>Limite: 50 km/h<br>Lungh.: 123 m</div>`)[0];
+                popup_51e46bfb472bd184bf4dd5ab10d3cd1c.setContent(html_ce28e78cdd7bfb0330c9989894e95c66);
+            
+        
+
+        poly_line_a2f6f1f86df9d941229761e62592e4cf.bindPopup(popup_51e46bfb472bd184bf4dd5ab10d3cd1c)
+        ;
+
+        
+    
+    
+            var poly_line_bfee11ecee667156e0f2992ffca99d3e = L.polyline(
+                [[41.94348, 12.46969], [41.94337, 12.46977]],
+                {"bubblingMouseEvents": true, "color": "#ff3e00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff3e00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_74058465eba768c493e2caa32dbd3a39 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_12cdd1073e2193eab832f08204fe81cd = $(`<div id="html_12cdd1073e2193eab832f08204fe81cd" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 463 m<br>Vel. media: 53.9 km/h<br>V85: 72.6 km/h<br>Dev. std: 20.2 km/h<br>Limite: 50 km/h<br>Lungh.: 13 m</div>`)[0];
+                popup_74058465eba768c493e2caa32dbd3a39.setContent(html_12cdd1073e2193eab832f08204fe81cd);
+            
+        
+
+        poly_line_bfee11ecee667156e0f2992ffca99d3e.bindPopup(popup_74058465eba768c493e2caa32dbd3a39)
+        ;
+
+        
+    
+    
+            var poly_line_60ca35df503091b2d6f36de04cc34c3b = L.polyline(
+                [[41.94337, 12.46977], [41.94332, 12.46981]],
+                {"bubblingMouseEvents": true, "color": "#ff3d00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff3d00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_ec5de9cb3da40fe03295f49204144301 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_0f37d3f4a810edd458dc7ef37f493f3c = $(`<div id="html_0f37d3f4a810edd458dc7ef37f493f3c" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 476 m<br>Vel. media: 55.0 km/h<br>V85: 72.8 km/h<br>Dev. std: 18.7 km/h<br>Limite: 50 km/h<br>Lungh.: 7 m</div>`)[0];
+                popup_ec5de9cb3da40fe03295f49204144301.setContent(html_0f37d3f4a810edd458dc7ef37f493f3c);
+            
+        
+
+        poly_line_60ca35df503091b2d6f36de04cc34c3b.bindPopup(popup_ec5de9cb3da40fe03295f49204144301)
+        ;
+
+        
+    
+    
+            var poly_line_6177c716ae94134b857eac85b9d63449 = L.polyline(
+                [[41.94332, 12.46981], [41.94316, 12.46991], [41.943, 12.47]],
+                {"bubblingMouseEvents": true, "color": "#ff4100ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff4100ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_7ca42f71eed0c0e32a2121e815a6db3e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_7fdf4677fb4f7710f293f09f5dbc9695 = $(`<div id="html_7fdf4677fb4f7710f293f09f5dbc9695" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 484 m<br>Vel. media: 55.2 km/h<br>V85: 72.4 km/h<br>Dev. std: 17.4 km/h<br>Limite: 50 km/h<br>Lungh.: 38 m</div>`)[0];
+                popup_7ca42f71eed0c0e32a2121e815a6db3e.setContent(html_7fdf4677fb4f7710f293f09f5dbc9695);
+            
+        
+
+        poly_line_6177c716ae94134b857eac85b9d63449.bindPopup(popup_7ca42f71eed0c0e32a2121e815a6db3e)
+        ;
+
+        
+    
+    
+            var poly_line_aff866f0928602e04c22addfe51bab55 = L.polyline(
+                [[41.943, 12.47], [41.94291, 12.47006], [41.94279, 12.47013], [41.94231, 12.47041]],
+                {"bubblingMouseEvents": true, "color": "#ff5400ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff5400ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_b10e06a2a1568a7efa954095af781c78 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_4250ca62700cc8ab16823032b9f57805 = $(`<div id="html_4250ca62700cc8ab16823032b9f57805" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 522 m<br>Vel. media: 53.9 km/h<br>V85: 70.1 km/h<br>Dev. std: 16.1 km/h<br>Limite: 50 km/h<br>Lungh.: 84 m</div>`)[0];
+                popup_b10e06a2a1568a7efa954095af781c78.setContent(html_4250ca62700cc8ab16823032b9f57805);
+            
+        
+
+        poly_line_aff866f0928602e04c22addfe51bab55.bindPopup(popup_b10e06a2a1568a7efa954095af781c78)
+        ;
+
+        
+    
+    
+            var poly_line_dbe902d296e4f8b575465a95818e5b27 = L.polyline(
+                [[41.94231, 12.47041], [41.9422, 12.47047], [41.94204, 12.47056]],
+                {"bubblingMouseEvents": true, "color": "#ff6300ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff6300ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_74316e117795c89284eb8d33af68954a = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_42770dcc1e754106168a8670bf548996 = $(`<div id="html_42770dcc1e754106168a8670bf548996" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 606 m<br>Vel. media: 50.9 km/h<br>V85: 68.4 km/h<br>Dev. std: 18.2 km/h<br>Limite: 50 km/h<br>Lungh.: 33 m</div>`)[0];
+                popup_74316e117795c89284eb8d33af68954a.setContent(html_42770dcc1e754106168a8670bf548996);
+            
+        
+
+        poly_line_dbe902d296e4f8b575465a95818e5b27.bindPopup(popup_74316e117795c89284eb8d33af68954a)
+        ;
+
+        
+    
+    
+            var poly_line_c7a1fe89a4cae3cf57d4e38abc82a562 = L.polyline(
+                [[41.94204, 12.47056], [41.94192, 12.4706], [41.94181, 12.47064], [41.94171, 12.47066]],
+                {"bubblingMouseEvents": true, "color": "#ff6a00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff6a00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_d14dbcd143d8738b1c7a24aa003f08a7 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_bfdb36f7f93e70dc7e64ee5da266bff2 = $(`<div id="html_bfdb36f7f93e70dc7e64ee5da266bff2" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 639 m<br>Vel. media: 46.8 km/h<br>V85: 67.5 km/h<br>Dev. std: 22.5 km/h<br>Limite: 50 km/h<br>Lungh.: 38 m</div>`)[0];
+                popup_d14dbcd143d8738b1c7a24aa003f08a7.setContent(html_bfdb36f7f93e70dc7e64ee5da266bff2);
+            
+        
+
+        poly_line_c7a1fe89a4cae3cf57d4e38abc82a562.bindPopup(popup_d14dbcd143d8738b1c7a24aa003f08a7)
+        ;
+
+        
+    
+    
+            var poly_line_aaf6c9f26d2ef96ab09343f201d32854 = L.polyline(
+                [[41.94171, 12.47066], [41.94148, 12.4707]],
+                {"bubblingMouseEvents": true, "color": "#ff6500ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff6500ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_5cd6e743b53981b3c76239254527c012 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_161ebde888eb364769a54c1c5638bcaa = $(`<div id="html_161ebde888eb364769a54c1c5638bcaa" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 677 m<br>Vel. media: 47.9 km/h<br>V85: 68.1 km/h<br>Dev. std: 19.7 km/h<br>Limite: 50 km/h<br>Lungh.: 25 m</div>`)[0];
+                popup_5cd6e743b53981b3c76239254527c012.setContent(html_161ebde888eb364769a54c1c5638bcaa);
+            
+        
+
+        poly_line_aaf6c9f26d2ef96ab09343f201d32854.bindPopup(popup_5cd6e743b53981b3c76239254527c012)
+        ;
+
+        
+    
+    
+            var poly_line_8adea4f2a625b162d31bf54a12aed750 = L.polyline(
+                [[41.94148, 12.4707], [41.94141, 12.47071], [41.94134, 12.47073], [41.94125, 12.47074], [41.94117, 12.47076]],
+                {"bubblingMouseEvents": true, "color": "#ff6500ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff6500ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_10fdde2a0a044c21e91c1a194ec657fb = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_88e7e4a39130219586ffca7863d95033 = $(`<div id="html_88e7e4a39130219586ffca7863d95033" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 701 m<br>Vel. media: 49.5 km/h<br>V85: 68.1 km/h<br>Dev. std: 18.4 km/h<br>Limite: 50 km/h<br>Lungh.: 35 m</div>`)[0];
+                popup_10fdde2a0a044c21e91c1a194ec657fb.setContent(html_88e7e4a39130219586ffca7863d95033);
+            
+        
+
+        poly_line_8adea4f2a625b162d31bf54a12aed750.bindPopup(popup_10fdde2a0a044c21e91c1a194ec657fb)
+        ;
+
+        
+    
+    
+            var poly_line_4c4de0b433cdddd479cb701a2e7e0668 = L.polyline(
+                [[41.94117, 12.47076], [41.94111, 12.47077], [41.94105, 12.47078]],
+                {"bubblingMouseEvents": true, "color": "#ff5b00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff5b00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_65bb707ff41535f4e0a3d378c530b26c = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_4e3c79945ce2df08d58f19f933580998 = $(`<div id="html_4e3c79945ce2df08d58f19f933580998" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 737 m<br>Vel. media: 50.4 km/h<br>V85: 69.2 km/h<br>Dev. std: 18.7 km/h<br>Limite: 50 km/h<br>Lungh.: 13 m</div>`)[0];
+                popup_65bb707ff41535f4e0a3d378c530b26c.setContent(html_4e3c79945ce2df08d58f19f933580998);
+            
+        
+
+        poly_line_4c4de0b433cdddd479cb701a2e7e0668.bindPopup(popup_65bb707ff41535f4e0a3d378c530b26c)
+        ;
+
+        
+    
+    
+            var poly_line_d912726252633a3356f94a6826f572cb = L.polyline(
+                [[41.94105, 12.47078], [41.94087, 12.47081]],
+                {"bubblingMouseEvents": true, "color": "#ff5e00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff5e00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_e2055e0002650759e2cf0d1456e8782e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_0cb04be845b03ffe2d08ccedd5056f34 = $(`<div id="html_0cb04be845b03ffe2d08ccedd5056f34" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 750 m<br>Vel. media: 47.6 km/h<br>V85: 68.9 km/h<br>Dev. std: 20.7 km/h<br>Limite: 50 km/h<br>Lungh.: 20 m</div>`)[0];
+                popup_e2055e0002650759e2cf0d1456e8782e.setContent(html_0cb04be845b03ffe2d08ccedd5056f34);
+            
+        
+
+        poly_line_d912726252633a3356f94a6826f572cb.bindPopup(popup_e2055e0002650759e2cf0d1456e8782e)
+        ;
+
+        
+    
+    
+            var poly_line_69590aa27fa63b1c5f450796db372fc7 = L.polyline(
+                [[41.94087, 12.47081], [41.94079, 12.47082], [41.94064, 12.47085], [41.94057, 12.47086], [41.94047, 12.47088]],
+                {"bubblingMouseEvents": true, "color": "#ff5100ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff5100ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_382188a3e9ec801cd3fc81874931a9bd = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_32d5f27d6b06ed378fd444a6f0561a4b = $(`<div id="html_32d5f27d6b06ed378fd444a6f0561a4b" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 770 m<br>Vel. media: 46.6 km/h<br>V85: 70.5 km/h<br>Dev. std: 23.6 km/h<br>Limite: 50 km/h<br>Lungh.: 45 m</div>`)[0];
+                popup_382188a3e9ec801cd3fc81874931a9bd.setContent(html_32d5f27d6b06ed378fd444a6f0561a4b);
+            
+        
+
+        poly_line_69590aa27fa63b1c5f450796db372fc7.bindPopup(popup_382188a3e9ec801cd3fc81874931a9bd)
+        ;
+
+        
+    
+    
+            var poly_line_96b995b160697c32305ab93f34335e6d = L.polyline(
+                [[41.94047, 12.47088], [41.94035, 12.4709], [41.94024, 12.47092]],
+                {"bubblingMouseEvents": true, "color": "#ff1f00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff1f00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_75c3783188c690d9d29d9db819074d2d = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_5d08dd56f0098eadff7153d0c4648125 = $(`<div id="html_5d08dd56f0098eadff7153d0c4648125" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 815 m<br>Vel. media: 56.7 km/h<br>V85: 76.2 km/h<br>Dev. std: 20.1 km/h<br>Limite: 50 km/h<br>Lungh.: 25 m</div>`)[0];
+                popup_75c3783188c690d9d29d9db819074d2d.setContent(html_5d08dd56f0098eadff7153d0c4648125);
+            
+        
+
+        poly_line_96b995b160697c32305ab93f34335e6d.bindPopup(popup_75c3783188c690d9d29d9db819074d2d)
+        ;
+
+        
+    
+    
+            var poly_line_17905a8b9d7c43dc2587dde354867abf = L.polyline(
+                [[41.94024, 12.47092], [41.94012, 12.47094]],
+                {"bubblingMouseEvents": true, "color": "#ff1a00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff1a00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_e27bd5f860b7db39254ef79b22218a67 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_30822b314b4ac39ec79aeda3c103910a = $(`<div id="html_30822b314b4ac39ec79aeda3c103910a" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 841 m<br>Vel. media: 58.5 km/h<br>V85: 76.9 km/h<br>Dev. std: 19.3 km/h<br>Limite: 50 km/h<br>Lungh.: 13 m</div>`)[0];
+                popup_e27bd5f860b7db39254ef79b22218a67.setContent(html_30822b314b4ac39ec79aeda3c103910a);
+            
+        
+
+        poly_line_17905a8b9d7c43dc2587dde354867abf.bindPopup(popup_e27bd5f860b7db39254ef79b22218a67)
+        ;
+
+        
+    
+    
+            var poly_line_90b233b52a0c0c4e55e3d87409f36d74 = L.polyline(
+                [[41.94012, 12.47094], [41.93934, 12.47108]],
+                {"bubblingMouseEvents": true, "color": "#ff0900ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0900ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_767e0e1d0ad5c17c7a53e3fb44c46ba3 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_e6dcb7e63885a7f3affc2586ce523d2e = $(`<div id="html_e6dcb7e63885a7f3affc2586ce523d2e" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 854 m<br>Vel. media: 60.5 km/h<br>V85: 78.9 km/h<br>Dev. std: 19.1 km/h<br>Limite: 50 km/h<br>Lungh.: 88 m</div>`)[0];
+                popup_767e0e1d0ad5c17c7a53e3fb44c46ba3.setContent(html_e6dcb7e63885a7f3affc2586ce523d2e);
+            
+        
+
+        poly_line_90b233b52a0c0c4e55e3d87409f36d74.bindPopup(popup_767e0e1d0ad5c17c7a53e3fb44c46ba3)
+        ;
+
+        
+    
+    
+            var poly_line_13e8a794195d2175ae5bb2f7ba869633 = L.polyline(
+                [[41.93934, 12.47108], [41.93918, 12.47111]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_153c56b05379f4b37e1c871572ac9003 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_69749d0ccdd026a10838030ae8843c99 = $(`<div id="html_69749d0ccdd026a10838030ae8843c99" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 942 m<br>Vel. media: 63.6 km/h<br>V85: 81.1 km/h<br>Dev. std: 18.9 km/h<br>Limite: 50 km/h<br>Lungh.: 17 m</div>`)[0];
+                popup_153c56b05379f4b37e1c871572ac9003.setContent(html_69749d0ccdd026a10838030ae8843c99);
+            
+        
+
+        poly_line_13e8a794195d2175ae5bb2f7ba869633.bindPopup(popup_153c56b05379f4b37e1c871572ac9003)
+        ;
+
+        
+    
+    
+            var poly_line_c61a2743014515d8c9f4700f2ef39b0f = L.polyline(
+                [[41.93918, 12.47111], [41.93896, 12.47115]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_7aad4866108c9f81c9d4b07f8e925102 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_dbbc50e06fdb600fab96d541210bcd8b = $(`<div id="html_dbbc50e06fdb600fab96d541210bcd8b" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 959 m<br>Vel. media: 63.9 km/h<br>V85: 81.6 km/h<br>Dev. std: 18.9 km/h<br>Limite: 50 km/h<br>Lungh.: 25 m</div>`)[0];
+                popup_7aad4866108c9f81c9d4b07f8e925102.setContent(html_dbbc50e06fdb600fab96d541210bcd8b);
+            
+        
+
+        poly_line_c61a2743014515d8c9f4700f2ef39b0f.bindPopup(popup_7aad4866108c9f81c9d4b07f8e925102)
+        ;
+
+        
+    
+    
+            var poly_line_a3711d092f3f565cb1b04420a90dc89b = L.polyline(
+                [[41.93896, 12.47115], [41.93867, 12.4712]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_839eb18c9b917cc4091247b728986839 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_bc8cd6c5a9222bddf701bb0712078259 = $(`<div id="html_bc8cd6c5a9222bddf701bb0712078259" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 984 m<br>Vel. media: 63.8 km/h<br>V85: 82.4 km/h<br>Dev. std: 19.8 km/h<br>Limite: 50 km/h<br>Lungh.: 33 m</div>`)[0];
+                popup_839eb18c9b917cc4091247b728986839.setContent(html_bc8cd6c5a9222bddf701bb0712078259);
+            
+        
+
+        poly_line_a3711d092f3f565cb1b04420a90dc89b.bindPopup(popup_839eb18c9b917cc4091247b728986839)
+        ;
+
+        
+    
+    
+            var poly_line_c186c1e5950f182fed70b59697ac3b39 = L.polyline(
+                [[41.93867, 12.4712], [41.93852, 12.47123], [41.93838, 12.47125]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_37a5910a45e6a8e73a27ba3c9c8e646e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_abb05fe09cdb1e3f1d134b7e4f4a393a = $(`<div id="html_abb05fe09cdb1e3f1d134b7e4f4a393a" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 1017 m<br>Vel. media: 67.9 km/h<br>V85: 85.6 km/h<br>Dev. std: 18.4 km/h<br>Limite: 50 km/h<br>Lungh.: 32 m</div>`)[0];
+                popup_37a5910a45e6a8e73a27ba3c9c8e646e.setContent(html_abb05fe09cdb1e3f1d134b7e4f4a393a);
+            
+        
+
+        poly_line_c186c1e5950f182fed70b59697ac3b39.bindPopup(popup_37a5910a45e6a8e73a27ba3c9c8e646e)
+        ;
+
+        
+    
+    
+            var poly_line_1ffef6e05635180e9d001a49d5f0c03f = L.polyline(
+                [[41.93838, 12.47125], [41.93826, 12.47128]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_50a650547a906c13ca877f6c794041d0 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_90d8d41f155759c61129aed596b3ab18 = $(`<div id="html_90d8d41f155759c61129aed596b3ab18" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 1049 m<br>Vel. media: 63.7 km/h<br>V85: 83.1 km/h<br>Dev. std: 20.1 km/h<br>Limite: 50 km/h<br>Lungh.: 14 m</div>`)[0];
+                popup_50a650547a906c13ca877f6c794041d0.setContent(html_90d8d41f155759c61129aed596b3ab18);
+            
+        
+
+        poly_line_1ffef6e05635180e9d001a49d5f0c03f.bindPopup(popup_50a650547a906c13ca877f6c794041d0)
+        ;
+
+        
+    
+    
+            var poly_line_c4d3a9407c0b95c1fa447811d629e5f3 = L.polyline(
+                [[41.93826, 12.47128], [41.93787, 12.47133]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_174bf47cec323a9a1ef8b2ce06b88ba9 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_af77053a6a0127ab13cc6e4f32fb1a67 = $(`<div id="html_af77053a6a0127ab13cc6e4f32fb1a67" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 1063 m<br>Vel. media: 65.0 km/h<br>V85: 84.0 km/h<br>Dev. std: 19.3 km/h<br>Limite: 50 km/h<br>Lungh.: 44 m</div>`)[0];
+                popup_174bf47cec323a9a1ef8b2ce06b88ba9.setContent(html_af77053a6a0127ab13cc6e4f32fb1a67);
+            
+        
+
+        poly_line_c4d3a9407c0b95c1fa447811d629e5f3.bindPopup(popup_174bf47cec323a9a1ef8b2ce06b88ba9)
+        ;
+
+        
+    
+    
+            var poly_line_480ae87479f02c9b79bbabfd8d471138 = L.polyline(
+                [[41.93787, 12.47133], [41.93762, 12.47136], [41.93726, 12.47142]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_bb2ff8a5062638ce9bd524e0f83b9c08 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_34ae816d587a030f892b233d4f9faba1 = $(`<div id="html_34ae816d587a030f892b233d4f9faba1" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 1107 m<br>Vel. media: 67.1 km/h<br>V85: 85.1 km/h<br>Dev. std: 18.8 km/h<br>Limite: 50 km/h<br>Lungh.: 68 m</div>`)[0];
+                popup_bb2ff8a5062638ce9bd524e0f83b9c08.setContent(html_34ae816d587a030f892b233d4f9faba1);
+            
+        
+
+        poly_line_480ae87479f02c9b79bbabfd8d471138.bindPopup(popup_bb2ff8a5062638ce9bd524e0f83b9c08)
+        ;
+
+        
+    
+    
+            var poly_line_d6ecf5f26bd024d6fa61fdcd8312ade9 = L.polyline(
+                [[41.93726, 12.47142], [41.93719, 12.47143], [41.93706, 12.47146]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_717b79910f8fcb484416a96c232947db = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_c9b8c35407131b13323ed465c88b1740 = $(`<div id="html_c9b8c35407131b13323ed465c88b1740" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 1175 m<br>Vel. media: 68.7 km/h<br>V85: 86.1 km/h<br>Dev. std: 18.4 km/h<br>Limite: 50 km/h<br>Lungh.: 22 m</div>`)[0];
+                popup_717b79910f8fcb484416a96c232947db.setContent(html_c9b8c35407131b13323ed465c88b1740);
+            
+        
+
+        poly_line_d6ecf5f26bd024d6fa61fdcd8312ade9.bindPopup(popup_717b79910f8fcb484416a96c232947db)
+        ;
+
+        
+    
+    
+            var poly_line_53e11dbc5bdb3784f6a98af2259dbf9c = L.polyline(
+                [[41.93706, 12.47146], [41.93655, 12.47154]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_1d68d0e79ccb9bf42ba7fed884953a2d = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_0593b523c1b65b0cd253ee785f84054f = $(`<div id="html_0593b523c1b65b0cd253ee785f84054f" style="width: 100.0%; height: 100.0%;"><b>Ponte Flaminio</b><br>Progr.: 1196 m<br>Vel. media: 70.0 km/h<br>V85: 87.5 km/h<br>Dev. std: 18.3 km/h<br>Limite: 50 km/h<br>Lungh.: 57 m</div>`)[0];
+                popup_1d68d0e79ccb9bf42ba7fed884953a2d.setContent(html_0593b523c1b65b0cd253ee785f84054f);
+            
+        
+
+        poly_line_53e11dbc5bdb3784f6a98af2259dbf9c.bindPopup(popup_1d68d0e79ccb9bf42ba7fed884953a2d)
+        ;
+
+        
+    
+    
+            var poly_line_7d9c29ebd66ea491873ca195a3a252ae = L.polyline(
+                [[41.93655, 12.47154], [41.93622, 12.4716]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_c226ac24b39d720fa8d340c769de6f87 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_038e0c290ea0ec951c32e05326b4bc6c = $(`<div id="html_038e0c290ea0ec951c32e05326b4bc6c" style="width: 100.0%; height: 100.0%;"><b>Ponte Flaminio</b><br>Progr.: 1254 m<br>Vel. media: 71.0 km/h<br>V85: 88.9 km/h<br>Dev. std: 18.4 km/h<br>Limite: 50 km/h<br>Lungh.: 37 m</div>`)[0];
+                popup_c226ac24b39d720fa8d340c769de6f87.setContent(html_038e0c290ea0ec951c32e05326b4bc6c);
+            
+        
+
+        poly_line_7d9c29ebd66ea491873ca195a3a252ae.bindPopup(popup_c226ac24b39d720fa8d340c769de6f87)
+        ;
+
+        
+    
+    
+            var poly_line_1f0e9c6757f0cc101ca095aa69a4fc97 = L.polyline(
+                [[41.93622, 12.4716], [41.93579, 12.47167], [41.93537, 12.47174]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_33af369b733cb7a3cf031d06a6aa209e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2a871676acc6bfde0ab64a0cfc000abb = $(`<div id="html_2a871676acc6bfde0ab64a0cfc000abb" style="width: 100.0%; height: 100.0%;"><b>Ponte Flaminio</b><br>Progr.: 1291 m<br>Vel. media: 70.4 km/h<br>V85: 89.1 km/h<br>Dev. std: 19.2 km/h<br>Limite: 50 km/h<br>Lungh.: 96 m</div>`)[0];
+                popup_33af369b733cb7a3cf031d06a6aa209e.setContent(html_2a871676acc6bfde0ab64a0cfc000abb);
+            
+        
+
+        poly_line_1f0e9c6757f0cc101ca095aa69a4fc97.bindPopup(popup_33af369b733cb7a3cf031d06a6aa209e)
+        ;
+
+        
+    
+    
+            var poly_line_40b2f76876f65bc6c748a31aea2304d6 = L.polyline(
+                [[41.93537, 12.47174], [41.9353, 12.47175], [41.93521, 12.47177]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_3dda487a8fc54cf92ae4c93e7e25f2bd = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_cb7c2f0c59fa944a6257f5cbea8c0364 = $(`<div id="html_cb7c2f0c59fa944a6257f5cbea8c0364" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 1387 m<br>Vel. media: 71.0 km/h<br>V85: 89.6 km/h<br>Dev. std: 19.0 km/h<br>Limite: 50 km/h<br>Lungh.: 17 m</div>`)[0];
+                popup_3dda487a8fc54cf92ae4c93e7e25f2bd.setContent(html_cb7c2f0c59fa944a6257f5cbea8c0364);
+            
+        
+
+        poly_line_40b2f76876f65bc6c748a31aea2304d6.bindPopup(popup_3dda487a8fc54cf92ae4c93e7e25f2bd)
+        ;
+
+        
+    
+    
+            var poly_line_f2879e456b75788563b1ec46b91fa7f6 = L.polyline(
+                [[41.93521, 12.47177], [41.93514, 12.47178]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_9f0d0124ae7f21207356b27a46ce85f8 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_9606126915fa4d5dc120194621e8ca9a = $(`<div id="html_9606126915fa4d5dc120194621e8ca9a" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 1404 m<br>Vel. media: 70.9 km/h<br>V85: 89.6 km/h<br>Dev. std: 19.2 km/h<br>Limite: 50 km/h<br>Lungh.: 8 m</div>`)[0];
+                popup_9f0d0124ae7f21207356b27a46ce85f8.setContent(html_9606126915fa4d5dc120194621e8ca9a);
+            
+        
+
+        poly_line_f2879e456b75788563b1ec46b91fa7f6.bindPopup(popup_9f0d0124ae7f21207356b27a46ce85f8)
+        ;
+
+        
+    
+    
+            var poly_line_16fa4054a26f3e95782847daa45cb4b9 = L.polyline(
+                [[41.93514, 12.47178], [41.93495, 12.47181], [41.93461, 12.47186], [41.93454, 12.47186]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_58076acbdd0496f847a13ce0f5e77585 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_982bff1f4df326214cf5e712c336b574 = $(`<div id="html_982bff1f4df326214cf5e712c336b574" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 1412 m<br>Vel. media: 69.8 km/h<br>V85: 89.9 km/h<br>Dev. std: 20.7 km/h<br>Limite: 50 km/h<br>Lungh.: 67 m</div>`)[0];
+                popup_58076acbdd0496f847a13ce0f5e77585.setContent(html_982bff1f4df326214cf5e712c336b574);
+            
+        
+
+        poly_line_16fa4054a26f3e95782847daa45cb4b9.bindPopup(popup_58076acbdd0496f847a13ce0f5e77585)
+        ;
+
+        
+    
+    
+            var poly_line_1321239299dd70198ea53eb32c253200 = L.polyline(
+                [[41.93454, 12.47186], [41.93443, 12.47188]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_e8d35868798fed1d11afbe163e3066ea = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_9c16edc483baafb560bbc0bc8e340640 = $(`<div id="html_9c16edc483baafb560bbc0bc8e340640" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 1479 m<br>Vel. media: 72.9 km/h<br>V85: 92.2 km/h<br>Dev. std: 20.3 km/h<br>Limite: 50 km/h<br>Lungh.: 13 m</div>`)[0];
+                popup_e8d35868798fed1d11afbe163e3066ea.setContent(html_9c16edc483baafb560bbc0bc8e340640);
+            
+        
+
+        poly_line_1321239299dd70198ea53eb32c253200.bindPopup(popup_e8d35868798fed1d11afbe163e3066ea)
+        ;
+
+        
+    
+    
+            var poly_line_12a7ec7f0a5c8e3633b8f92277cee348 = L.polyline(
+                [[41.93443, 12.47188], [41.93426, 12.47191]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_16054fcfdf6e53c367dc8fe9f3923124 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_539c24f638407bafd5942e8aa39ddad9 = $(`<div id="html_539c24f638407bafd5942e8aa39ddad9" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 1491 m<br>Vel. media: 73.0 km/h<br>V85: 92.4 km/h<br>Dev. std: 20.3 km/h<br>Limite: 50 km/h<br>Lungh.: 19 m</div>`)[0];
+                popup_16054fcfdf6e53c367dc8fe9f3923124.setContent(html_539c24f638407bafd5942e8aa39ddad9);
+            
+        
+
+        poly_line_12a7ec7f0a5c8e3633b8f92277cee348.bindPopup(popup_16054fcfdf6e53c367dc8fe9f3923124)
+        ;
+
+        
+    
+    
+            var poly_line_7df940fd4b3b9e57f0598ba0c8845317 = L.polyline(
+                [[41.93426, 12.47191], [41.93414, 12.47192]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_a0e42591f6d870ab88bd64cc8ace300b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_5e69dafe0a92317f22c7e2b36b83ecc0 = $(`<div id="html_5e69dafe0a92317f22c7e2b36b83ecc0" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 1511 m<br>Vel. media: 73.8 km/h<br>V85: 92.8 km/h<br>Dev. std: 20.2 km/h<br>Limite: 50 km/h<br>Lungh.: 13 m</div>`)[0];
+                popup_a0e42591f6d870ab88bd64cc8ace300b.setContent(html_5e69dafe0a92317f22c7e2b36b83ecc0);
+            
+        
+
+        poly_line_7df940fd4b3b9e57f0598ba0c8845317.bindPopup(popup_a0e42591f6d870ab88bd64cc8ace300b)
+        ;
+
+        
+    
+    
+            var poly_line_71f065b71aac963cd9f8924177b11180 = L.polyline(
+                [[41.93414, 12.47192], [41.93401, 12.47195]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_ea0ddd1b03207fe45bf68746ff12c784 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_10d55376d98f19b479294f4b692a2d7e = $(`<div id="html_10d55376d98f19b479294f4b692a2d7e" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 1524 m<br>Vel. media: 74.2 km/h<br>V85: 93.5 km/h<br>Dev. std: 20.2 km/h<br>Limite: 50 km/h<br>Lungh.: 14 m</div>`)[0];
+                popup_ea0ddd1b03207fe45bf68746ff12c784.setContent(html_10d55376d98f19b479294f4b692a2d7e);
+            
+        
+
+        poly_line_71f065b71aac963cd9f8924177b11180.bindPopup(popup_ea0ddd1b03207fe45bf68746ff12c784)
+        ;
+
+        
+    
+    
+            var poly_line_2bccc9ce5914e3b3b046c94b5c4295b2 = L.polyline(
+                [[41.93401, 12.47195], [41.93258, 12.47223]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_f7ef45a11e342a2047a2f89d14e4e801 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_6e09c942afb63e6e4aa10f2d1d310440 = $(`<div id="html_6e09c942afb63e6e4aa10f2d1d310440" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 1538 m<br>Vel. media: 75.5 km/h<br>V85: 94.8 km/h<br>Dev. std: 20.1 km/h<br>Limite: 50 km/h<br>Lungh.: 161 m</div>`)[0];
+                popup_f7ef45a11e342a2047a2f89d14e4e801.setContent(html_6e09c942afb63e6e4aa10f2d1d310440);
+            
+        
+
+        poly_line_2bccc9ce5914e3b3b046c94b5c4295b2.bindPopup(popup_f7ef45a11e342a2047a2f89d14e4e801)
+        ;
+
+        
+    
+    
+            var poly_line_121e76ba3e2ac7e2bb3b6d6a2d4be52c = L.polyline(
+                [[41.93258, 12.47223], [41.93203, 12.47233]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_acc3a90c65ca7d8d30139c0e60e1f2be = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2400e7dba87dc7ff401aa53088d07a31 = $(`<div id="html_2400e7dba87dc7ff401aa53088d07a31" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 1699 m<br>Vel. media: 80.8 km/h<br>V85: 101.2 km/h<br>Dev. std: 21.3 km/h<br>Limite: 50 km/h<br>Lungh.: 61 m</div>`)[0];
+                popup_acc3a90c65ca7d8d30139c0e60e1f2be.setContent(html_2400e7dba87dc7ff401aa53088d07a31);
+            
+        
+
+        poly_line_121e76ba3e2ac7e2bb3b6d6a2d4be52c.bindPopup(popup_acc3a90c65ca7d8d30139c0e60e1f2be)
+        ;
+
+        
+    
+    
+            var poly_line_d97e7093c60e07f4f4819fb6fa3352d4 = L.polyline(
+                [[41.93203, 12.47233], [41.93002, 12.4727]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_16fc6ffeda530e3d60674064b813a482 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_b9db0abb520d79ceb2fafdb1c969af68 = $(`<div id="html_b9db0abb520d79ceb2fafdb1c969af68" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 1760 m<br>Vel. media: 77.8 km/h<br>V85: 97.6 km/h<br>Dev. std: 20.0 km/h<br>Limite: 50 km/h<br>Lungh.: 225 m</div>`)[0];
+                popup_16fc6ffeda530e3d60674064b813a482.setContent(html_b9db0abb520d79ceb2fafdb1c969af68);
+            
+        
+
+        poly_line_d97e7093c60e07f4f4819fb6fa3352d4.bindPopup(popup_16fc6ffeda530e3d60674064b813a482)
+        ;
+
+        
+    
+    
+            var poly_line_ab2b72e2ac2cf4215bc36e74018ef944 = L.polyline(
+                [[41.93002, 12.4727], [41.92972, 12.47273]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_8e7e31fcadeac545f8c44e5d96438799 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_9e34e5b23a359c393d38899fe0f80dd9 = $(`<div id="html_9e34e5b23a359c393d38899fe0f80dd9" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 1985 m<br>Vel. media: 75.0 km/h<br>V85: 93.5 km/h<br>Dev. std: 18.6 km/h<br>Limite: 50 km/h<br>Lungh.: 34 m</div>`)[0];
+                popup_8e7e31fcadeac545f8c44e5d96438799.setContent(html_9e34e5b23a359c393d38899fe0f80dd9);
+            
+        
+
+        poly_line_ab2b72e2ac2cf4215bc36e74018ef944.bindPopup(popup_8e7e31fcadeac545f8c44e5d96438799)
+        ;
+
+        
+    
+    
+            var poly_line_f1dafa2865f14afe26a20152dddffac6 = L.polyline(
+                [[41.92972, 12.47273], [41.92958, 12.47274]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_693427b73076a7d76f3b09c2f80ae313 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_7d360f853b4862deeb80e3da5d6f9c1e = $(`<div id="html_7d360f853b4862deeb80e3da5d6f9c1e" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 2019 m<br>Vel. media: 74.2 km/h<br>V85: 91.6 km/h<br>Dev. std: 18.2 km/h<br>Limite: 50 km/h<br>Lungh.: 16 m</div>`)[0];
+                popup_693427b73076a7d76f3b09c2f80ae313.setContent(html_7d360f853b4862deeb80e3da5d6f9c1e);
+            
+        
+
+        poly_line_f1dafa2865f14afe26a20152dddffac6.bindPopup(popup_693427b73076a7d76f3b09c2f80ae313)
+        ;
+
+        
+    
+    
+            var poly_line_177ace6a5bbe7a4df9bd12e3b09973d6 = L.polyline(
+                [[41.92958, 12.47274], [41.92955, 12.47275], [41.92952, 12.47276]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_97fbdbe789670f603f21b2c293327e61 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ed8d6204b42e9b4dae644fd93dae9393 = $(`<div id="html_ed8d6204b42e9b4dae644fd93dae9393" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 2035 m<br>Vel. media: 73.9 km/h<br>V85: 91.1 km/h<br>Dev. std: 18.1 km/h<br>Limite: 50 km/h<br>Lungh.: 7 m</div>`)[0];
+                popup_97fbdbe789670f603f21b2c293327e61.setContent(html_ed8d6204b42e9b4dae644fd93dae9393);
+            
+        
+
+        poly_line_177ace6a5bbe7a4df9bd12e3b09973d6.bindPopup(popup_97fbdbe789670f603f21b2c293327e61)
+        ;
+
+        
+    
+    
+            var poly_line_52d0a10155697eb9e8ca1c1e5a9f2778 = L.polyline(
+                [[41.92952, 12.47276], [41.92945, 12.47277], [41.92914, 12.47285], [41.92901, 12.47289]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_b97f31bcf69da7a190b396d6151d6512 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_e40782ddfdeefec7623d8e0add0aa75d = $(`<div id="html_e40782ddfdeefec7623d8e0add0aa75d" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 2042 m<br>Vel. media: 72.0 km/h<br>V85: 88.4 km/h<br>Dev. std: 17.1 km/h<br>Limite: 50 km/h<br>Lungh.: 57 m</div>`)[0];
+                popup_b97f31bcf69da7a190b396d6151d6512.setContent(html_e40782ddfdeefec7623d8e0add0aa75d);
+            
+        
+
+        poly_line_52d0a10155697eb9e8ca1c1e5a9f2778.bindPopup(popup_b97f31bcf69da7a190b396d6151d6512)
+        ;
+
+        
+    
+    
+            var poly_line_02e7cab252591f2726bc3970f90faf8e = L.polyline(
+                [[41.92901, 12.47289], [41.92886, 12.47293], [41.9285, 12.4731]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_2520548baf8bc79d29a6bc0e103a96d6 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_a022eb04866a07925aab5dac4fa060a6 = $(`<div id="html_a022eb04866a07925aab5dac4fa060a6" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 2099 m<br>Vel. media: 69.0 km/h<br>V85: 84.4 km/h<br>Dev. std: 15.7 km/h<br>Limite: 50 km/h<br>Lungh.: 59 m</div>`)[0];
+                popup_2520548baf8bc79d29a6bc0e103a96d6.setContent(html_a022eb04866a07925aab5dac4fa060a6);
+            
+        
+
+        poly_line_02e7cab252591f2726bc3970f90faf8e.bindPopup(popup_2520548baf8bc79d29a6bc0e103a96d6)
+        ;
+
+        
+    
+    
+            var poly_line_a3f3defeec7ae7c9d9a605c01c26b649 = L.polyline(
+                [[41.9285, 12.4731], [41.9284, 12.47315], [41.92831, 12.4732]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_36226578d57f3889431556313fd1b040 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_a269cab512f13a0f775f5e7ab739e3a5 = $(`<div id="html_a269cab512f13a0f775f5e7ab739e3a5" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 2158 m<br>Vel. media: 66.8 km/h<br>V85: 81.2 km/h<br>Dev. std: 15.0 km/h<br>Limite: 50 km/h<br>Lungh.: 23 m</div>`)[0];
+                popup_36226578d57f3889431556313fd1b040.setContent(html_a269cab512f13a0f775f5e7ab739e3a5);
+            
+        
+
+        poly_line_a3f3defeec7ae7c9d9a605c01c26b649.bindPopup(popup_36226578d57f3889431556313fd1b040)
+        ;
+
+        
+    
+    
+            var poly_line_bf94772e01c392ce252c18ec2075425f = L.polyline(
+                [[41.92831, 12.4732], [41.92813, 12.47325], [41.92805, 12.47328], [41.92802, 12.47329]],
+                {"bubblingMouseEvents": true, "color": "#ff0000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff0000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_4d5e3121fb623bcf12358c37bdf6c2f6 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_c1e66b67d1f675e4125b9e3fff7fac5c = $(`<div id="html_c1e66b67d1f675e4125b9e3fff7fac5c" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 2181 m<br>Vel. media: 67.2 km/h<br>V85: 82.2 km/h<br>Dev. std: 15.3 km/h<br>Limite: 50 km/h<br>Lungh.: 33 m</div>`)[0];
+                popup_4d5e3121fb623bcf12358c37bdf6c2f6.setContent(html_c1e66b67d1f675e4125b9e3fff7fac5c);
+            
+        
+
+        poly_line_bf94772e01c392ce252c18ec2075425f.bindPopup(popup_4d5e3121fb623bcf12358c37bdf6c2f6)
+        ;
+
+        
+    
+    
+            var poly_line_20e6d42670a688e2f86bdc45cbcc5042 = L.polyline(
+                [[41.92802, 12.47329], [41.92791, 12.47336], [41.92775, 12.47345], [41.92732, 12.47369], [41.92706, 12.47377], [41.92674, 12.47381]],
+                {"bubblingMouseEvents": true, "color": "#ff4400ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff4400ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_b8202bd46a385efe757f676314a9140e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_962131477123fc75250b4961c41bbd00 = $(`<div id="html_962131477123fc75250b4961c41bbd00" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 2215 m<br>Vel. media: 59.6 km/h<br>V85: 72.0 km/h<br>Dev. std: 12.5 km/h<br>Limite: 40 km/h<br>Lungh.: 149 m</div>`)[0];
+                popup_b8202bd46a385efe757f676314a9140e.setContent(html_962131477123fc75250b4961c41bbd00);
+            
+        
+
+        poly_line_20e6d42670a688e2f86bdc45cbcc5042.bindPopup(popup_b8202bd46a385efe757f676314a9140e)
+        ;
+
+        
+    
+    
+            var poly_line_581cbcce9314dde58ca118cb19c2aa9b = L.polyline(
+                [[41.92674, 12.47381], [41.92656, 12.47378], [41.92644, 12.47374], [41.92638, 12.47372], [41.92633, 12.4737]],
+                {"bubblingMouseEvents": true, "color": "#ff8400ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff8400ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_f30c51923c72d35c9a20e352651d87f5 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_fae846816e0e6cbdc7f4e1897d663ff3 = $(`<div id="html_fae846816e0e6cbdc7f4e1897d663ff3" style="width: 100.0%; height: 100.0%;"><b>Corso di Francia</b><br>Progr.: 2364 m<br>Vel. media: 53.6 km/h<br>V85: 64.5 km/h<br>Dev. std: 11.1 km/h<br>Limite: 40 km/h<br>Lungh.: 47 m</div>`)[0];
+                popup_f30c51923c72d35c9a20e352651d87f5.setContent(html_fae846816e0e6cbdc7f4e1897d663ff3);
+            
+        
+
+        poly_line_581cbcce9314dde58ca118cb19c2aa9b.bindPopup(popup_f30c51923c72d35c9a20e352651d87f5)
+        ;
+
+        
+    
+    
+            var poly_line_db9a999ba2e5f0308ee195e0bfb640ad = L.polyline(
+                [[41.92633, 12.4737], [41.9263, 12.47369], [41.92624, 12.47366], [41.92611, 12.47358], [41.92607, 12.47354], [41.92601, 12.47349], [41.92576, 12.47329], [41.92567, 12.47322]],
+                {"bubblingMouseEvents": true, "color": "#ff9d00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff9d00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_dfdc294aa808450d3ed5598f561b76d5 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2c58385baa903687018eeb9aa9c2e2e0 = $(`<div id="html_2c58385baa903687018eeb9aa9c2e2e0" style="width: 100.0%; height: 100.0%;"><b>Viale Maresciallo Pilsudski</b><br>Progr.: 2411 m<br>Vel. media: 37.8 km/h<br>V85: 61.5 km/h<br>Dev. std: 21.6 km/h<br>Limite: 40 km/h<br>Lungh.: 84 m</div>`)[0];
+                popup_dfdc294aa808450d3ed5598f561b76d5.setContent(html_2c58385baa903687018eeb9aa9c2e2e0);
+            
+        
+
+        poly_line_db9a999ba2e5f0308ee195e0bfb640ad.bindPopup(popup_dfdc294aa808450d3ed5598f561b76d5)
+        ;
+
+        
+    
+    
+            var poly_line_48f468a5aafdd39adc65603bd226aa16 = L.polyline(
+                [[41.92567, 12.47322], [41.92549, 12.47307]],
+                {"bubblingMouseEvents": true, "color": "#ff7b00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ff7b00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_826b041d1b99c7c95d87f80080c65301 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_27bd9cf4acc50f984d420e43e9a82904 = $(`<div id="html_27bd9cf4acc50f984d420e43e9a82904" style="width: 100.0%; height: 100.0%;"><b>Viale Maresciallo Pilsudski</b><br>Progr.: 2495 m<br>Vel. media: 47.6 km/h<br>V85: 65.5 km/h<br>Dev. std: 17.3 km/h<br>Limite: 40 km/h<br>Lungh.: 24 m</div>`)[0];
+                popup_826b041d1b99c7c95d87f80080c65301.setContent(html_27bd9cf4acc50f984d420e43e9a82904);
+            
+        
+
+        poly_line_48f468a5aafdd39adc65603bd226aa16.bindPopup(popup_826b041d1b99c7c95d87f80080c65301)
+        ;
+
+        
+    
+    
+            var poly_line_6e32d4bdb20a3a0f187614498b0e3f3d = L.polyline(
+                [[41.92549, 12.47307], [41.92464, 12.47233], [41.92457, 12.47227]],
+                {"bubblingMouseEvents": true, "color": "#ffba00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#ffba00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+        var popup_eb52314c57275310a7867da9145ea36b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_bad04547e0762e102a98403f207575fc = $(`<div id="html_bad04547e0762e102a98403f207575fc" style="width: 100.0%; height: 100.0%;"><b>Viale Maresciallo Pilsudski</b><br>Progr.: 2519 m<br>Vel. media: 46.5 km/h<br>V85: 58.1 km/h<br>Dev. std: 13.2 km/h<br>Limite: 40 km/h<br>Lungh.: 122 m</div>`)[0];
+                popup_eb52314c57275310a7867da9145ea36b.setContent(html_bad04547e0762e102a98403f207575fc);
+            
+        
+
+        poly_line_6e32d4bdb20a3a0f187614498b0e3f3d.bindPopup(popup_eb52314c57275310a7867da9145ea36b)
+        ;
+
+        
+    
+    
+    var color_map_bbc225c64fef1a1187c693da8f131725 = {};
+
+    
+    color_map_bbc225c64fef1a1187c693da8f131725.color = d3.scale.threshold()
+              .domain([20.0, 20.120240480961925, 20.240480961923847, 20.360721442885772, 20.480961923847694, 20.60120240480962, 20.721442885771545, 20.841683366733466, 20.96192384769539, 21.082164328657313, 21.20240480961924, 21.322645290581164, 21.442885771543086, 21.56312625250501, 21.683366733466933, 21.803607214428858, 21.92384769539078, 22.044088176352705, 22.16432865731463, 22.284569138276552, 22.404809619238478, 22.5250501002004, 22.645290581162325, 22.76553106212425, 22.88577154308617, 23.006012024048097, 23.12625250501002, 23.246492985971944, 23.366733466933866, 23.48697394789579, 23.607214428857716, 23.727454909819638, 23.847695390781563, 23.967935871743485, 24.08817635270541, 24.208416833667336, 24.328657314629258, 24.448897795591183, 24.569138276553105, 24.68937875751503, 24.809619238476955, 24.929859719438877, 25.050100200400802, 25.170340681362724, 25.29058116232465, 25.410821643286575, 25.531062124248496, 25.65130260521042, 25.771543086172343, 25.89178356713427, 26.012024048096194, 26.132264529058116, 26.25250501002004, 26.372745490981963, 26.492985971943888, 26.613226452905813, 26.733466933867735, 26.85370741482966, 26.973947895791582, 27.094188376753507, 27.214428857715433, 27.334669338677354, 27.45490981963928, 27.5751503006012, 27.695390781563127, 27.815631262525052, 27.935871743486974, 28.056112224448896, 28.17635270541082, 28.296593186372746, 28.41683366733467, 28.537074148296593, 28.657314629258515, 28.77755511022044, 28.897795591182366, 29.01803607214429, 29.138276553106213, 29.258517034068134, 29.37875751503006, 29.498997995991985, 29.61923847695391, 29.739478957915832, 29.859719438877754, 29.97995991983968, 30.100200400801604, 30.22044088176353, 30.34068136272545, 30.460921843687373, 30.5811623246493, 30.701402805611224, 30.821643286573146, 30.94188376753507, 31.062124248496993, 31.182364729458918, 31.302605210420843, 31.422845691382765, 31.54308617234469, 31.663326653306612, 31.783567134268537, 31.903807615230463, 32.02404809619239, 32.144288577154306, 32.26452905811623, 32.38476953907816, 32.50501002004008, 32.625250501002, 32.745490981963925, 32.86573146292585, 32.985971943887776, 33.1062124248497, 33.22645290581163, 33.346693386773545, 33.46693386773547, 33.587174348697395, 33.70741482965932, 33.82765531062124, 33.947895791583164, 34.06813627254509, 34.188376753507015, 34.30861723446894, 34.428857715430865, 34.549098196392784, 34.66933867735471, 34.789579158316634, 34.90981963927856, 35.03006012024048, 35.1503006012024, 35.27054108216433, 35.390781563126254, 35.51102204408818, 35.631262525050104, 35.75150300601202, 35.87174348697395, 35.99198396793587, 36.11222444889779, 36.23246492985972, 36.35270541082164, 36.47294589178357, 36.59318637274549, 36.71342685370742, 36.83366733466934, 36.95390781563126, 37.07414829659319, 37.19438877755511, 37.31462925851703, 37.434869739478955, 37.55511022044088, 37.675350701402806, 37.79559118236473, 37.91583166332666, 38.03607214428858, 38.1563126252505, 38.276553106212425, 38.39679358717434, 38.51703406813627, 38.637274549098194, 38.75751503006012, 38.877755511022045, 38.99799599198397, 39.118236472945895, 39.23847695390782, 39.35871743486974, 39.478957915831664, 39.59919839679358, 39.71943887775551, 39.83967935871743, 39.95991983967936, 40.08016032064128, 40.20040080160321, 40.320641282565134, 40.44088176352706, 40.56112224448898, 40.6813627254509, 40.80160320641282, 40.921843687374746, 41.04208416833667, 41.1623246492986, 41.28256513026052, 41.40280561122245, 41.52304609218437, 41.64328657314629, 41.763527054108216, 41.88376753507014, 42.00400801603206, 42.124248496993985, 42.24448897795591, 42.364729458917836, 42.48496993987976, 42.605210420841686, 42.72545090180361, 42.84569138276553, 42.965931863727455, 43.08617234468938, 43.2064128256513, 43.326653306613224, 43.44689378757515, 43.567134268537075, 43.687374749499, 43.807615230460925, 43.92785571142285, 44.04809619238477, 44.168336673346694, 44.28857715430861, 44.40881763527054, 44.52905811623246, 44.64929859719439, 44.76953907815631, 44.88977955911824, 45.010020040080164, 45.13026052104209, 45.25050100200401, 45.37074148296593, 45.49098196392785, 45.611222444889776, 45.7314629258517, 45.85170340681363, 45.97194388777555, 46.09218436873748, 46.2124248496994, 46.33266533066132, 46.452905811623246, 46.57314629258517, 46.69338677354709, 46.813627254509015, 46.93386773547094, 47.054108216432866, 47.17434869739479, 47.294589178356716, 47.41482965931864, 47.53507014028056, 47.655310621242485, 47.77555110220441, 47.89579158316633, 48.016032064128254, 48.13627254509018, 48.256513026052104, 48.37675350701403, 48.496993987975955, 48.61723446893788, 48.7374749498998, 48.857715430861724, 48.97795591182364, 49.09819639278557, 49.21843687374749, 49.33867735470942, 49.45891783567134, 49.57915831663327, 49.699398797595194, 49.81963927855712, 49.93987975951904, 50.06012024048096, 50.18036072144288, 50.300601202404806, 50.42084168336673, 50.54108216432866, 50.66132264529058, 50.78156312625251, 50.90180360721443, 51.02204408817636, 51.142284569138276, 51.2625250501002, 51.38276553106212, 51.503006012024045, 51.62324649298597, 51.743486973947896, 51.86372745490982, 51.983967935871746, 52.104208416833664, 52.22444889779559, 52.344689378757515, 52.46492985971944, 52.585170340681366, 52.705410821643284, 52.82565130260521, 52.945891783567134, 53.06613226452906, 53.186372745490985, 53.3066132264529, 53.42685370741483, 53.547094188376754, 53.66733466933868, 53.787575150300604, 53.90781563126252, 54.02805611222445, 54.14829659318637, 54.2685370741483, 54.388777555110224, 54.50901803607214, 54.62925851703407, 54.74949899799599, 54.86973947895792, 54.98997995991984, 55.11022044088176, 55.23046092184369, 55.35070140280561, 55.47094188376754, 55.591182364729455, 55.71142284569138, 55.831663326653306, 55.95190380761523, 56.07214428857716, 56.192384769539075, 56.312625250501, 56.432865731462925, 56.55310621242485, 56.673346693386776, 56.793587174348694, 56.91382765531062, 57.034068136272545, 57.15430861723447, 57.274549098196395, 57.394789579158314, 57.51503006012024, 57.635270541082164, 57.75551102204409, 57.875751503006015, 57.99599198396793, 58.11623246492986, 58.236472945891784, 58.35671342685371, 58.476953907815634, 58.59719438877755, 58.71743486973948, 58.8376753507014, 58.95791583166333, 59.078156312625254, 59.19839679358717, 59.3186372745491, 59.43887775551102, 59.55911823647295, 59.67935871743487, 59.79959919839679, 59.91983967935872, 60.04008016032064, 60.16032064128257, 60.28056112224449, 60.40080160320641, 60.521042084168336, 60.64128256513026, 60.76152304609219, 60.88176352705411, 61.00200400801603, 61.122244488977955, 61.24248496993988, 61.362725450901806, 61.482965931863724, 61.60320641282565, 61.723446893787575, 61.8436873747495, 61.963927855711425, 62.08416833667334, 62.20440881763527, 62.324649298597194, 62.44488977955912, 62.565130260521045, 62.68537074148296, 62.80561122244489, 62.92585170340681, 63.04609218436874, 63.166332665330664, 63.28657314629258, 63.40681362725451, 63.52705410821643, 63.64729458917836, 63.76753507014028, 63.8877755511022, 64.00801603206412, 64.12825651302606, 64.24849699398797, 64.36873747494991, 64.48897795591182, 64.60921843687375, 64.72945891783567, 64.8496993987976, 64.96993987975952, 65.09018036072143, 65.21042084168337, 65.33066132264528, 65.45090180360722, 65.57114228456913, 65.69138276553106, 65.81162324649299, 65.93186372745491, 66.05210420841684, 66.17234468937876, 66.29258517034069, 66.4128256513026, 66.53306613226454, 66.65330661322645, 66.77354709418837, 66.8937875751503, 67.01402805611222, 67.13426853707415, 67.25450901803607, 67.374749498998, 67.49498997995991, 67.61523046092185, 67.73547094188376, 67.8557114228457, 67.97595190380761, 68.09619238476954, 68.21643286573146, 68.33667334669339, 68.45691382765531, 68.57715430861722, 68.69739478957916, 68.81763527054107, 68.93787575150301, 69.05811623246493, 69.17835671342685, 69.29859719438878, 69.4188376753507, 69.53907815631263, 69.65931863727455, 69.77955911823648, 69.89979959919839, 70.02004008016033, 70.14028056112224, 70.26052104208418, 70.38076152304609, 70.50100200400801, 70.62124248496994, 70.74148296593187, 70.86172344689379, 70.9819639278557, 71.10220440881764, 71.22244488977955, 71.34268537074149, 71.4629258517034, 71.58316633266533, 71.70340681362725, 71.82364729458918, 71.9438877755511, 72.06412825651302, 72.18436873747495, 72.30460921843687, 72.4248496993988, 72.54509018036072, 72.66533066132264, 72.78557114228457, 72.90581162324649, 73.02605210420842, 73.14629258517034, 73.26653306613227, 73.38677354709418, 73.50701402805612, 73.62725450901803, 73.74749498997997, 73.86773547094188, 73.9879759519038, 74.10821643286573, 74.22845691382766, 74.34869739478958, 74.4689378757515, 74.58917835671343, 74.70941883767534, 74.82965931863728, 74.9498997995992, 75.07014028056112, 75.19038076152304, 75.31062124248497, 75.4308617234469, 75.55110220440882, 75.67134268537075, 75.79158316633266, 75.9118236472946, 76.03206412825651, 76.15230460921845, 76.27254509018036, 76.39278557114228, 76.51302605210421, 76.63326653306613, 76.75350701402806, 76.87374749498997, 76.99398797595191, 77.11422845691382, 77.23446893787576, 77.35470941883767, 77.4749498997996, 77.59519038076152, 77.71543086172345, 77.83567134268537, 77.95591182364728, 78.07615230460922, 78.19639278557113, 78.31663326653307, 78.43687374749499, 78.55711422845691, 78.67735470941884, 78.79759519038076, 78.91783567134269, 79.03807615230461, 79.15831663326654, 79.27855711422845, 79.39879759519039, 79.5190380761523, 79.63927855711424, 79.75951903807615, 79.87975951903807, 80.0])
+              .range(['#008000ff', '#018100ff', '#028100ff', '#038200ff', '#048200ff', '#058300ff', '#068300ff', '#078400ff', '#088400ff', '#098500ff', '#0a8500ff', '#0b8600ff', '#0c8600ff', '#0d8700ff', '#0e8700ff', '#0f8800ff', '#108800ff', '#118900ff', '#128900ff', '#138a00ff', '#148a00ff', '#158b00ff', '#168b00ff', '#178c00ff', '#188c00ff', '#198d00ff', '#1a8d00ff', '#1b8e00ff', '#1c8e00ff', '#1d8f00ff', '#1e8f00ff', '#1f9000ff', '#209000ff', '#219100ff', '#229100ff', '#239200ff', '#249200ff', '#259300ff', '#269300ff', '#289400ff', '#299400ff', '#2a9500ff', '#2b9500ff', '#2c9600ff', '#2d9600ff', '#2e9700ff', '#2f9800ff', '#309800ff', '#319900ff', '#329900ff', '#339a00ff', '#349a00ff', '#359b00ff', '#369b00ff', '#379c00ff', '#389c00ff', '#399d00ff', '#3a9d00ff', '#3b9e00ff', '#3c9e00ff', '#3d9f00ff', '#3e9f00ff', '#3fa000ff', '#40a000ff', '#41a100ff', '#42a100ff', '#43a200ff', '#44a200ff', '#45a300ff', '#46a300ff', '#47a400ff', '#48a400ff', '#49a500ff', '#4aa500ff', '#4ba600ff', '#4ca600ff', '#4da700ff', '#4fa700ff', '#50a800ff', '#51a800ff', '#52a900ff', '#53a900ff', '#54aa00ff', '#55aa00ff', '#56ab00ff', '#57ab00ff', '#58ac00ff', '#59ac00ff', '#5aad00ff', '#5bad00ff', '#5cae00ff', '#5daf00ff', '#5eaf00ff', '#5fb000ff', '#60b000ff', '#61b100ff', '#62b100ff', '#63b200ff', '#64b200ff', '#65b300ff', '#66b300ff', '#67b400ff', '#68b400ff', '#69b500ff', '#6ab500ff', '#6bb600ff', '#6cb600ff', '#6db700ff', '#6eb700ff', '#6fb800ff', '#70b800ff', '#71b900ff', '#72b900ff', '#73ba00ff', '#74ba00ff', '#75bb00ff', '#77bb00ff', '#78bc00ff', '#79bc00ff', '#7abd00ff', '#7bbd00ff', '#7cbe00ff', '#7dbe00ff', '#7ebf00ff', '#7fbf00ff', '#80c000ff', '#81c000ff', '#82c100ff', '#83c100ff', '#84c200ff', '#85c200ff', '#86c300ff', '#87c300ff', '#88c400ff', '#89c400ff', '#8ac500ff', '#8bc500ff', '#8cc600ff', '#8dc700ff', '#8ec700ff', '#8fc800ff', '#90c800ff', '#91c900ff', '#92c900ff', '#93ca00ff', '#94ca00ff', '#95cb00ff', '#96cb00ff', '#97cc00ff', '#98cc00ff', '#99cd00ff', '#9acd00ff', '#9bce00ff', '#9cce00ff', '#9ecf00ff', '#9fcf00ff', '#a0d000ff', '#a1d000ff', '#a2d100ff', '#a3d100ff', '#a4d200ff', '#a5d200ff', '#a6d300ff', '#a7d300ff', '#a8d400ff', '#a9d400ff', '#aad500ff', '#abd500ff', '#acd600ff', '#add600ff', '#aed700ff', '#afd700ff', '#b0d800ff', '#b1d800ff', '#b2d900ff', '#b3d900ff', '#b4da00ff', '#b5da00ff', '#b6db00ff', '#b7db00ff', '#b8dc00ff', '#b9dc00ff', '#badd00ff', '#bbde00ff', '#bcde00ff', '#bddf00ff', '#bedf00ff', '#bfe000ff', '#c0e000ff', '#c1e100ff', '#c2e100ff', '#c3e200ff', '#c5e200ff', '#c6e300ff', '#c7e300ff', '#c8e400ff', '#c9e400ff', '#cae500ff', '#cbe500ff', '#cce600ff', '#cde600ff', '#cee700ff', '#cfe700ff', '#d0e800ff', '#d1e800ff', '#d2e900ff', '#d3e900ff', '#d4ea00ff', '#d5ea00ff', '#d6eb00ff', '#d7eb00ff', '#d8ec00ff', '#d9ec00ff', '#daed00ff', '#dbed00ff', '#dcee00ff', '#ddee00ff', '#deef00ff', '#dfef00ff', '#e0f000ff', '#e1f000ff', '#e2f100ff', '#e3f100ff', '#e4f200ff', '#e5f200ff', '#e6f300ff', '#e7f300ff', '#e8f400ff', '#e9f500ff', '#eaf500ff', '#ebf600ff', '#edf600ff', '#eef700ff', '#eff700ff', '#f0f800ff', '#f1f800ff', '#f2f900ff', '#f3f900ff', '#f4fa00ff', '#f5fa00ff', '#f6fb00ff', '#f7fb00ff', '#f8fc00ff', '#f9fc00ff', '#fafd00ff', '#fbfd00ff', '#fcfe00ff', '#fdfe00ff', '#feff00ff', '#ffff00ff', '#ffff00ff', '#fffe00ff', '#fffd00ff', '#fffc00ff', '#fffb00ff', '#fffa00ff', '#fff900ff', '#fff800ff', '#fff700ff', '#fff600ff', '#fff500ff', '#fff400ff', '#fff300ff', '#fff200ff', '#fff100ff', '#fff000ff', '#ffef00ff', '#ffee00ff', '#ffed00ff', '#ffeb00ff', '#ffea00ff', '#ffe900ff', '#ffe800ff', '#ffe700ff', '#ffe600ff', '#ffe500ff', '#ffe400ff', '#ffe300ff', '#ffe200ff', '#ffe100ff', '#ffe000ff', '#ffdf00ff', '#ffde00ff', '#ffdd00ff', '#ffdc00ff', '#ffdb00ff', '#ffda00ff', '#ffd900ff', '#ffd800ff', '#ffd700ff', '#ffd600ff', '#ffd500ff', '#ffd400ff', '#ffd300ff', '#ffd200ff', '#ffd100ff', '#ffd000ff', '#ffcf00ff', '#ffce00ff', '#ffcd00ff', '#ffcc00ff', '#ffcb00ff', '#ffca00ff', '#ffc900ff', '#ffc800ff', '#ffc700ff', '#ffc600ff', '#ffc500ff', '#ffc300ff', '#ffc200ff', '#ffc100ff', '#ffc000ff', '#ffbf00ff', '#ffbe00ff', '#ffbd00ff', '#ffbc00ff', '#ffbb00ff', '#ffba00ff', '#ffb900ff', '#ffb800ff', '#ffb700ff', '#ffb600ff', '#ffb500ff', '#ffb400ff', '#ffb300ff', '#ffb200ff', '#ffb100ff', '#ffb000ff', '#ffaf00ff', '#ffae00ff', '#ffad00ff', '#ffac00ff', '#ffab00ff', '#ffaa00ff', '#ffa900ff', '#ffa800ff', '#ffa700ff', '#ffa600ff', '#ffa500ff', '#ffa400ff', '#ffa300ff', '#ffa200ff', '#ffa100ff', '#ffa000ff', '#ff9f00ff', '#ff9e00ff', '#ff9c00ff', '#ff9b00ff', '#ff9a00ff', '#ff9900ff', '#ff9800ff', '#ff9700ff', '#ff9600ff', '#ff9500ff', '#ff9400ff', '#ff9300ff', '#ff9200ff', '#ff9100ff', '#ff9000ff', '#ff8f00ff', '#ff8e00ff', '#ff8d00ff', '#ff8c00ff', '#ff8b00ff', '#ff8a00ff', '#ff8900ff', '#ff8800ff', '#ff8700ff', '#ff8600ff', '#ff8500ff', '#ff8400ff', '#ff8300ff', '#ff8200ff', '#ff8100ff', '#ff8000ff', '#ff7f00ff', '#ff7e00ff', '#ff7d00ff', '#ff7c00ff', '#ff7b00ff', '#ff7a00ff', '#ff7900ff', '#ff7800ff', '#ff7700ff', '#ff7500ff', '#ff7400ff', '#ff7300ff', '#ff7200ff', '#ff7100ff', '#ff7000ff', '#ff6f00ff', '#ff6e00ff', '#ff6d00ff', '#ff6c00ff', '#ff6b00ff', '#ff6a00ff', '#ff6900ff', '#ff6800ff', '#ff6700ff', '#ff6600ff', '#ff6500ff', '#ff6400ff', '#ff6300ff', '#ff6200ff', '#ff6100ff', '#ff6000ff', '#ff5f00ff', '#ff5e00ff', '#ff5d00ff', '#ff5c00ff', '#ff5b00ff', '#ff5a00ff', '#ff5900ff', '#ff5800ff', '#ff5700ff', '#ff5600ff', '#ff5500ff', '#ff5400ff', '#ff5300ff', '#ff5200ff', '#ff5100ff', '#ff5000ff', '#ff4f00ff', '#ff4d00ff', '#ff4c00ff', '#ff4b00ff', '#ff4a00ff', '#ff4900ff', '#ff4800ff', '#ff4700ff', '#ff4600ff', '#ff4500ff', '#ff4400ff', '#ff4300ff', '#ff4200ff', '#ff4100ff', '#ff4000ff', '#ff3f00ff', '#ff3e00ff', '#ff3d00ff', '#ff3c00ff', '#ff3b00ff', '#ff3a00ff', '#ff3900ff', '#ff3800ff', '#ff3700ff', '#ff3600ff', '#ff3500ff', '#ff3400ff', '#ff3300ff', '#ff3200ff', '#ff3100ff', '#ff3000ff', '#ff2f00ff', '#ff2e00ff', '#ff2d00ff', '#ff2c00ff', '#ff2b00ff', '#ff2a00ff', '#ff2900ff', '#ff2800ff', '#ff2600ff', '#ff2500ff', '#ff2400ff', '#ff2300ff', '#ff2200ff', '#ff2100ff', '#ff2000ff', '#ff1f00ff', '#ff1e00ff', '#ff1d00ff', '#ff1c00ff', '#ff1b00ff', '#ff1a00ff', '#ff1900ff', '#ff1800ff', '#ff1700ff', '#ff1600ff', '#ff1500ff', '#ff1400ff', '#ff1300ff', '#ff1200ff', '#ff1100ff', '#ff1000ff', '#ff0f00ff', '#ff0e00ff', '#ff0d00ff', '#ff0c00ff', '#ff0b00ff', '#ff0a00ff', '#ff0900ff', '#ff0800ff', '#ff0700ff', '#ff0600ff', '#ff0500ff', '#ff0400ff', '#ff0300ff', '#ff0200ff', '#ff0100ff', '#ff0000ff']);
+    
+
+    color_map_bbc225c64fef1a1187c693da8f131725.x = d3.scale.linear()
+              .domain([20.0, 80.0])
+              .range([0, 450 - 50]);
+
+    color_map_bbc225c64fef1a1187c693da8f131725.legend = L.control({position: 'topright'});
+    color_map_bbc225c64fef1a1187c693da8f131725.legend.onAdd = function (map) {var div = L.DomUtil.create('div', 'legend'); return div};
+    color_map_bbc225c64fef1a1187c693da8f131725.legend.addTo(map_eb60e68b667494088c11f298cd84d1fe);
+
+    color_map_bbc225c64fef1a1187c693da8f131725.xAxis = d3.svg.axis()
+        .scale(color_map_bbc225c64fef1a1187c693da8f131725.x)
+        .orient("top")
+        .tickSize(1)
+        .tickValues([20.0, 50.0, 80.0]);
+
+    color_map_bbc225c64fef1a1187c693da8f131725.svg = d3.select(".legend.leaflet-control").append("svg")
+        .attr("id", 'legend')
+        .attr("width", 450)
+        .attr("height", 40);
+
+    color_map_bbc225c64fef1a1187c693da8f131725.g = color_map_bbc225c64fef1a1187c693da8f131725.svg.append("g")
+        .attr("class", "key")
+        .attr("fill", "black")
+        .attr("transform", "translate(25,16)");
+
+    color_map_bbc225c64fef1a1187c693da8f131725.g.selectAll("rect")
+        .data(color_map_bbc225c64fef1a1187c693da8f131725.color.range().map(function(d, i) {
+          return {
+            x0: i ? color_map_bbc225c64fef1a1187c693da8f131725.x(color_map_bbc225c64fef1a1187c693da8f131725.color.domain()[i - 1]) : color_map_bbc225c64fef1a1187c693da8f131725.x.range()[0],
+            x1: i < color_map_bbc225c64fef1a1187c693da8f131725.color.domain().length ? color_map_bbc225c64fef1a1187c693da8f131725.x(color_map_bbc225c64fef1a1187c693da8f131725.color.domain()[i]) : color_map_bbc225c64fef1a1187c693da8f131725.x.range()[1],
+            z: d
+          };
+        }))
+      .enter().append("rect")
+        .attr("height", 40 - 30)
+        .attr("x", function(d) { return d.x0; })
+        .attr("width", function(d) { return d.x1 - d.x0; })
+        .style("fill", function(d) { return d.z; });
+
+    color_map_bbc225c64fef1a1187c693da8f131725.g.call(color_map_bbc225c64fef1a1187c693da8f131725.xAxis).append("text")
+        .attr("class", "caption")
+        .attr("y", 21)
+        .attr("fill", "black")
+        .text("V85 Notturno \u2014 Feriali Dir. Centro (22\u201305) (km/h)");
+    
+            var marker_99b08c5ad00ef48f7d3f666dfca8d63d = L.marker(
+                [41.94753, 12.46972],
+                {
+}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+            var div_icon_628aebafa913e86f3a3d091ea0091609 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e0 m\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_99b08c5ad00ef48f7d3f666dfca8d63d.setIcon(div_icon_628aebafa913e86f3a3d091ea0091609);
+            
+    
+            var marker_adc1fba8af9500cb16ef5e2756a48147 = L.marker(
+                [41.943186073652676, 12.469893703967076],
+                {
+}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+            var div_icon_8dca0ac85bf0392fec5792ef80fd183d = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e500 m\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_adc1fba8af9500cb16ef5e2756a48147.setIcon(div_icon_8dca0ac85bf0392fec5792ef80fd183d);
+            
+    
+            var marker_f3d4bcbf4d734ed89acd37b386cc09a1 = L.marker(
+                [41.93881909008189, 12.471174294813466],
+                {
+}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+            var div_icon_3f3b1eaa45b7d8a1b0f1d0651e3f0f98 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e1.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_f3d4bcbf4d734ed89acd37b386cc09a1.setIcon(div_icon_3f3b1eaa45b7d8a1b0f1d0651e3f0f98);
+            
+    
+            var marker_14cf4b1377a7217d4fc0e75b021cfdbf = L.marker(
+                [41.9343537628866, 12.471893453608248],
+                {
+}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+            var div_icon_a66ddfffeca35a5b21af19a42cd11ad8 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e1.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_14cf4b1377a7217d4fc0e75b021cfdbf.setIcon(div_icon_a66ddfffeca35a5b21af19a42cd11ad8);
+            
+    
+            var marker_1aeaca0347585a3ab81e827ed6a3cda1 = L.marker(
+                [41.92989066549912, 12.472712933450088],
+                {
+}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+            var div_icon_8e3fbb40e09cce3529465708db79b712 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e2.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_1aeaca0347585a3ab81e827ed6a3cda1.setIcon(div_icon_8e3fbb40e09cce3529465708db79b712);
+            
+    
+            var marker_9b8579face63265be76a934fdbe218c8 = L.marker(
+                [41.92563120754717, 12.473187672955975],
+                {
+}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+            var div_icon_1312a62350079f0a571967b74bdd0f54 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e2.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_9b8579face63265be76a934fdbe218c8.setIcon(div_icon_1312a62350079f0a571967b74bdd0f54);
+            
+    
+            var marker_570388dc481acdf0b41160f1adc1f26e = L.marker(
+                [41.94753, 12.46972],
+                {
+}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+            var icon_68feb52304c040d8d5cbec1881fbf3d5 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4f5e21dc0f5181bad372f93d78e42bf8 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_5e958e5ea685d1f251512b679d2a78ab = $(`<div id="html_5e958e5ea685d1f251512b679d2a78ab" style="width: 100.0%; height: 100.0%;">Inizio (0 m)</div>`)[0];
+                popup_4f5e21dc0f5181bad372f93d78e42bf8.setContent(html_5e958e5ea685d1f251512b679d2a78ab);
+            
+        
+
+        marker_570388dc481acdf0b41160f1adc1f26e.bindPopup(popup_4f5e21dc0f5181bad372f93d78e42bf8)
+        ;
+
+        
+    
+    
+                marker_570388dc481acdf0b41160f1adc1f26e.setIcon(icon_68feb52304c040d8d5cbec1881fbf3d5);
+            
+    
+            var marker_dae1804e52e0ca3845fbaaa9dcc0abe8 = L.marker(
+                [41.92457, 12.47227],
+                {
+}
+            ).addTo(map_eb60e68b667494088c11f298cd84d1fe);
+        
+    
+            var icon_3226059eb086a8346f3a5fd129bf92d5 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_b7d71c1ba01419f6892ee4ae8ee6449d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_9f101cbfda88a40e44935024aca7a457 = $(`<div id="html_9f101cbfda88a40e44935024aca7a457" style="width: 100.0%; height: 100.0%;">Fine (2744 m)</div>`)[0];
+                popup_b7d71c1ba01419f6892ee4ae8ee6449d.setContent(html_9f101cbfda88a40e44935024aca7a457);
+            
+        
+
+        marker_dae1804e52e0ca3845fbaaa9dcc0abe8.bindPopup(popup_b7d71c1ba01419f6892ee4ae8ee6449d)
+        ;
+
+        
+    
+    
+                marker_dae1804e52e0ca3845fbaaa9dcc0abe8.setIcon(icon_3226059eb086a8346f3a5fd129bf92d5);
+            
+</script>
+</html>

@@ -740,21 +740,73 @@ def _seg_geodataframe(segments, day_type, direction, value_col, agg="mean"):
     return gpd.GeoDataFrame(grouped, geometry="geometry", crs="EPSG:4326")
 
 
-def make_folium_map(gdf, value_col, title, vmin=None, vmax=None,
-                     reverse_cmap=False):
-    """Folium map with THICK coloured segments (weight=10)."""
+def _add_folium_progressive(m, gdf, interval_m=500):
+    """Add progressive distance markers + start/end flags to a Folium map."""
+    total_dist = gdf["cum_dist_start"].max() + gdf["seg_distance"].max()
+    if interval_m is None:
+        interval_m = 500 if total_dist > 1500 else 250
+    for target_m in range(0, int(total_dist) + interval_m, interval_m):
+        candidates = gdf.loc[(gdf["cum_dist_start"] <= target_m)
+                              & (gdf["cum_dist_start"] + gdf["seg_distance"] >= target_m)]
+        if candidates.empty:
+            continue
+        row = candidates.iloc[0]
+        d = row["seg_distance"]
+        frac = (target_m - row["cum_dist_start"]) / d if d > 0 else 0.0
+        frac = max(0.0, min(1.0, frac))
+        pt = row["geometry"].interpolate(frac, normalized=True)
+        label = f"{target_m} m" if target_m < 1000 else f"{target_m/1000:.1f} km"
+        folium.Marker(
+            [pt.y, pt.x],
+            icon=folium.DivIcon(
+                html=(f'<div style="font-size:10px;font-weight:bold;background:white;'
+                      f'padding:2px 5px;border:1px solid #1a237e;border-radius:3px;'
+                      f'white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);'
+                      f'color:#1a237e;">{label}</div>'),
+                icon_size=(70, 22), icon_anchor=(35, 11)),
+        ).add_to(m)
+
+    sc = list(gdf.iloc[0]["geometry"].coords)[0]
+    ec = list(gdf.iloc[-1]["geometry"].coords)[-1]
+    folium.Marker([sc[1], sc[0]], icon=folium.Icon(color="green"),
+                  popup="Inizio (0 m)").add_to(m)
+    folium.Marker([ec[1], ec[0]], icon=folium.Icon(color="red"),
+                  popup=f"Fine ({total_dist:.0f} m)").add_to(m)
+
+
+def _add_folium_stats(m, gdf, value_col, title):
+    """Add a floating stats box (title + min/mean/max) to a Folium map."""
+    vals = gdf[value_col]
+    metric = "V85" if "p85" in value_col else ("Dev. Std." if "std" in value_col else "Vel. media")
+    html = (
+        f'<div style="position:fixed;bottom:30px;left:10px;z-index:9999;'
+        f'background:white;padding:10px 14px;border-radius:6px;'
+        f'box-shadow:0 2px 8px rgba(0,0,0,.3);font-family:sans-serif;'
+        f'font-size:12px;max-width:320px;line-height:1.5;">'
+        f'<b style="color:#1a237e;">{title}</b><br>'
+        f'{metric}: media={vals.mean():.1f}, max={vals.max():.1f}, '
+        f'min={vals.min():.1f} km/h<br>'
+        f'<span style="color:#c00;">&#9644;</span> Limite {SPEED_LIMIT} km/h'
+        f'</div>'
+    )
+    m.get_root().html.add_child(folium.Element(html))
+
+
+def make_folium_map(gdf, value_col, title, vmin=20, vmax=80,
+                     reverse_cmap=False, add_progressive=True,
+                     add_stats=True, direction_label=None):
+    """Folium map matching static map format: segments, legend, markers, stats."""
     clat = gdf.geometry.centroid.y.mean()
     clon = gdf.geometry.centroid.x.mean()
     m = folium.Map(location=[clat, clon], zoom_start=15,
                    tiles="CartoDB positron")
-    if vmin is None:
-        vmin = gdf[value_col].min()
-    if vmax is None:
-        vmax = gdf[value_col].max()
+
     colors = (["green", "yellow", "red"] if not reverse_cmap
               else ["red", "yellow", "green"])
     cmap = cm.LinearColormap(colors=colors, vmin=vmin, vmax=vmax,
                               caption=f"{title} (km/h)")
+
+    # Draw coloured segments with popups
     for _, row in gdf.iterrows():
         coords = [[c[1], c[0]] for c in row.geometry.coords]
         popup_html = (
@@ -770,140 +822,197 @@ def make_folium_map(gdf, value_col, title, vmin=None, vmax=None,
                         opacity=0.9,
                         popup=folium.Popup(popup_html, max_width=280)).add_to(m)
     cmap.add_to(m)
+
+    if add_progressive:
+        _add_folium_progressive(m, gdf)
+    if add_stats:
+        _add_folium_stats(m, gdf, value_col, title)
     return m
 
 
-def create_progressive_map(segments, day_type, direction, interval_m=250):
-    """Folium map with progressive distance markers every interval_m."""
-    sub = segments[(segments["day_type"] == day_type)
-                   & (segments["direction"] == direction)]
-    si = sub.drop_duplicates("seg_idx").sort_values("seg_idx")
-    clat = si.geometry.apply(lambda g: g.centroid.y).mean()
-    clon = si.geometry.apply(lambda g: g.centroid.x).mean()
-    m = folium.Map(location=[clat, clon], zoom_start=15,
+def make_folium_map_combined(gdf_centro, gdf_gra, value_col, title,
+                               vmin=20, vmax=80, reverse_cmap=False):
+    """Folium map with BOTH directions on one map, each in a layer group."""
+    all_lats = list(gdf_centro.geometry.centroid.y) + list(gdf_gra.geometry.centroid.y)
+    all_lons = list(gdf_centro.geometry.centroid.x) + list(gdf_gra.geometry.centroid.x)
+    clat, clon = np.mean(all_lats), np.mean(all_lons)
+    m = folium.Map(location=[clat, clon], zoom_start=14,
                    tiles="CartoDB positron")
-    for _, row in si.iterrows():
-        coords = [[c[1], c[0]] for c in row["geometry"].coords]
-        folium.PolyLine(coords, weight=6, color="#1a237e", opacity=.8).add_to(m)
-    total_dist = si["cum_dist_end"].max()
-    for td in range(0, int(total_dist) + interval_m, interval_m):
-        if td > total_dist:
-            break
-        lat, lon = find_point_at_distance(si, td)
-        label = f"{td} m" if td < 1000 else f"{td/1000:.2f} km"
-        folium.Marker(
-            [lat, lon],
-            icon=folium.DivIcon(
-                html=(f'<div style="font-size:10px;font-weight:bold;background:white;'
-                      f'padding:2px 5px;border:1px solid #333;border-radius:3px;'
-                      f'white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);">'
-                      f'{label}</div>'),
-                icon_size=(70, 22), icon_anchor=(35, 11)),
-        ).add_to(m)
-    sc = list(si.iloc[0]["geometry"].coords)[0]
-    ec = list(si.iloc[-1]["geometry"].coords)[-1]
-    folium.Marker([sc[1], sc[0]], icon=folium.Icon(color="green"),
-                  popup="Inizio (0 m)").add_to(m)
-    folium.Marker([ec[1], ec[0]], icon=folium.Icon(color="red"),
-                  popup=f"Fine ({total_dist:.0f} m)").add_to(m)
-    return m
 
+    colors = (["green", "yellow", "red"] if not reverse_cmap
+              else ["red", "yellow", "green"])
+    cmap = cm.LinearColormap(colors=colors, vmin=vmin, vmax=vmax,
+                              caption=f"{title} (km/h)")
 
-def create_top_segments_map(segments, seg_stats, day_type, direction, n=10):
-    """Folium map highlighting top-N segments by max V85."""
-    sub = segments[(segments["day_type"] == day_type)
-                   & (segments["direction"] == direction)]
-    si = sub.drop_duplicates("seg_idx").sort_values("seg_idx")
-    top = seg_stats[
-        (seg_stats["day_type"] == day_type)
-        & (seg_stats["direction"] == direction)
-    ].nlargest(n, "max_v85")
-    top_set = set(top["seg_idx"].values)
+    fg_centro = folium.FeatureGroup(name="Dir. Centro")
+    fg_gra = folium.FeatureGroup(name="Dir. GRA")
 
-    clat = si.geometry.apply(lambda g: g.centroid.y).mean()
-    clon = si.geometry.apply(lambda g: g.centroid.x).mean()
-    m = folium.Map(location=[clat, clon], zoom_start=15,
-                   tiles="CartoDB positron")
-    for _, row in si.iterrows():
-        coords = [[c[1], c[0]] for c in row["geometry"].coords]
-        is_top = row["seg_idx"] in top_set
-        folium.PolyLine(
-            coords,
-            weight=10 if is_top else 4,
-            color="#e41a1c" if is_top else "#aaaaaa",
-            opacity=0.9 if is_top else 0.4,
-        ).add_to(m)
-    for rank, (_, row) in enumerate(top.iterrows(), 1):
-        match = si[si["seg_idx"] == row["seg_idx"]]
-        if match.empty:
-            continue
-        c = match.iloc[0]["geometry"].centroid
-        folium.Marker(
-            [c.y, c.x],
-            icon=folium.DivIcon(
-                html=(f'<div style="font-size:11px;background:#e41a1c;color:white;'
-                      f'padding:2px 6px;border-radius:50%;text-align:center;'
-                      f'width:24px;height:24px;line-height:20px;font-weight:bold;'
-                      f'box-shadow:1px 1px 3px rgba(0,0,0,.4);">{rank}</div>'),
-                icon_size=(24, 24), icon_anchor=(12, 12)),
-            popup=(f"<b>#{rank}</b><br>Progr.: {row['cum_dist_start']:.0f} m<br>"
-                   f"V85 max: {row['max_v85']:.0f} km/h<br>"
-                   f"Vel. media: {row['all_avg_speed']:.1f} km/h"),
-        ).add_to(m)
+    for gdf, fg, dir_label in [
+        (gdf_centro, fg_centro, "Centro"),
+        (gdf_gra, fg_gra, "GRA"),
+    ]:
+        for _, row in gdf.iterrows():
+            coords = [[c[1], c[0]] for c in row.geometry.coords]
+            popup_html = (
+                f"<b>Dir. {dir_label} \u2014 {row['streetName']}</b><br>"
+                f"Progr.: {row['cum_dist_start']:.0f} m<br>"
+                f"Vel. media: {row['avg_speed']:.1f} km/h<br>"
+                f"V85: {row['p85']:.1f} km/h<br>"
+                f"Dev. std: {row['std_speed']:.1f} km/h<br>"
+                f"Limite: {row['speedLimit']} km/h<br>"
+                f"Lungh.: {row['seg_distance']:.0f} m"
+            )
+            folium.PolyLine(coords, weight=10, color=cmap(row[value_col]),
+                            opacity=0.9,
+                            popup=folium.Popup(popup_html, max_width=300)).add_to(fg)
+        # Start/end markers
+        sc = list(gdf.iloc[0]["geometry"].coords)[0]
+        ec = list(gdf.iloc[-1]["geometry"].coords)[-1]
+        folium.Marker([sc[1], sc[0]], icon=folium.Icon(color="green"),
+                      popup=f"Inizio Dir. {dir_label}").add_to(fg)
+        folium.Marker([ec[1], ec[0]], icon=folium.Icon(color="red"),
+                      popup=f"Fine Dir. {dir_label}").add_to(fg)
+        fg.add_to(m)
+
+    cmap.add_to(m)
+    folium.LayerControl(collapsed=False).add_to(m)
+
+    # Stats box for both directions
+    vc = gdf_centro[value_col]
+    vg = gdf_gra[value_col]
+    metric = "V85" if "p85" in value_col else ("Dev. Std." if "std" in value_col else "Vel. media")
+    html = (
+        f'<div style="position:fixed;bottom:30px;left:10px;z-index:9999;'
+        f'background:white;padding:10px 14px;border-radius:6px;'
+        f'box-shadow:0 2px 8px rgba(0,0,0,.3);font-family:sans-serif;'
+        f'font-size:12px;max-width:360px;line-height:1.5;">'
+        f'<b style="color:#1a237e;">{title}</b><br>'
+        f'<b>Centro</b>: {metric} media={vc.mean():.1f}, max={vc.max():.1f}, min={vc.min():.1f} km/h<br>'
+        f'<b>GRA</b>: {metric} media={vg.mean():.1f}, max={vg.max():.1f}, min={vg.min():.1f} km/h<br>'
+        f'<span style="color:#c00;">&#9644;</span> Limite {SPEED_LIMIT} km/h'
+        f'</div>'
+    )
+    m.get_root().html.add_child(folium.Element(html))
     return m
 
 
 def generate_maps(segments, seg_stats):
+    """Generate all interactive Folium maps matching static map configurations."""
     MAPS_DIR.mkdir(parents=True, exist_ok=True)
     map_files = {}
+
+    # === Configs matching static maps (same metrics/filters) ===
     configs = [
-        ("v85_feriali_centro.html", "Feriali", "Centro", "p85", "mean",
-         "V85 Medio \u2014 Feriali Dir. Centro", 20, 80, False),
-        ("v85_feriali_gra.html", "Feriali", "GRA", "p85", "mean",
-         "V85 Medio \u2014 Feriali Dir. GRA", 20, 80, False),
-        ("v85_festivi_centro.html", "Festivi", "Centro", "p85", "mean",
-         "V85 Medio \u2014 Festivi Dir. Centro", 20, 80, False),
-        ("v85_festivi_gra.html", "Festivi", "GRA", "p85", "mean",
-         "V85 Medio \u2014 Festivi Dir. GRA", 20, 80, False),
-        ("std_feriali_centro.html", "Feriali", "Centro", "std_speed", "mean",
-         "Variabilit\u00e0 \u2014 Feriali Dir. Centro", 5, 22, True),
-        ("std_feriali_gra.html", "Feriali", "GRA", "std_speed", "mean",
-         "Variabilit\u00e0 \u2014 Feriali Dir. GRA", 5, 22, True),
-        ("night_v85_feriali_centro.html", "Feriali", "Centro", "p85", "mean",
-         "V85 Notturno \u2014 Feriali Dir. Centro", 30, 90, False),
-        ("night_v85_feriali_gra.html", "Feriali", "GRA", "p85", "mean",
-         "V85 Notturno \u2014 Feriali Dir. GRA", 30, 90, False),
+        # (value_col, hour_filter, label_metric, file_prefix, agg, vmin, vmax, rev)
+        ("avg_speed", None,        "Velocit\u00e0 Media (24h)",      "avg_speed_24h", "mean", 20, 80, False),
+        ("p85",       None,        "V85 (24h)",                      "v85_24h",       "mean", 20, 80, False),
+        ("avg_speed", NIGHT_HOURS, "Velocit\u00e0 Media Notturna",   "avg_speed_night", "mean", 20, 80, False),
+        ("p85",       NIGHT_HOURS, "V85 Notturno",                   "v85_night",     "mean", 20, 80, False),
+        ("p85",       None,        "V85 Massimo (ora peggiore)",     "max_v85",       "max",  20, 90, False),
     ]
-    for cfg in configs:
-        fname, dt, dr, vcol, agg, title, vmin, vmax, rev = cfg
-        sub = (segments[segments["hour"].isin(NIGHT_HOURS)]
-               if "night" in fname else segments)
-        gdf = _seg_geodataframe(sub, dt, dr, vcol, agg)
-        m = make_folium_map(gdf, vcol, title, vmin, vmax, rev)
+
+    # --- Individual maps (one per direction, Feriali) ---
+    for direction in ["Centro", "GRA"]:
+        for vcol, hfilter, label, prefix, agg, vmin, vmax, rev in configs:
+            period = "22\u201305" if hfilter is not None else "tutte le ore"
+            title = f"{label} \u2014 Feriali Dir. {direction} ({period})"
+            fname = f"{prefix}_feriali_{direction.lower()}.html"
+            sub = (segments[segments["hour"].isin(hfilter)]
+                   if hfilter is not None else segments)
+            gdf = _seg_geodataframe(sub, "Feriali", direction, vcol, agg)
+            m = make_folium_map(gdf, vcol, title, vmin, vmax, rev)
+            m.save(str(MAPS_DIR / fname))
+            map_files[fname] = fname
+
+    # --- Combined both-directions maps (Feriali) ---
+    for vcol, hfilter, label, prefix, agg, vmin, vmax, rev in configs:
+        period = "22\u201305" if hfilter is not None else "tutte le ore"
+        title = f"{label} \u2014 Feriali ({period})"
+        fname = f"{prefix}_feriali_combined.html"
+        sub = (segments[segments["hour"].isin(hfilter)]
+               if hfilter is not None else segments)
+        gdf_c = _seg_geodataframe(sub, "Feriali", "Centro", vcol, agg)
+        gdf_g = _seg_geodataframe(sub, "Feriali", "GRA", vcol, agg)
+        m = make_folium_map_combined(gdf_c, gdf_g, vcol, title, vmin, vmax, rev)
         m.save(str(MAPS_DIR / fname))
         map_files[fname] = fname
 
-    # Progressive distance maps (one per direction)
+    # --- Festivi V85 maps ---
     for direction in ["Centro", "GRA"]:
-        m = create_progressive_map(segments, "Feriali", direction)
+        title = f"V85 (24h) \u2014 Festivi Dir. {direction}"
+        fname = f"v85_24h_festivi_{direction.lower()}.html"
+        gdf = _seg_geodataframe(segments, "Festivi", direction, "p85", "mean")
+        m = make_folium_map(gdf, "p85", title, 20, 80, False)
+        m.save(str(MAPS_DIR / fname))
+        map_files[fname] = fname
+
+    # --- Variability maps ---
+    for direction in ["Centro", "GRA"]:
+        title = f"Variabilit\u00e0 \u2014 Feriali Dir. {direction}"
+        fname = f"std_feriali_{direction.lower()}.html"
+        gdf = _seg_geodataframe(segments, "Feriali", direction, "std_speed", "mean")
+        m = make_folium_map(gdf, "std_speed", title, 5, 22, True)
+        m.save(str(MAPS_DIR / fname))
+        map_files[fname] = fname
+
+    # --- Progressive distance maps ---
+    for direction in ["Centro", "GRA"]:
+        sub = segments[(segments["day_type"] == "Feriali")
+                       & (segments["direction"] == direction)]
+        si = sub.drop_duplicates("seg_idx").sort_values("seg_idx")
+        clat = si.geometry.apply(lambda g: g.centroid.y).mean()
+        clon = si.geometry.apply(lambda g: g.centroid.x).mean()
+        m = folium.Map(location=[clat, clon], zoom_start=15,
+                       tiles="CartoDB positron")
+        for _, row in si.iterrows():
+            coords = [[c[1], c[0]] for c in row["geometry"].coords]
+            folium.PolyLine(coords, weight=6, color="#1a237e", opacity=.8).add_to(m)
+        _add_folium_progressive(m, si, interval_m=250)
         fname = f"progressive_{direction.lower()}.html"
         m.save(str(MAPS_DIR / fname))
         map_files[fname] = fname
 
-    # Top-10 V85 maps
+    # --- Top-10 V85 maps ---
     for direction in ["Centro", "GRA"]:
-        m = create_top_segments_map(segments, seg_stats, "Feriali", direction)
+        sub = segments[(segments["day_type"] == "Feriali")
+                       & (segments["direction"] == direction)]
+        si = sub.drop_duplicates("seg_idx").sort_values("seg_idx")
+        top = seg_stats[
+            (seg_stats["day_type"] == "Feriali")
+            & (seg_stats["direction"] == direction)
+        ].nlargest(10, "max_v85")
+        top_set = set(top["seg_idx"].values)
+        clat = si.geometry.apply(lambda g: g.centroid.y).mean()
+        clon = si.geometry.apply(lambda g: g.centroid.x).mean()
+        m = folium.Map(location=[clat, clon], zoom_start=15,
+                       tiles="CartoDB positron")
+        for _, row in si.iterrows():
+            coords = [[c[1], c[0]] for c in row["geometry"].coords]
+            is_top = row["seg_idx"] in top_set
+            folium.PolyLine(
+                coords,
+                weight=10 if is_top else 4,
+                color="#e41a1c" if is_top else "#aaaaaa",
+                opacity=0.9 if is_top else 0.4,
+            ).add_to(m)
+        for rank, (_, row) in enumerate(top.iterrows(), 1):
+            match = si[si["seg_idx"] == row["seg_idx"]]
+            if match.empty:
+                continue
+            c = match.iloc[0]["geometry"].centroid
+            folium.Marker(
+                [c.y, c.x],
+                icon=folium.DivIcon(
+                    html=(f'<div style="font-size:11px;background:#e41a1c;color:white;'
+                          f'padding:2px 6px;border-radius:50%;text-align:center;'
+                          f'width:24px;height:24px;line-height:20px;font-weight:bold;'
+                          f'box-shadow:1px 1px 3px rgba(0,0,0,.4);">{rank}</div>'),
+                    icon_size=(24, 24), icon_anchor=(12, 12)),
+                popup=(f"<b>#{rank}</b><br>Progr.: {row['cum_dist_start']:.0f} m<br>"
+                       f"V85 max: {row['max_v85']:.0f} km/h<br>"
+                       f"Vel. media: {row['all_avg_speed']:.1f} km/h"),
+            ).add_to(m)
         fname = f"top10_v85_feriali_{direction.lower()}.html"
-        m.save(str(MAPS_DIR / fname))
-        map_files[fname] = fname
-
-    # Max V85 maps (maximum V85 across all hours per segment)
-    for direction in ["Centro", "GRA"]:
-        gdf = _seg_geodataframe(segments, "Feriali", direction, "p85", agg="max")
-        m = make_folium_map(gdf, "p85",
-                            f"V85 Massimo (ora peggiore) \u2014 Feriali Dir. {direction}",
-                            vmin=20, vmax=90, reverse_cmap=False)
-        fname = f"max_v85_feriali_{direction.lower()}.html"
         m.save(str(MAPS_DIR / fname))
         map_files[fname] = fname
 
@@ -1006,16 +1115,32 @@ def generate_html_report(charts, map_files, tables):
                                 "Mappa Top 10 \u2014 Dir. GRA")
     main_map_iframes = "".join(
         _iframe(f, t) for f, t in [
-            ("v85_feriali_centro.html", "V85 Medio \u2014 Feriali Dir. Centro"),
-            ("v85_feriali_gra.html",    "V85 Medio \u2014 Feriali Dir. GRA"),
-            ("v85_festivi_centro.html", "V85 Medio \u2014 Festivi Dir. Centro"),
-            ("v85_festivi_gra.html",    "V85 Medio \u2014 Festivi Dir. GRA"),
+            # --- Velocità Media (24h) ---
+            ("avg_speed_24h_feriali_centro.html", "Velocit\u00e0 Media (24h) \u2014 Feriali Dir. Centro"),
+            ("avg_speed_24h_feriali_gra.html",    "Velocit\u00e0 Media (24h) \u2014 Feriali Dir. GRA"),
+            ("avg_speed_24h_feriali_combined.html","Velocit\u00e0 Media (24h) \u2014 Feriali (entrambe le direzioni)"),
+            # --- V85 (24h) ---
+            ("v85_24h_feriali_centro.html", "V85 (24h) \u2014 Feriali Dir. Centro"),
+            ("v85_24h_feriali_gra.html",    "V85 (24h) \u2014 Feriali Dir. GRA"),
+            ("v85_24h_feriali_combined.html","V85 (24h) \u2014 Feriali (entrambe le direzioni)"),
+            # --- Velocità Media Notturna ---
+            ("avg_speed_night_feriali_centro.html", "Velocit\u00e0 Media Notturna \u2014 Feriali Dir. Centro"),
+            ("avg_speed_night_feriali_gra.html",    "Velocit\u00e0 Media Notturna \u2014 Feriali Dir. GRA"),
+            ("avg_speed_night_feriali_combined.html","Velocit\u00e0 Media Notturna \u2014 Feriali (entrambe le direzioni)"),
+            # --- V85 Notturno ---
+            ("v85_night_feriali_centro.html", "V85 Notturno \u2014 Feriali Dir. Centro"),
+            ("v85_night_feriali_gra.html",    "V85 Notturno \u2014 Feriali Dir. GRA"),
+            ("v85_night_feriali_combined.html","V85 Notturno \u2014 Feriali (entrambe le direzioni)"),
+            # --- V85 Massimo ---
             ("max_v85_feriali_centro.html", "V85 Massimo (ora peggiore) \u2014 Feriali Dir. Centro"),
             ("max_v85_feriali_gra.html",    "V85 Massimo (ora peggiore) \u2014 Feriali Dir. GRA"),
+            ("max_v85_feriali_combined.html","V85 Massimo (ora peggiore) \u2014 Feriali (entrambe le direzioni)"),
+            # --- Festivi ---
+            ("v85_24h_festivi_centro.html", "V85 (24h) \u2014 Festivi Dir. Centro"),
+            ("v85_24h_festivi_gra.html",    "V85 (24h) \u2014 Festivi Dir. GRA"),
+            # --- Variabilità ---
             ("std_feriali_centro.html", "Variabilit\u00e0 \u2014 Feriali Dir. Centro"),
             ("std_feriali_gra.html",    "Variabilit\u00e0 \u2014 Feriali Dir. GRA"),
-            ("night_v85_feriali_centro.html", "V85 Notturno \u2014 Feriali Dir. Centro"),
-            ("night_v85_feriali_gra.html",    "V85 Notturno \u2014 Feriali Dir. GRA"),
         ]
     )
 
