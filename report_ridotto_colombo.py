@@ -281,7 +281,7 @@ def build_tables_ridotto(segments, summaries):
 # BLOCK D — TRATTE WITHOUT INTERSECTION SEGMENTS
 # ================================================================
 
-def detect_intersection_segments(segments, direction, threshold_ratio=0.72):
+def detect_intersection_segments(segments, direction, threshold_ratio=0.80):
     """Flag segments whose mean V85 drops below threshold_ratio * corridor median.
     These are likely signalised intersections causing forced slowdowns.
     """
@@ -296,7 +296,7 @@ def detect_intersection_segments(segments, direction, threshold_ratio=0.72):
     return set(seg[seg["v85_mean"] < threshold].index.tolist())
 
 
-def compute_tratte_no_intersections(segments, n_bkps=8):
+def compute_tratte_no_intersections(segments, n_bkps=5):
     """Compute tratte excluding intersection segments from segmentation signal.
     Intersections are re-assigned to nearest tratta afterwards but don't
     influence the statistics.
@@ -685,7 +685,7 @@ def _build_tratte_html(charts, tratte_df, intersection_info, map_files):
 <p>La Carreggiata Centrale &egrave; stata suddivisa in <strong>tratte omogenee</strong>
 sulla base del profilo spaziale del V85 (85&deg; percentile delle velocit&agrave;).
 I segmenti corrispondenti a <strong>intersezioni semaforiche</strong> sono stati
-identificati (V85 medio &lt; 65% della mediana del corridoio) ed esclusi dal
+identificati (V85 medio &lt; 80% della mediana del corridoio) ed esclusi dal
 calcolo della segmentazione, in quanto non rappresentativi del comportamento
 di guida in marcia libera.</p>
 
