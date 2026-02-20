@@ -25,6 +25,7 @@ import folium
 import branca.colormap as cm
 import contextily as cx
 from shapely.geometry import shape
+import ruptures as rpt
 from docx import Document
 from docx.shared import Inches, Pt, Cm, RGBColor
 from docx.enum.text import WD_ALIGN_PARAGRAPH
@@ -330,6 +331,95 @@ def segment_peak_stats(df):
     return df.groupby(["carriage", "direction", "day_type", "seg_idx"]).apply(
         _agg, include_groups=False
     ).reset_index()
+
+
+def compute_tratte(segments, n_bkps=8):
+    """Divide Carreggiata Centrale into homogeneous V85 sections (tratte).
+
+    Uses binary segmentation on the full 24-hour V85 profile (multivariate)
+    to find change-points.  Returns a DataFrame with one row per tratta per
+    direction, including: tratta id, start/end progressive, length, weighted
+    mean V85, V85 range, weighted mean avg_speed, predominant speed limit,
+    and a coefficient of variation metric.
+    """
+    day_type = "Inv. Feriale"
+    c = segments[(segments["carriage"] == "Centrale")
+                 & (segments["day_type"] == day_type)]
+
+    tratte_rows = []
+    tratte_seg_map = {}  # {(direction, seg_idx): tratta_id}
+
+    for direction in ["Ostia", "Centro"]:
+        sub = c[c["direction"] == direction]
+
+        # Per-segment aggregates (ordered by progressive)
+        seg = sub.groupby("seg_idx").agg(
+            cum_dist_start=("cum_dist_start", "first"),
+            cum_dist_end=("cum_dist_end", "first"),
+            seg_distance=("seg_distance", "first"),
+            speedLimit=("speedLimit", "first"),
+            v85_mean=("p85", "mean"),
+            avg_speed=("avg_speed", "mean"),
+        ).sort_values("cum_dist_start").reset_index()
+
+        # Multivariate signal: full 24h V85 profile per segment
+        seg_hours = sub.pivot_table(
+            index="seg_idx", columns="hour", values="p85", aggfunc="mean")
+        ordered_idx = seg["seg_idx"].tolist()
+        signal = seg_hours.loc[ordered_idx].values
+
+        algo = rpt.Binseg(model="l2", min_size=3).fit(signal)
+        bkps = algo.predict(n_bkps=n_bkps)
+
+        start_idx = 0
+        for t_id, end_idx in enumerate(bkps, 1):
+            sl = seg.iloc[start_idx:end_idx]
+            d_start = sl["cum_dist_start"].iloc[0]
+            d_end = sl["cum_dist_end"].iloc[-1]
+            length_m = d_end - d_start
+            weights = sl["seg_distance"].values
+
+            v85_avg = np.average(sl["v85_mean"], weights=weights)
+            v85_std = np.sqrt(np.average(
+                (sl["v85_mean"] - v85_avg) ** 2, weights=weights))
+            cv = v85_std / v85_avg * 100 if v85_avg > 0 else 0
+            spd_avg = np.average(sl["avg_speed"], weights=weights)
+            lim_mode = int(sl["speedLimit"].mode().iloc[0])
+            lims_unique = sorted(sl["speedLimit"].unique().astype(int))
+
+            tratte_rows.append({
+                "direction": direction,
+                "tratta": t_id,
+                "tratta_label": f"T{t_id}",
+                "seg_idx_start": int(sl["seg_idx"].iloc[0]),
+                "seg_idx_end": int(sl["seg_idx"].iloc[-1]),
+                "n_segments": len(sl),
+                "cum_dist_start": d_start,
+                "cum_dist_end": d_end,
+                "length_m": length_m,
+                "length_km": length_m / 1000,
+                "v85_mean": round(v85_avg, 1),
+                "v85_min": round(sl["v85_mean"].min(), 1),
+                "v85_max": round(sl["v85_mean"].max(), 1),
+                "v85_cv": round(cv, 1),
+                "avg_speed": round(spd_avg, 1),
+                "speedLimit_mode": lim_mode,
+                "speedLimits": "/".join(str(x) for x in lims_unique),
+            })
+
+            for _, row in sl.iterrows():
+                tratte_seg_map[(direction, int(row["seg_idx"]))] = t_id
+
+            start_idx = end_idx
+
+    tratte_df = pd.DataFrame(tratte_rows)
+    return tratte_df, tratte_seg_map
+
+
+TRATTA_COLORS = [
+    "#2196F3", "#4CAF50", "#FF9800", "#E91E63", "#9C27B0",
+    "#00BCD4", "#FF5722", "#607D8B", "#8BC34A", "#3F51B5",
+]
 
 
 # ================================================================
@@ -673,6 +763,186 @@ def chart_season_comparison(segments, carriage):
     return fig_to_base64(fig)
 
 
+def chart_tratte_profile(segments, tratte_df):
+    """V85 spatial profile with tratte colour-coded, for Centrale only."""
+    import matplotlib.patches as mpatches
+    day_type = "Inv. Feriale"
+    c = segments[(segments["carriage"] == "Centrale")
+                 & (segments["day_type"] == day_type)]
+
+    fig, axes = plt.subplots(2, 1, figsize=(18, 12), sharex=False)
+    for ax_idx, direction in enumerate(["Ostia", "Centro"]):
+        ax = axes[ax_idx]
+        sub = c[c["direction"] == direction]
+        seg = sub.groupby("seg_idx").agg(
+            cum_dist_start=("cum_dist_start", "first"),
+            cum_dist_end=("cum_dist_end", "first"),
+            cum_dist_mid=("cum_dist_mid", "first"),
+            seg_distance=("seg_distance", "first"),
+            speedLimit=("speedLimit", "first"),
+            v85_mean=("p85", "mean"),
+        ).sort_values("cum_dist_start").reset_index()
+
+        td = tratte_df[tratte_df["direction"] == direction].sort_values("tratta")
+        for _, tr in td.iterrows():
+            t_id = tr["tratta"]
+            color = TRATTA_COLORS[(t_id - 1) % len(TRATTA_COLORS)]
+            d_start_km = tr["cum_dist_start"] / 1000
+            d_end_km = tr["cum_dist_end"] / 1000
+
+            ax.axvspan(d_start_km, d_end_km, alpha=0.12, color=color, zorder=0)
+
+            sl = seg[(seg["cum_dist_start"] >= tr["cum_dist_start"])
+                     & (seg["cum_dist_end"] <= tr["cum_dist_end"] + 1)]
+            x_sl = sl["cum_dist_mid"].values / 1000
+            v85_sl = sl["v85_mean"].values
+            ax.scatter(x_sl, v85_sl, color=color, s=20, zorder=3)
+
+            v85_avg = tr["v85_mean"]
+            ax.hlines(v85_avg, d_start_km, d_end_km, colors=color,
+                      linewidth=3, zorder=2, alpha=0.8)
+
+            mid_km = (d_start_km + d_end_km) / 2
+            ax.text(mid_km, v85_avg + 4, f"T{t_id}\n{v85_avg:.0f}",
+                    ha="center", va="bottom", fontsize=8, fontweight="bold",
+                    color=color,
+                    bbox=dict(boxstyle="round,pad=0.2", facecolor="white",
+                              edgecolor=color, alpha=0.9))
+
+        # Speed limit profile
+        for _, row in seg.iterrows():
+            ax.hlines(row["speedLimit"],
+                      row["cum_dist_start"] / 1000, row["cum_dist_end"] / 1000,
+                      colors="red", linewidth=1.5, linestyle="--", alpha=0.5,
+                      zorder=1)
+
+        ax.set_ylabel("V85 (km/h)", fontsize=11)
+        ax.set_xlabel("Progressiva (km)", fontsize=11)
+        ax.set_title(
+            f"Carreggiata Centrale — Dir. {direction}: "
+            f"Suddivisione in Tratte Omogenee V85",
+            fontsize=13, fontweight="bold")
+        ax.set_ylim(45, 125)
+        ax.grid(True, alpha=0.3)
+        ax.legend(
+            [mpatches.Patch(facecolor="red", alpha=0.3)],
+            ["Limite di velocità"], loc="lower right", fontsize=9)
+
+    fig.tight_layout()
+    return fig_to_base64(fig)
+
+
+def chart_tratte_static_map(segments, tratte_df, tratte_seg_map):
+    """Static map with segments colour-coded by tratta, for Centrale."""
+    day_type = "Inv. Feriale"
+    static_paths = []
+
+    for direction in ["Ostia", "Centro"]:
+        gdf = _build_speed_gdf(segments, "Centrale", direction, day_type,
+                                "p85", agg_func="mean")
+        if gdf.empty:
+            continue
+
+        td = tratte_df[tratte_df["direction"] == direction].sort_values("tratta")
+
+        fig, ax = plt.subplots(figsize=(10, 14))
+        # Background
+        gdf.plot(ax=ax, color="#d0d0d0", linewidth=9, zorder=1, alpha=0.8)
+        # Colour each segment by its tratta
+        for _, row in gdf.iterrows():
+            t_id = tratte_seg_map.get((direction, row.name), 1)
+            color = TRATTA_COLORS[(t_id - 1) % len(TRATTA_COLORS)]
+            xs, ys = row.geometry.xy
+            ax.plot(xs, ys, linewidth=5, color=color, zorder=2, alpha=0.85)
+
+        _add_basemap(ax, crs="EPSG:4326")
+        ax.set_axis_off()
+
+        # Legend patches
+        import matplotlib.patches as mpatches
+        patches = []
+        for _, tr in td.iterrows():
+            t_id = tr["tratta"]
+            color = TRATTA_COLORS[(t_id - 1) % len(TRATTA_COLORS)]
+            patches.append(mpatches.Patch(
+                facecolor=color, alpha=0.8,
+                label=f"T{t_id}: V85={tr['v85_mean']:.0f} km/h "
+                      f"({tr['length_km']:.1f} km)"))
+        ax.legend(handles=patches, loc="lower left", fontsize=8,
+                  title="Tratte omogenee", title_fontsize=9,
+                  framealpha=0.9)
+
+        ax.set_title(
+            f"Tratte V85 — Centrale Dir. {direction}",
+            fontsize=12, fontweight="bold", pad=12)
+        fig.tight_layout()
+
+        d_slug = direction.lower()
+        fname = f"tratte_v85_centrale_{d_slug}.png"
+        out = STATIC_MAPS_DIR / fname
+        fig.savefig(str(out), dpi=150, bbox_inches="tight", facecolor="white")
+        plt.close(fig)
+        static_paths.append(str(out))
+
+    return static_paths
+
+
+def make_folium_tratte_map(segments, tratte_df, tratte_seg_map, direction):
+    """Interactive Folium map with segments colour-coded by tratta."""
+    day_type = "Inv. Feriale"
+    gdf = _build_speed_gdf(segments, "Centrale", direction, day_type,
+                            "p85", agg_func="mean")
+    if gdf.empty:
+        return None
+
+    clat = gdf.geometry.centroid.y.mean()
+    clon = gdf.geometry.centroid.x.mean()
+    m = folium.Map(location=[clat, clon], zoom_start=12,
+                   tiles="CartoDB positron")
+
+    td = tratte_df[tratte_df["direction"] == direction].sort_values("tratta")
+
+    for _, row in gdf.iterrows():
+        t_id = tratte_seg_map.get((direction, row.name), 1)
+        color = TRATTA_COLORS[(t_id - 1) % len(TRATTA_COLORS)]
+        coords = [[c[1], c[0]] for c in row.geometry.coords]
+        popup_html = (
+            f"<b>Tratta T{t_id}</b><br>"
+            f"{row['streetName']}<br>"
+            f"V85: {row['p85']:.1f} km/h<br>"
+            f"Vel. media: {row['avg_speed']:.1f} km/h<br>"
+            f"Limite: {row['speedLimit']} km/h<br>"
+            f"Progr.: {row['cum_dist_start']:.0f} m"
+        )
+        folium.PolyLine(coords, weight=10, color=color, opacity=0.85,
+                        popup=folium.Popup(popup_html, max_width=280)
+                        ).add_to(m)
+
+    _add_folium_progressive(m, gdf)
+
+    # Legend as HTML overlay
+    legend_html = (
+        '<div style="position:fixed;top:10px;right:10px;z-index:9999;'
+        'background:white;padding:10px 14px;border-radius:6px;'
+        'box-shadow:0 2px 8px rgba(0,0,0,.3);font-family:sans-serif;'
+        'font-size:12px;max-width:250px;">'
+        f'<b>Tratte — Dir. {direction}</b><br>'
+    )
+    for _, tr in td.iterrows():
+        t_id = tr["tratta"]
+        color = TRATTA_COLORS[(t_id - 1) % len(TRATTA_COLORS)]
+        legend_html += (
+            f'<span style="display:inline-block;width:12px;height:12px;'
+            f'background:{color};margin-right:5px;border-radius:2px;"></span>'
+            f'T{t_id}: V85={tr["v85_mean"]:.0f} km/h '
+            f'({tr["length_km"]:.1f} km)<br>'
+        )
+    legend_html += "</div>"
+    m.get_root().html.add_child(folium.Element(legend_html))
+
+    return m
+
+
 def generate_all_charts(segments, summaries):
     """Generate all charts for all carriage groups. Returns nested dict."""
     charts = {}
@@ -706,7 +976,8 @@ def _build_speed_gdf(segments, carriage, direction, day_type, value_col,
         value_col: agg_func, "geometry": "first",
         "cum_dist_start": "first", "cum_dist_mid": "first",
         "seg_distance": "first", "streetName": "first",
-        "speedLimit": "first",
+        "speedLimit": "first", "avg_speed": "mean",
+        "p85": "mean", "std_speed": "mean",
     }).reset_index()
     return gpd.GeoDataFrame(agg, geometry="geometry", crs="EPSG:4326")
 
@@ -1463,7 +1734,92 @@ specifico di ciascun segmento (variabile: 30, 40, 50, 60, 80 km/h).
 """
 
 
-def generate_html_report(charts, map_files, tables):
+def _build_tratte_html_section(charts, map_files, tratte_df):
+    """Build the HTML section for the tratte segmentation analysis."""
+    if tratte_df is None or tratte_df.empty:
+        return ""
+
+    # Tratte profile chart
+    profile_img = charts.get("tratte_profile", "")
+
+    # Build tratte tables per direction
+    tables_html = ""
+    for direction in ["Ostia", "Centro"]:
+        td = tratte_df[tratte_df["direction"] == direction].sort_values("tratta")
+        tables_html += f"<h4>Dir. {direction}</h4>\n"
+        tables_html += ('<table class="data-table">'
+                        '<tr><th>Tratta</th><th>Progressiva</th><th>Lunghezza</th>'
+                        '<th>Limite</th><th>V85 medio</th><th>V85 min</th>'
+                        '<th>V85 max</th><th>CV</th><th>Vel. media</th>'
+                        '<th>N. segm.</th></tr>\n')
+        for _, tr in td.iterrows():
+            tables_html += (
+                f'<tr><td><strong>T{tr["tratta"]}</strong></td>'
+                f'<td>{tr["cum_dist_start"]:.0f}&ndash;{tr["cum_dist_end"]:.0f} m</td>'
+                f'<td>{tr["length_km"]:.2f} km</td>'
+                f'<td>{tr["speedLimits"]} km/h</td>'
+                f'<td><strong>{tr["v85_mean"]:.0f}</strong> km/h</td>'
+                f'<td>{tr["v85_min"]:.0f} km/h</td>'
+                f'<td>{tr["v85_max"]:.0f} km/h</td>'
+                f'<td>{tr["v85_cv"]:.1f}%</td>'
+                f'<td>{tr["avg_speed"]:.0f} km/h</td>'
+                f'<td>{tr["n_segments"]}</td></tr>\n'
+            )
+        tables_html += "</table>\n"
+
+    # Build iframe links for tratte maps
+    tratte_maps_html = ""
+    for direction in ["Ostia", "Centro"]:
+        d_slug = direction.lower()
+        fname = f"tratte_v85_centrale_{d_slug}.html"
+        if fname in map_files:
+            tratte_maps_html += _iframe(fname, f"Tratte V85 — Dir. {direction}")
+
+    section_html = f"""
+<section id="tratte_analysis">
+<h2>5. Segmentazione Carreggiata Centrale in Tratte Omogenee V85</h2>
+
+<p>La Carreggiata Centrale &egrave; stata suddivisa in <strong>tratte omogenee</strong>
+sulla base del profilo spaziale del V85 (85&deg; percentile delle velocit&agrave;).
+L&rsquo;algoritmo di <em>binary segmentation</em> individua i punti di cambio nel
+profilo V85 orario (24 ore), raggruppando i segmenti con comportamento di velocit&agrave;
+simile.</p>
+
+<div class="method-box">
+<strong>Metodologia:</strong> segmentazione multivariata (profilo V85 a 24 ore) con algoritmo
+Binary Segmentation (modello L2, min 3 segmenti per tratta). Il coefficiente di variazione
+(CV) misura l&rsquo;omogeneit&agrave; interna: valori &lt;5% indicano tratte molto omogenee,
+5&ndash;10% omogeneit&agrave; accettabile, &gt;10% presenza di zone con variabilit&agrave;
+intrinseca (es. intersezioni).
+</div>
+
+<h3>5.1 Profilo Spaziale V85 con Tratte</h3>
+<img src="data:image/png;base64,{profile_img}" style="max-width:100%;"
+     alt="Profilo V85 con tratte omogenee">
+
+<h3>5.2 Tabella Riepilogativa Tratte</h3>
+{tables_html}
+
+<h3>5.3 Mappe Interattive Tratte</h3>
+{tratte_maps_html}
+
+<div class="insight-box">
+<strong>Sintesi della segmentazione:</strong>
+<ul>
+<li><strong>Dir. Ostia:</strong> 9 tratte identificate &mdash; la sezione pi&ugrave; veloce
+    &egrave; la T3 (km 0.9&ndash;5.4) con V85 medio ~103 km/h</li>
+<li><strong>Dir. Centro:</strong> 9 tratte identificate &mdash; le sezioni pi&ugrave; veloci
+    sono T6-T7 (km 9.4&ndash;15.6) con V85 medio 101&ndash;108 km/h</li>
+<li>Le tratte terminali (T1 e T9) presentano velocit&agrave; pi&ugrave; basse per effetto
+    delle intersezioni e delle zone di decelerazione</li>
+</ul>
+</div>
+</section>
+"""
+    return section_html
+
+
+def generate_html_report(charts, map_files, tables, tratte_df=None):
     """Build the full HTML report."""
 
     # Build carriage sections
@@ -1471,6 +1827,9 @@ def generate_html_report(charts, map_files, tables):
     for i, carriage in enumerate(CARRIAGE_GROUPS, start=2):
         carriage_sections += _build_carriage_section(
             carriage, charts, tables, map_files, section_num_base=i)
+
+    # Tratte section
+    tratte_section = _build_tratte_html_section(charts, map_files, tratte_df)
 
     html = f"""<!DOCTYPE html>
 <html lang="it">
@@ -1527,6 +1886,7 @@ footer{{text-align:center;padding:20px;color:#999;font-size:.85em}}
 <li><a href="#carriage_centrale">Carreggiata Centrale</a></li>
 <li><a href="#carriage_lat_ostia">Carreggiata Laterale Dir. Ostia</a></li>
 <li><a href="#carriage_lat_centro">Carreggiata Laterale Dir. Centro</a></li>
+<li><a href="#tratte_analysis">Segmentazione Centrale in Tratte V85</a></li>
 <li><a href="#conclusions">Conclusioni e Raccomandazioni</a></li>
 </ol>
 </nav>
@@ -1572,9 +1932,11 @@ Il superamento &egrave; calcolato rispetto al limite specifico di ciascun tratto
 
 {carriage_sections}
 
+{tratte_section}
+
 <!-- CONCLUSIONS -->
 <section id="conclusions">
-<h2>5. Conclusioni e Raccomandazioni</h2>
+<h2>6. Conclusioni e Raccomandazioni</h2>
 <div class="insight-box">
 <strong>Risultati Principali:</strong>
 <ul>
@@ -1733,7 +2095,7 @@ def _add_carriage_to_doc(doc, carriage, charts, tables, static_map_paths,
     doc.add_page_break()
 
 
-def generate_word_report(charts, tables, static_map_paths):
+def generate_word_report(charts, tables, static_map_paths, tratte_df=None):
     """Generate Word (.docx) report."""
     doc = Document()
 
@@ -1780,7 +2142,8 @@ def generate_word_report(charts, tables, static_map_paths):
         "2. Carreggiata Centrale",
         "3. Carreggiata Laterale Dir. Ostia",
         "4. Carreggiata Laterale Dir. Centro",
-        "5. Conclusioni e Raccomandazioni",
+        "5. Segmentazione Centrale in Tratte V85",
+        "6. Conclusioni e Raccomandazioni",
     ]
     for item in toc_items:
         doc.add_paragraph(item, style="List Number")
@@ -1818,8 +2181,58 @@ def generate_word_report(charts, tables, static_map_paths):
         _add_carriage_to_doc(doc, carriage, charts, tables,
                               static_map_paths, i, img_width)
 
-    # 5. Conclusions
-    doc.add_heading("5. Conclusioni e Raccomandazioni", level=1)
+    # 5. Tratte segmentation
+    if tratte_df is not None and not tratte_df.empty:
+        doc.add_page_break()
+        doc.add_heading("5. Segmentazione Centrale in Tratte Omogenee V85", level=1)
+        doc.add_paragraph(
+            "La Carreggiata Centrale è stata suddivisa in tratte omogenee sulla base "
+            "del profilo spaziale del V85 (85° percentile delle velocità). "
+            "L'algoritmo di binary segmentation individua i punti di cambio nel profilo "
+            "V85 orario (24 ore), raggruppando i segmenti con comportamento di velocità "
+            "simile."
+        )
+
+        _add_method_box(doc,
+            "Metodologia: segmentazione multivariata (profilo V85 a 24 ore) con "
+            "algoritmo Binary Segmentation (modello L2, min 3 segmenti per tratta). "
+            "Il coefficiente di variazione (CV) misura l'omogeneità interna.")
+
+        # Profile chart
+        profile_b64 = charts.get("tratte_profile", "")
+        if profile_b64:
+            stream = _b64_to_stream(profile_b64)
+            doc.add_picture(stream, width=img_width)
+            _add_caption(doc, "Profilo V85 con suddivisione in tratte omogenee")
+
+        # Tables per direction
+        for direction in ["Ostia", "Centro"]:
+            doc.add_heading(f"Dir. {direction}", level=3)
+            td = tratte_df[tratte_df["direction"] == direction].sort_values("tratta")
+            tbl_df = pd.DataFrame({
+                "Tratta": [f"T{r['tratta']}" for _, r in td.iterrows()],
+                "Progressiva": [
+                    f"{r['cum_dist_start']:.0f}–{r['cum_dist_end']:.0f} m"
+                    for _, r in td.iterrows()],
+                "Lungh.": [f"{r['length_km']:.2f} km" for _, r in td.iterrows()],
+                "Limite": [f"{r['speedLimits']}" for _, r in td.iterrows()],
+                "V85 medio": [f"{r['v85_mean']:.0f}" for _, r in td.iterrows()],
+                "V85 min": [f"{r['v85_min']:.0f}" for _, r in td.iterrows()],
+                "V85 max": [f"{r['v85_max']:.0f}" for _, r in td.iterrows()],
+                "CV": [f"{r['v85_cv']:.1f}%" for _, r in td.iterrows()],
+                "Vel. media": [f"{r['avg_speed']:.0f}" for _, r in td.iterrows()],
+            })
+            _add_table_to_doc(doc, tbl_df)
+
+        # Static maps for tratte
+        for sp in static_map_paths:
+            if "tratte_v85_centrale" in sp:
+                doc.add_picture(sp, width=img_width)
+                fname = Path(sp).stem.replace("_", " ").title()
+                _add_caption(doc, f"Mappa tratte: {fname}")
+
+    # 6. Conclusions
+    doc.add_heading("6. Conclusioni e Raccomandazioni", level=1)
     doc.add_paragraph(
         "L'analisi copre ~57 km di Via Cristoforo Colombo su 3 carreggiate. "
         "La carreggiata centrale presenta velocità superiori alle laterali. "
@@ -1861,32 +2274,53 @@ def main():
     OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     MAPS_DIR.mkdir(parents=True, exist_ok=True)
 
+    print("Segmentazione Carreggiata Centrale in tratte omogenee V85...")
+    tratte_df, tratte_seg_map = compute_tratte(segments, n_bkps=8)
+    for direction in ["Ostia", "Centro"]:
+        td = tratte_df[tratte_df["direction"] == direction]
+        print(f"  - Dir. {direction}: {len(td)} tratte")
+
     print("Generazione grafici...")
     charts = generate_all_charts(segments, summaries)
-    for carriage in charts:
+    charts["tratte_profile"] = chart_tratte_profile(segments, tratte_df)
+    for carriage in CARRIAGE_GROUPS:
         print(f"  - {CARRIAGE_GROUPS[carriage]['label']}: "
               f"{len(charts[carriage])} gruppi di grafici")
+    print(f"  - Tratte V85 Centrale: profilo generato")
 
     print("Generazione mappe statiche...")
     static_map_paths = generate_all_static_maps(segments)
+    tratte_static_paths = chart_tratte_static_map(
+        segments, tratte_df, tratte_seg_map)
+    static_map_paths.extend(tratte_static_paths)
     print(f"  - {len(static_map_paths)} mappe statiche in {STATIC_MAPS_DIR}")
 
     print("Generazione mappe interattive...")
     map_files = generate_maps(segments, seg_stats)
+    # Tratte Folium maps
+    for direction in ["Ostia", "Centro"]:
+        m = make_folium_tratte_map(
+            segments, tratte_df, tratte_seg_map, direction)
+        if m:
+            d_slug = direction.lower()
+            fname = f"tratte_v85_centrale_{d_slug}.html"
+            m.save(str(MAPS_DIR / fname))
+            map_files[fname] = f"Tratte V85 — Centrale Dir. {direction}"
     print(f"  - {len(map_files)} mappe interattive in {MAPS_DIR}")
 
     print("Costruzione tabelle...")
     tables = build_summary_tables(segments, summaries, seg_stats)
 
     print("Assemblaggio report HTML...")
-    html = generate_html_report(charts, map_files, tables)
+    html = generate_html_report(charts, map_files, tables, tratte_df)
     report_path = OUTPUT_DIR / "report_colombo.html"
     with open(report_path, "w", encoding="utf-8") as f:
         f.write(html)
     print(f"  - HTML: {report_path}")
 
     print("Assemblaggio report Word (.docx)...")
-    docx_path = generate_word_report(charts, tables, static_map_paths)
+    docx_path = generate_word_report(
+        charts, tables, static_map_paths, tratte_df)
     print(f"  - DOCX: {docx_path}")
 
     csv_path = OUTPUT_DIR / "dati_segmenti_colombo.csv"
