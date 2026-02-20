@@ -918,7 +918,38 @@ def make_folium_tratte_map(segments, tratte_df, tratte_seg_map, direction):
                         popup=folium.Popup(popup_html, max_width=280)
                         ).add_to(m)
 
-    _add_folium_progressive(m, gdf)
+    # Separators at tratta boundaries
+    gdf_sorted = gdf.sort_values("cum_dist_start")
+    for i in range(len(td) - 1):
+        tr = td.iloc[i]
+        # Find last segment of this tratta
+        last_seg = gdf_sorted[
+            gdf_sorted.index.map(
+                lambda idx: tratte_seg_map.get((direction, idx), -1)
+            ) == tr["tratta"]
+        ]
+        if last_seg.empty:
+            continue
+        last_geom = last_seg.iloc[-1].geometry
+        pt = last_geom.coords[-1]  # endpoint of last segment
+        t_cur = int(tr["tratta"])
+        t_next = int(td.iloc[i + 1]["tratta"])
+        folium.CircleMarker(
+            location=[pt[1], pt[0]], radius=7,
+            color="white", weight=2, fill=True,
+            fill_color="#333333", fill_opacity=0.9,
+            popup=f"Confine T{t_cur}/T{t_next}",
+        ).add_to(m)
+        folium.Marker(
+            location=[pt[1], pt[0]],
+            icon=folium.DivIcon(
+                html=(f'<div style="font-size:9px;color:white;background:#333;'
+                      f'padding:1px 4px;border-radius:8px;text-align:center;'
+                      f'white-space:nowrap;font-weight:bold;'
+                      f'box-shadow:0 1px 3px rgba(0,0,0,.4);">'
+                      f'T{t_cur}|T{t_next}</div>'),
+                icon_size=(48, 18), icon_anchor=(24, -6)),
+        ).add_to(m)
 
     # Legend as HTML overlay
     legend_html = (
