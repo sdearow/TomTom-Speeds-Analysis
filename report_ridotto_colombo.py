@@ -296,10 +296,13 @@ def detect_intersection_segments(segments, direction, threshold_ratio=0.85):
     return set(seg[seg["v85_mean"] < threshold].index.tolist())
 
 
-def compute_tratte_no_intersections(segments, n_bkps=5):
+def compute_tratte_no_intersections(segments, n_bkps=4, merge_threshold=5.0):
     """Compute tratte excluding intersection segments from segmentation signal.
     Intersections are re-assigned to nearest tratta afterwards but don't
     influence the statistics.
+
+    After binary segmentation, adjacent tratte whose weighted V85 means differ
+    by less than *merge_threshold* km/h are merged iteratively.
     """
     day_type = "Inv. Feriale"
     c = segments[(segments["carriage"] == "Centrale")
@@ -334,13 +337,31 @@ def compute_tratte_no_intersections(segments, n_bkps=5):
 
         # Build tratte from clean segments
         start, tratta_ranges = 0, []
-        for t_id, end in enumerate(bkps, 1):
+        for end in bkps:
             sl = seg_clean.iloc[start:end]
             t_segs = set(sl["seg_idx"].tolist())
-            tratta_ranges.append((t_id, t_segs))
-            for _, r in sl.iterrows():
-                tratte_seg_map[(direction, int(r["seg_idx"]))] = t_id
+            tratta_ranges.append(t_segs)
             start = end
+
+        # --- Post-merge: iteratively merge adjacent tratte with similar V85 ---
+        def _weighted_v85(seg_idxs):
+            s = seg[seg["seg_idx"].isin(seg_idxs) & ~seg["seg_idx"].isin(intersections)]
+            if s.empty:
+                s = seg[seg["seg_idx"].isin(seg_idxs)]
+            w = s["seg_distance"].values
+            return np.average(s["v85_mean"], weights=w) if len(w) else 0.0
+
+        merged = True
+        while merged and len(tratta_ranges) > 2:
+            merged = False
+            v85s = [_weighted_v85(ts) for ts in tratta_ranges]
+            diffs = [abs(v85s[i] - v85s[i + 1]) for i in range(len(v85s) - 1)]
+            min_diff = min(diffs)
+            if min_diff < merge_threshold:
+                idx = diffs.index(min_diff)
+                tratta_ranges[idx] = tratta_ranges[idx] | tratta_ranges[idx + 1]
+                del tratta_ranges[idx + 1]
+                merged = True
 
         # Re-assign intersections to nearest tratta
         for iseg in sorted(intersections):
@@ -348,19 +369,25 @@ def compute_tratte_no_intersections(segments, n_bkps=5):
             if ir.empty:
                 continue
             idist = ir["cum_dist_start"].iloc[0]
-            best_t, best_d = 1, float("inf")
-            for t_id, t_segs in tratta_ranges:
+            best_i, best_d = 0, float("inf")
+            for i, t_segs in enumerate(tratta_ranges):
                 tr = seg[seg["seg_idx"].isin(t_segs)]
                 if tr.empty:
                     continue
                 d = abs(idist - tr["cum_dist_start"].mean())
                 if d < best_d:
-                    best_d, best_t = d, t_id
-            tratte_seg_map[(direction, int(iseg))] = best_t
-            tratta_ranges[best_t - 1][1].add(iseg)
+                    best_d, best_i = d, i
+            tratte_seg_map[(direction, int(iseg))] = best_i + 1
+            tratta_ranges[best_i].add(iseg)
+
+        # Update seg_map for clean segments too
+        for i, t_segs in enumerate(tratta_ranges):
+            for sidx in t_segs:
+                if sidx not in intersections:
+                    tratte_seg_map[(direction, int(sidx))] = i + 1
 
         # Summary rows (stats from clean segments only)
-        for t_id, t_segs in tratta_ranges:
+        for t_id, t_segs in enumerate(tratta_ranges, 1):
             sl = seg[seg["seg_idx"].isin(t_segs)].sort_values("cum_dist_start")
             if sl.empty:
                 continue
@@ -387,9 +414,10 @@ def compute_tratte_no_intersections(segments, n_bkps=5):
     return pd.DataFrame(tratte_rows), tratte_seg_map, intersection_info
 
 
-def compute_tratte_no_intersections_mean(segments, n_bkps=5):
+def compute_tratte_no_intersections_mean(segments, n_bkps=4, merge_threshold=5.0):
     """Like compute_tratte_no_intersections but uses only the 24h V85 mean
     (univariate signal) instead of the full 24-hour profile for segmentation.
+    Same post-merge logic as the multivariate version.
     """
     day_type = "Inv. Feriale"
     c = segments[(segments["carriage"] == "Centrale")
@@ -423,13 +451,31 @@ def compute_tratte_no_intersections_mean(segments, n_bkps=5):
 
         # Build tratte from clean segments
         start, tratta_ranges = 0, []
-        for t_id, end in enumerate(bkps, 1):
+        for end in bkps:
             sl = seg_clean.iloc[start:end]
             t_segs = set(sl["seg_idx"].tolist())
-            tratta_ranges.append((t_id, t_segs))
-            for _, r in sl.iterrows():
-                tratte_seg_map[(direction, int(r["seg_idx"]))] = t_id
+            tratta_ranges.append(t_segs)
             start = end
+
+        # --- Post-merge ---
+        def _weighted_v85(seg_idxs):
+            s = seg[seg["seg_idx"].isin(seg_idxs) & ~seg["seg_idx"].isin(intersections)]
+            if s.empty:
+                s = seg[seg["seg_idx"].isin(seg_idxs)]
+            w = s["seg_distance"].values
+            return np.average(s["v85_mean"], weights=w) if len(w) else 0.0
+
+        merged = True
+        while merged and len(tratta_ranges) > 2:
+            merged = False
+            v85s = [_weighted_v85(ts) for ts in tratta_ranges]
+            diffs = [abs(v85s[i] - v85s[i + 1]) for i in range(len(v85s) - 1)]
+            min_diff = min(diffs)
+            if min_diff < merge_threshold:
+                idx = diffs.index(min_diff)
+                tratta_ranges[idx] = tratta_ranges[idx] | tratta_ranges[idx + 1]
+                del tratta_ranges[idx + 1]
+                merged = True
 
         # Re-assign intersections to nearest tratta
         for iseg in sorted(intersections):
@@ -437,19 +483,25 @@ def compute_tratte_no_intersections_mean(segments, n_bkps=5):
             if ir.empty:
                 continue
             idist = ir["cum_dist_start"].iloc[0]
-            best_t, best_d = 1, float("inf")
-            for t_id, t_segs in tratta_ranges:
+            best_i, best_d = 0, float("inf")
+            for i, t_segs in enumerate(tratta_ranges):
                 tr = seg[seg["seg_idx"].isin(t_segs)]
                 if tr.empty:
                     continue
                 d = abs(idist - tr["cum_dist_start"].mean())
                 if d < best_d:
-                    best_d, best_t = d, t_id
-            tratte_seg_map[(direction, int(iseg))] = best_t
-            tratta_ranges[best_t - 1][1].add(iseg)
+                    best_d, best_i = d, i
+            tratte_seg_map[(direction, int(iseg))] = best_i + 1
+            tratta_ranges[best_i].add(iseg)
+
+        # Update seg_map for clean segments too
+        for i, t_segs in enumerate(tratta_ranges):
+            for sidx in t_segs:
+                if sidx not in intersections:
+                    tratte_seg_map[(direction, int(sidx))] = i + 1
 
         # Summary rows (stats from clean segments only)
-        for t_id, t_segs in tratta_ranges:
+        for t_id, t_segs in enumerate(tratta_ranges, 1):
             sl = seg[seg["seg_idx"].isin(t_segs)].sort_values("cum_dist_start")
             if sl.empty:
                 continue
