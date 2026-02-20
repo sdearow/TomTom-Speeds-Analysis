@@ -763,6 +763,142 @@ def chart_season_comparison(segments, carriage):
     return fig_to_base64(fig)
 
 
+def chart_tratte_distribution(segments, tratte_df, tratte_seg_map):
+    """V85 distribution analysis per tratta: box plots + hourly profiles + heatmaps.
+
+    Returns a dict with base64 images keyed by direction.
+    """
+    day_type = "Inv. Feriale"
+    c = segments[(segments["carriage"] == "Centrale")
+                 & (segments["day_type"] == day_type)]
+    results = {}
+
+    for direction in ["Ostia", "Centro"]:
+        sub = c[c["direction"] == direction]
+        td = tratte_df[tratte_df["direction"] == direction].sort_values("tratta")
+        n_tratte = len(td)
+
+        # ---- Figure with 3 rows: box plots, hourly profiles, heatmaps ----
+        fig = plt.figure(figsize=(max(16, n_tratte * 2), 18))
+        gs = fig.add_gridspec(3, n_tratte, height_ratios=[1, 1, 1.2],
+                              hspace=0.35, wspace=0.30)
+
+        # Precompute per-tratta data
+        tratta_data = []
+        for _, tr in td.iterrows():
+            t_id = int(tr["tratta"])
+            t_segs = [idx for (d, idx), tid in tratte_seg_map.items()
+                       if d == direction and tid == t_id]
+            t_sub = sub[sub["seg_idx"].isin(t_segs)]
+            # Per-segment mean V85
+            seg_v85 = t_sub.groupby("seg_idx").agg(
+                v85=("p85", "mean"),
+                seg_distance=("seg_distance", "first"),
+            )
+            # Per-hour weighted V85
+            hour_v85 = []
+            for h in range(24):
+                hd = t_sub[t_sub["hour"] == h]
+                if hd.empty:
+                    hour_v85.append(np.nan)
+                else:
+                    hour_v85.append(
+                        np.average(hd["p85"], weights=hd["seg_distance"]))
+            hour_v85 = np.array(hour_v85)
+            # Heatmap: segments x hours
+            pivot = t_sub.pivot_table(
+                index="seg_idx", columns="hour", values="p85", aggfunc="mean")
+            pivot = pivot.reindex(
+                index=sorted(t_segs),
+                columns=range(24)).ffill(axis=1).bfill(axis=1)
+            tratta_data.append({
+                "t_id": t_id, "tr": tr, "seg_v85": seg_v85,
+                "hour_v85": hour_v85, "pivot": pivot,
+                "color": TRATTA_COLORS[(t_id - 1) % len(TRATTA_COLORS)],
+            })
+
+        # ---- Row 1: Box plots ----
+        for ci, td_item in enumerate(tratta_data):
+            ax = fig.add_subplot(gs[0, ci])
+            t_id = td_item["t_id"]
+            color = td_item["color"]
+            v85_vals = td_item["seg_v85"]["v85"].values
+            lim = td_item["tr"]["speedLimit_mode"]
+
+            bp = ax.boxplot(v85_vals, patch_artist=True, widths=0.6,
+                            medianprops=dict(color="black", linewidth=2),
+                            whiskerprops=dict(color=color),
+                            capprops=dict(color=color))
+            bp["boxes"][0].set_facecolor(color)
+            bp["boxes"][0].set_alpha(0.5)
+            # Scatter individual points
+            ax.scatter(np.ones_like(v85_vals) + np.random.uniform(-0.1, 0.1, len(v85_vals)),
+                       v85_vals, color=color, s=15, zorder=3, alpha=0.7)
+            ax.axhline(lim, color="red", linewidth=1.2, linestyle="--", alpha=0.6)
+            ax.set_title(f"T{t_id}", fontsize=11, fontweight="bold", color=color)
+            ax.set_ylabel("V85 (km/h)" if ci == 0 else "", fontsize=9)
+            ax.set_xticks([])
+            n_seg = len(v85_vals)
+            length_km = td_item["tr"]["length_km"]
+            ax.set_xlabel(f"{n_seg} seg.\n{length_km:.1f} km", fontsize=8)
+            ax.set_ylim(40, 130)
+            ax.grid(True, alpha=0.2, axis="y")
+
+        # ---- Row 2: Hourly V85 profiles ----
+        for ci, td_item in enumerate(tratta_data):
+            ax = fig.add_subplot(gs[1, ci])
+            color = td_item["color"]
+            h_v85 = td_item["hour_v85"]
+            lim = td_item["tr"]["speedLimit_mode"]
+
+            ax.fill_between(range(24), h_v85, alpha=0.2, color=color)
+            ax.plot(range(24), h_v85, color=color, linewidth=2, marker="o",
+                    markersize=3)
+            ax.axhline(lim, color="red", linewidth=1.2, linestyle="--", alpha=0.6)
+            ax.set_xlim(0, 23)
+            ax.set_ylim(40, 130)
+            ax.set_xticks([0, 6, 12, 18, 23])
+            ax.set_xticklabels(["0", "6", "12", "18", "23"], fontsize=7)
+            ax.set_xlabel("Ora", fontsize=8)
+            ax.set_ylabel("V85 (km/h)" if ci == 0 else "", fontsize=9)
+            ax.set_title(f"T{td_item['t_id']} orario", fontsize=9, color=color)
+            ax.grid(True, alpha=0.2)
+
+        # ---- Row 3: Heatmaps (segment x hour) ----
+        norm_heat = mcolors.TwoSlopeNorm(vmin=40, vcenter=80, vmax=130)
+        cmap_heat = plt.cm.RdYlGn_r
+        for ci, td_item in enumerate(tratta_data):
+            ax = fig.add_subplot(gs[2, ci])
+            pivot = td_item["pivot"]
+            if pivot.empty:
+                continue
+            im = ax.pcolormesh(
+                np.arange(25), np.arange(len(pivot) + 1),
+                pivot.values, cmap=cmap_heat, norm=norm_heat, shading="flat")
+            ax.set_xticks([0, 6, 12, 18, 23])
+            ax.set_xticklabels(["0", "6", "12", "18", "23"], fontsize=7)
+            ax.set_xlabel("Ora", fontsize=8)
+            ax.set_ylabel("Segmento" if ci == 0 else "", fontsize=8)
+            ax.set_title(f"T{td_item['t_id']} heatmap", fontsize=9,
+                         color=td_item["color"])
+            ax.set_yticks([])
+
+        # Shared colorbar for heatmaps
+        cbar_ax = fig.add_axes([0.92, 0.05, 0.015, 0.25])
+        sm = plt.cm.ScalarMappable(cmap=cmap_heat, norm=norm_heat)
+        sm.set_array([])
+        cbar = fig.colorbar(sm, cax=cbar_ax)
+        cbar.set_label("V85 (km/h)", fontsize=9)
+
+        fig.suptitle(
+            f"Distribuzione V85 per Tratta — Carreggiata Centrale Dir. {direction}",
+            fontsize=14, fontweight="bold", y=0.98)
+
+        results[direction] = fig_to_base64(fig)
+
+    return results
+
+
 def chart_tratte_profile(segments, tratte_df):
     """V85 spatial profile with tratte colour-coded, for Centrale only."""
     import matplotlib.patches as mpatches
@@ -918,7 +1054,38 @@ def make_folium_tratte_map(segments, tratte_df, tratte_seg_map, direction):
                         popup=folium.Popup(popup_html, max_width=280)
                         ).add_to(m)
 
-    _add_folium_progressive(m, gdf)
+    # Separators at tratta boundaries
+    gdf_sorted = gdf.sort_values("cum_dist_start")
+    for i in range(len(td) - 1):
+        tr = td.iloc[i]
+        # Find last segment of this tratta
+        last_seg = gdf_sorted[
+            gdf_sorted.index.map(
+                lambda idx: tratte_seg_map.get((direction, idx), -1)
+            ) == tr["tratta"]
+        ]
+        if last_seg.empty:
+            continue
+        last_geom = last_seg.iloc[-1].geometry
+        pt = last_geom.coords[-1]  # endpoint of last segment
+        t_cur = int(tr["tratta"])
+        t_next = int(td.iloc[i + 1]["tratta"])
+        folium.CircleMarker(
+            location=[pt[1], pt[0]], radius=7,
+            color="white", weight=2, fill=True,
+            fill_color="#333333", fill_opacity=0.9,
+            popup=f"Confine T{t_cur}/T{t_next}",
+        ).add_to(m)
+        folium.Marker(
+            location=[pt[1], pt[0]],
+            icon=folium.DivIcon(
+                html=(f'<div style="font-size:9px;color:white;background:#333;'
+                      f'padding:1px 4px;border-radius:8px;text-align:center;'
+                      f'white-space:nowrap;font-weight:bold;'
+                      f'box-shadow:0 1px 3px rgba(0,0,0,.4);">'
+                      f'T{t_cur}|T{t_next}</div>'),
+                icon_size=(48, 18), icon_anchor=(24, -6)),
+        ).add_to(m)
 
     # Legend as HTML overlay
     legend_html = (
@@ -1775,6 +1942,18 @@ def _build_tratte_html_section(charts, map_files, tratte_df):
         if fname in map_files:
             tratte_maps_html += _iframe(fname, f"Tratte V85 — Dir. {direction}")
 
+    # Distribution charts
+    dist_charts = charts.get("tratte_distribution", {})
+    _dist_imgs = ""
+    for direction in ["Ostia", "Centro"]:
+        img_b64 = dist_charts.get(direction, "")
+        if img_b64:
+            _dist_imgs += (
+                f'<h4>Dir. {direction}</h4>\n'
+                f'<img src="data:image/png;base64,{img_b64}" '
+                f'style="max-width:100%;" '
+                f'alt="Distribuzione V85 per tratta — Dir. {direction}">\n')
+
     section_html = f"""
 <section id="tratte_analysis">
 <h2>5. Segmentazione Carreggiata Centrale in Tratte Omogenee V85</h2>
@@ -1800,7 +1979,19 @@ intrinseca (es. intersezioni).
 <h3>5.2 Tabella Riepilogativa Tratte</h3>
 {tables_html}
 
-<h3>5.3 Mappe Interattive Tratte</h3>
+<h3>5.3 Distribuzione V85 per Tratta</h3>
+<p>Per ogni tratta si analizza la distribuzione del V85 su tre dimensioni:</p>
+<ul>
+<li><strong>Box plot</strong> (riga 1): dispersione del V85 medio tra i segmenti della tratta.
+    La linea rossa tratteggiata indica il limite di velocit&agrave; prevalente.</li>
+<li><strong>Profilo orario</strong> (riga 2): andamento del V85 ponderato (per distanza)
+    nelle 24 ore. Evidenzia le ore di punta e le ore notturne.</li>
+<li><strong>Heatmap</strong> (riga 3): matrice segmento &times; ora, che mostra la variabilit&agrave;
+    sia spaziale che temporale all&rsquo;interno di ogni tratta.</li>
+</ul>
+{_dist_imgs}
+
+<h3>5.4 Mappe Interattive Tratte</h3>
 {tratte_maps_html}
 
 <div class="insight-box">
@@ -2224,6 +2415,19 @@ def generate_word_report(charts, tables, static_map_paths, tratte_df=None):
             })
             _add_table_to_doc(doc, tbl_df)
 
+        # Distribution charts per tratta
+        dist_charts = charts.get("tratte_distribution", {})
+        for direction in ["Ostia", "Centro"]:
+            img_b64 = dist_charts.get(direction, "")
+            if img_b64:
+                doc.add_heading(f"Distribuzione V85 — Dir. {direction}", level=3)
+                stream = _b64_to_stream(img_b64)
+                doc.add_picture(stream, width=img_width)
+                _add_caption(doc,
+                    f"Distribuzione V85 per tratta — Dir. {direction}: "
+                    f"box plot (riga 1), profilo orario (riga 2), "
+                    f"heatmap segmento×ora (riga 3)")
+
         # Static maps for tratte
         for sp in static_map_paths:
             if "tratte_v85_centrale" in sp:
@@ -2283,10 +2487,12 @@ def main():
     print("Generazione grafici...")
     charts = generate_all_charts(segments, summaries)
     charts["tratte_profile"] = chart_tratte_profile(segments, tratte_df)
+    charts["tratte_distribution"] = chart_tratte_distribution(
+        segments, tratte_df, tratte_seg_map)
     for carriage in CARRIAGE_GROUPS:
         print(f"  - {CARRIAGE_GROUPS[carriage]['label']}: "
               f"{len(charts[carriage])} gruppi di grafici")
-    print(f"  - Tratte V85 Centrale: profilo generato")
+    print(f"  - Tratte V85 Centrale: profilo + distribuzione generati")
 
     print("Generazione mappe statiche...")
     static_map_paths = generate_all_static_maps(segments)
