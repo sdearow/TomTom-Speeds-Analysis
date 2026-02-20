@@ -441,7 +441,7 @@ def chart_heatmaps(segments, carriage, day_type="Inv. Feriale"):
     """Speed heatmaps: hour (y) x progressive distance (x), one per direction."""
     cg = CARRIAGE_GROUPS[carriage]
     results = {}
-    norm = mcolors.TwoSlopeNorm(vmin=15, vcenter=50, vmax=90)
+    norm = mcolors.TwoSlopeNorm(vmin=15, vcenter=60, vmax=120)
     cmap = plt.cm.RdYlGn
     for d in cg["directions"]:
         sub = segments[(segments["carriage"] == carriage)
@@ -783,7 +783,7 @@ def generate_static_speed_map(segments, carriage, direction, day_type, value_col
         return None
 
     fig, ax = plt.subplots(figsize=(10, 14))
-    norm = mcolors.TwoSlopeNorm(vmin=20, vcenter=50, vmax=80)
+    norm = mcolors.TwoSlopeNorm(vmin=20, vcenter=60, vmax=120)
     cmap = plt.cm.RdYlGn_r
 
     gdf.plot(ax=ax, color="#d0d0d0", linewidth=9, zorder=1, alpha=0.8)
@@ -801,9 +801,11 @@ def generate_static_speed_map(segments, carriage, direction, day_type, value_col
     sm.set_array([])
     cbar = fig.colorbar(sm, ax=ax, shrink=0.4, pad=0.03, aspect=30)
     cbar.set_label("km/h", fontsize=10)
-    cbar.ax.axhline(y=50, color="black", linewidth=1.5, linestyle="--")
-    cbar.ax.text(1.3, 50, "Limite 50", transform=cbar.ax.get_yaxis_transform(),
-                 va="center", fontsize=8, color="black")
+    # Reference lines for common speed limits on Via Colombo
+    for lim, lbl in [(50, "50"), (80, "80")]:
+        cbar.ax.axhline(y=lim, color="black", linewidth=1.2, linestyle="--", alpha=0.7)
+        cbar.ax.text(1.3, lim, f"Lim. {lbl}", transform=cbar.ax.get_yaxis_transform(),
+                     va="center", fontsize=7, color="black")
     ax.set_title(title, fontsize=12, fontweight="bold", pad=12)
     fig.tight_layout()
 
@@ -826,7 +828,7 @@ def generate_static_speed_map_sidebyside(segments, carriage, day_type, value_col
         return None
 
     fig, axes = plt.subplots(1, 2, figsize=(20, 14))
-    norm = mcolors.TwoSlopeNorm(vmin=20, vcenter=50, vmax=80)
+    norm = mcolors.TwoSlopeNorm(vmin=20, vcenter=60, vmax=120)
     cmap = plt.cm.RdYlGn_r
 
     for ax, gdf_orig, lbl in [(axes[0], gdf_a, label_a), (axes[1], gdf_b, label_b)]:
@@ -843,7 +845,10 @@ def generate_static_speed_map_sidebyside(segments, carriage, day_type, value_col
     sm.set_array([])
     cbar = fig.colorbar(sm, ax=axes.tolist(), shrink=0.4, pad=0.02, aspect=30)
     cbar.set_label("km/h", fontsize=10)
-    cbar.ax.axhline(y=50, color="black", linewidth=1.5, linestyle="--")
+    for lim, lbl in [(50, "50"), (80, "80")]:
+        cbar.ax.axhline(y=lim, color="black", linewidth=1.2, linestyle="--", alpha=0.7)
+        cbar.ax.text(1.3, lim, f"Lim. {lbl}", transform=cbar.ax.get_yaxis_transform(),
+                     va="center", fontsize=7, color="black")
 
     fig.suptitle(title, fontsize=13, fontweight="bold", y=1.01)
     fig.tight_layout()
@@ -1003,7 +1008,7 @@ def _add_folium_stats(m, gdf, value_col, title):
     m.get_root().html.add_child(folium.Element(html))
 
 
-def make_folium_map(gdf, value_col, title, vmin=20, vmax=80,
+def make_folium_map(gdf, value_col, title, vmin=20, vmax=120,
                      reverse_cmap=False, add_progressive=True,
                      add_stats=True):
     """Folium map with coloured segments, legend, markers, stats."""
@@ -1015,8 +1020,8 @@ def make_folium_map(gdf, value_col, title, vmin=20, vmax=80,
     m = folium.Map(location=[clat, clon], zoom_start=zoom,
                    tiles="CartoDB positron")
 
-    colors = (["green", "yellow", "red"] if not reverse_cmap
-              else ["red", "yellow", "green"])
+    colors_fwd = ["green", "#b2df8a", "yellow", "orange", "red"]
+    colors = (colors_fwd if not reverse_cmap else colors_fwd[::-1])
     cmap = cm.LinearColormap(colors=colors, vmin=vmin, vmax=vmax,
                               caption=f"{title} (km/h)")
     for _, row in gdf.iterrows():
@@ -1043,7 +1048,7 @@ def make_folium_map(gdf, value_col, title, vmin=20, vmax=80,
 
 def make_folium_map_combined(gdf_a, gdf_b, value_col, title,
                                label_a="Dir. A", label_b="Dir. B",
-                               vmin=20, vmax=80, reverse_cmap=False):
+                               vmin=20, vmax=120, reverse_cmap=False):
     """Folium map with BOTH directions on one map, each in a layer group."""
     all_lats = list(gdf_a.geometry.centroid.y) + list(gdf_b.geometry.centroid.y)
     all_lons = list(gdf_a.geometry.centroid.x) + list(gdf_b.geometry.centroid.x)
@@ -1056,8 +1061,8 @@ def make_folium_map_combined(gdf_a, gdf_b, value_col, title,
     m = folium.Map(location=[clat, clon], zoom_start=zoom,
                    tiles="CartoDB positron")
 
-    colors = (["green", "yellow", "red"] if not reverse_cmap
-              else ["red", "yellow", "green"])
+    colors_fwd = ["green", "#b2df8a", "yellow", "orange", "red"]
+    colors = (colors_fwd if not reverse_cmap else colors_fwd[::-1])
     cmap = cm.LinearColormap(colors=colors, vmin=vmin, vmax=vmax,
                               caption=f"{title} (km/h)")
 
@@ -1103,11 +1108,11 @@ def generate_maps(segments, seg_stats):
     day_type = "Inv. Feriale"
 
     configs = [
-        ("avg_speed", None,        "Velocità Media (24h)",      "avg_speed_24h", "mean", 20, 80, False),
-        ("p85",       None,        "V85 (24h)",                 "v85_24h",       "mean", 20, 80, False),
-        ("avg_speed", NIGHT_HOURS, "Velocità Media Notturna",   "avg_speed_night", "mean", 20, 80, False),
-        ("p85",       NIGHT_HOURS, "V85 Notturno",              "v85_night",     "mean", 20, 80, False),
-        ("p85",       None,        "V85 Massimo (ora peggiore)","max_v85",       "max",  20, 90, False),
+        ("avg_speed", None,        "Velocità Media (24h)",      "avg_speed_24h", "mean", 20, 120, False),
+        ("p85",       None,        "V85 (24h)",                 "v85_24h",       "mean", 20, 130, False),
+        ("avg_speed", NIGHT_HOURS, "Velocità Media Notturna",   "avg_speed_night", "mean", 20, 120, False),
+        ("p85",       NIGHT_HOURS, "V85 Notturno",              "v85_night",     "mean", 20, 130, False),
+        ("p85",       None,        "V85 Massimo (ora peggiore)","max_v85",       "max",  20, 140, False),
     ]
 
     for carriage in CARRIAGE_GROUPS:
