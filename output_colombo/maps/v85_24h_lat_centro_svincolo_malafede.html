@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_162914c9004f06749bd162c17920f6f8 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+</head>
+<body>
+    
+    <div style="position:fixed;bottom:30px;left:10px;z-index:9999;background:white;padding:10px 14px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.3);font-family:sans-serif;font-size:12px;max-width:320px;line-height:1.5;"><b style="color:#1a237e;">V85 (24h) — Carreggiata Laterale Dir. Centro Svincolo Malafede (tutte le ore)</b><br>V85: media=44.1, max=50.1, min=40.9 km/h</div>
+    
+            <div class="folium-map" id="map_162914c9004f06749bd162c17920f6f8" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_162914c9004f06749bd162c17920f6f8 = L.map(
+                "map_162914c9004f06749bd162c17920f6f8",
+                {
+                    center: [41.77549122387753, 12.396703226400067],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 13,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_7b149c4e45276095ea4155a8f7b2f8d1 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_7b149c4e45276095ea4155a8f7b2f8d1.addTo(map_162914c9004f06749bd162c17920f6f8);
+        
+    
+            var poly_line_d0e4c0dd660f37cdf83592a18456081d = L.polyline(
+                [[41.77443, 12.3954], [41.77445, 12.39563], [41.77464, 12.39584], [41.77491, 12.39616], [41.77519, 12.39652], [41.77557, 12.39699]],
+                {"bubblingMouseEvents": true, "color": "#bcde00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#bcde00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_162914c9004f06749bd162c17920f6f8);
+        
+    
+        var popup_1d87e6eabb10171843fc52836e5ef521 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_493b07f1c7d94c69140b57ae28f7a736 = $(`<div id="html_493b07f1c7d94c69140b57ae28f7a736" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 7778 m<br>Vel. media: 21.7 km/h<br>V85: 42.0 km/h<br>Dev. std: 19.3 km/h<br>Limite: 50 km/h<br>Lungh.: 187 m</div>`)[0];
+                popup_1d87e6eabb10171843fc52836e5ef521.setContent(html_493b07f1c7d94c69140b57ae28f7a736);
+            
+        
+
+        poly_line_d0e4c0dd660f37cdf83592a18456081d.bindPopup(popup_1d87e6eabb10171843fc52836e5ef521)
+        ;
+
+        
+    
+    
+            var poly_line_b1e2ed3891d040f394e845f6c3eee25c = L.polyline(
+                [[41.77557, 12.39699], [41.77561, 12.39694]],
+                {"bubblingMouseEvents": true, "color": "#fffe00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#fffe00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_162914c9004f06749bd162c17920f6f8);
+        
+    
+        var popup_e0fca156d6f75436499611289a8e50c3 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_06090a922af2b312f2e0021737184b39 = $(`<div id="html_06090a922af2b312f2e0021737184b39" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 7965 m<br>Vel. media: 36.7 km/h<br>V85: 50.1 km/h<br>Dev. std: 16.6 km/h<br>Limite: 90 km/h<br>Lungh.: 6 m</div>`)[0];
+                popup_e0fca156d6f75436499611289a8e50c3.setContent(html_06090a922af2b312f2e0021737184b39);
+            
+        
+
+        poly_line_b1e2ed3891d040f394e845f6c3eee25c.bindPopup(popup_e0fca156d6f75436499611289a8e50c3)
+        ;
+
+        
+    
+    
+            var poly_line_e2d9eb7d0c400d3a2666c178a69fb3d8 = L.polyline(
+                [[41.77561, 12.39694], [41.77568, 12.39683]],
+                {"bubblingMouseEvents": true, "color": "#c5e200ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#c5e200ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_162914c9004f06749bd162c17920f6f8);
+        
+    
+        var popup_6e1b1a5d21752be56545b658f33e87e8 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_5046d17528408a4a1d6d7b20dce58f00 = $(`<div id="html_5046d17528408a4a1d6d7b20dce58f00" style="width: 100.0%; height: 100.0%;"><b>Via di Malafede</b><br>Progr.: 7971 m<br>Vel. media: 32.3 km/h<br>V85: 43.2 km/h<br>Dev. std: 16.1 km/h<br>Limite: 90 km/h<br>Lungh.: 12 m</div>`)[0];
+                popup_6e1b1a5d21752be56545b658f33e87e8.setContent(html_5046d17528408a4a1d6d7b20dce58f00);
+            
+        
+
+        poly_line_e2d9eb7d0c400d3a2666c178a69fb3d8.bindPopup(popup_6e1b1a5d21752be56545b658f33e87e8)
+        ;
+
+        
+    
+    
+            var poly_line_5275797e3f7f501b9303b8e58d76fef0 = L.polyline(
+                [[41.77568, 12.39683], [41.77588, 12.39667]],
+                {"bubblingMouseEvents": true, "color": "#b2d900ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#b2d900ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_162914c9004f06749bd162c17920f6f8);
+        
+    
+        var popup_c4f96c2751e82b8ae8a440af88b5e5b5 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_7d7a54bcd5dd1d4f4704c6f737c9b53d = $(`<div id="html_7d7a54bcd5dd1d4f4704c6f737c9b53d" style="width: 100.0%; height: 100.0%;"><b>Via di Malafede</b><br>Progr.: 7983 m<br>Vel. media: 32.0 km/h<br>V85: 40.9 km/h<br>Dev. std: 11.1 km/h<br>Limite: 90 km/h<br>Lungh.: 26 m</div>`)[0];
+                popup_c4f96c2751e82b8ae8a440af88b5e5b5.setContent(html_7d7a54bcd5dd1d4f4704c6f737c9b53d);
+            
+        
+
+        poly_line_5275797e3f7f501b9303b8e58d76fef0.bindPopup(popup_c4f96c2751e82b8ae8a440af88b5e5b5)
+        ;
+
+        
+    
+    
+    var color_map_8e8f46f0517b959d7b6b9dbed8024fcb = {};
+
+    
+    color_map_8e8f46f0517b959d7b6b9dbed8024fcb.color = d3.scale.threshold()
+              .domain([20.0, 20.120240480961925, 20.240480961923847, 20.360721442885772, 20.480961923847694, 20.60120240480962, 20.721442885771545, 20.841683366733466, 20.96192384769539, 21.082164328657313, 21.20240480961924, 21.322645290581164, 21.442885771543086, 21.56312625250501, 21.683366733466933, 21.803607214428858, 21.92384769539078, 22.044088176352705, 22.16432865731463, 22.284569138276552, 22.404809619238478, 22.5250501002004, 22.645290581162325, 22.76553106212425, 22.88577154308617, 23.006012024048097, 23.12625250501002, 23.246492985971944, 23.366733466933866, 23.48697394789579, 23.607214428857716, 23.727454909819638, 23.847695390781563, 23.967935871743485, 24.08817635270541, 24.208416833667336, 24.328657314629258, 24.448897795591183, 24.569138276553105, 24.68937875751503, 24.809619238476955, 24.929859719438877, 25.050100200400802, 25.170340681362724, 25.29058116232465, 25.410821643286575, 25.531062124248496, 25.65130260521042, 25.771543086172343, 25.89178356713427, 26.012024048096194, 26.132264529058116, 26.25250501002004, 26.372745490981963, 26.492985971943888, 26.613226452905813, 26.733466933867735, 26.85370741482966, 26.973947895791582, 27.094188376753507, 27.214428857715433, 27.334669338677354, 27.45490981963928, 27.5751503006012, 27.695390781563127, 27.815631262525052, 27.935871743486974, 28.056112224448896, 28.17635270541082, 28.296593186372746, 28.41683366733467, 28.537074148296593, 28.657314629258515, 28.77755511022044, 28.897795591182366, 29.01803607214429, 29.138276553106213, 29.258517034068134, 29.37875751503006, 29.498997995991985, 29.61923847695391, 29.739478957915832, 29.859719438877754, 29.97995991983968, 30.100200400801604, 30.22044088176353, 30.34068136272545, 30.460921843687373, 30.5811623246493, 30.701402805611224, 30.821643286573146, 30.94188376753507, 31.062124248496993, 31.182364729458918, 31.302605210420843, 31.422845691382765, 31.54308617234469, 31.663326653306612, 31.783567134268537, 31.903807615230463, 32.02404809619239, 32.144288577154306, 32.26452905811623, 32.38476953907816, 32.50501002004008, 32.625250501002, 32.745490981963925, 32.86573146292585, 32.985971943887776, 33.1062124248497, 33.22645290581163, 33.346693386773545, 33.46693386773547, 33.587174348697395, 33.70741482965932, 33.82765531062124, 33.947895791583164, 34.06813627254509, 34.188376753507015, 34.30861723446894, 34.428857715430865, 34.549098196392784, 34.66933867735471, 34.789579158316634, 34.90981963927856, 35.03006012024048, 35.1503006012024, 35.27054108216433, 35.390781563126254, 35.51102204408818, 35.631262525050104, 35.75150300601202, 35.87174348697395, 35.99198396793587, 36.11222444889779, 36.23246492985972, 36.35270541082164, 36.47294589178357, 36.59318637274549, 36.71342685370742, 36.83366733466934, 36.95390781563126, 37.07414829659319, 37.19438877755511, 37.31462925851703, 37.434869739478955, 37.55511022044088, 37.675350701402806, 37.79559118236473, 37.91583166332666, 38.03607214428858, 38.1563126252505, 38.276553106212425, 38.39679358717434, 38.51703406813627, 38.637274549098194, 38.75751503006012, 38.877755511022045, 38.99799599198397, 39.118236472945895, 39.23847695390782, 39.35871743486974, 39.478957915831664, 39.59919839679358, 39.71943887775551, 39.83967935871743, 39.95991983967936, 40.08016032064128, 40.20040080160321, 40.320641282565134, 40.44088176352706, 40.56112224448898, 40.6813627254509, 40.80160320641282, 40.921843687374746, 41.04208416833667, 41.1623246492986, 41.28256513026052, 41.40280561122245, 41.52304609218437, 41.64328657314629, 41.763527054108216, 41.88376753507014, 42.00400801603206, 42.124248496993985, 42.24448897795591, 42.364729458917836, 42.48496993987976, 42.605210420841686, 42.72545090180361, 42.84569138276553, 42.965931863727455, 43.08617234468938, 43.2064128256513, 43.326653306613224, 43.44689378757515, 43.567134268537075, 43.687374749499, 43.807615230460925, 43.92785571142285, 44.04809619238477, 44.168336673346694, 44.28857715430861, 44.40881763527054, 44.52905811623246, 44.64929859719439, 44.76953907815631, 44.88977955911824, 45.010020040080164, 45.13026052104209, 45.25050100200401, 45.37074148296593, 45.49098196392785, 45.611222444889776, 45.7314629258517, 45.85170340681363, 45.97194388777555, 46.09218436873748, 46.2124248496994, 46.33266533066132, 46.452905811623246, 46.57314629258517, 46.69338677354709, 46.813627254509015, 46.93386773547094, 47.054108216432866, 47.17434869739479, 47.294589178356716, 47.41482965931864, 47.53507014028056, 47.655310621242485, 47.77555110220441, 47.89579158316633, 48.016032064128254, 48.13627254509018, 48.256513026052104, 48.37675350701403, 48.496993987975955, 48.61723446893788, 48.7374749498998, 48.857715430861724, 48.97795591182364, 49.09819639278557, 49.21843687374749, 49.33867735470942, 49.45891783567134, 49.57915831663327, 49.699398797595194, 49.81963927855712, 49.93987975951904, 50.06012024048096, 50.18036072144288, 50.300601202404806, 50.42084168336673, 50.54108216432866, 50.66132264529058, 50.78156312625251, 50.90180360721443, 51.02204408817636, 51.142284569138276, 51.2625250501002, 51.38276553106212, 51.503006012024045, 51.62324649298597, 51.743486973947896, 51.86372745490982, 51.983967935871746, 52.104208416833664, 52.22444889779559, 52.344689378757515, 52.46492985971944, 52.585170340681366, 52.705410821643284, 52.82565130260521, 52.945891783567134, 53.06613226452906, 53.186372745490985, 53.3066132264529, 53.42685370741483, 53.547094188376754, 53.66733466933868, 53.787575150300604, 53.90781563126252, 54.02805611222445, 54.14829659318637, 54.2685370741483, 54.388777555110224, 54.50901803607214, 54.62925851703407, 54.74949899799599, 54.86973947895792, 54.98997995991984, 55.11022044088176, 55.23046092184369, 55.35070140280561, 55.47094188376754, 55.591182364729455, 55.71142284569138, 55.831663326653306, 55.95190380761523, 56.07214428857716, 56.192384769539075, 56.312625250501, 56.432865731462925, 56.55310621242485, 56.673346693386776, 56.793587174348694, 56.91382765531062, 57.034068136272545, 57.15430861723447, 57.274549098196395, 57.394789579158314, 57.51503006012024, 57.635270541082164, 57.75551102204409, 57.875751503006015, 57.99599198396793, 58.11623246492986, 58.236472945891784, 58.35671342685371, 58.476953907815634, 58.59719438877755, 58.71743486973948, 58.8376753507014, 58.95791583166333, 59.078156312625254, 59.19839679358717, 59.3186372745491, 59.43887775551102, 59.55911823647295, 59.67935871743487, 59.79959919839679, 59.91983967935872, 60.04008016032064, 60.16032064128257, 60.28056112224449, 60.40080160320641, 60.521042084168336, 60.64128256513026, 60.76152304609219, 60.88176352705411, 61.00200400801603, 61.122244488977955, 61.24248496993988, 61.362725450901806, 61.482965931863724, 61.60320641282565, 61.723446893787575, 61.8436873747495, 61.963927855711425, 62.08416833667334, 62.20440881763527, 62.324649298597194, 62.44488977955912, 62.565130260521045, 62.68537074148296, 62.80561122244489, 62.92585170340681, 63.04609218436874, 63.166332665330664, 63.28657314629258, 63.40681362725451, 63.52705410821643, 63.64729458917836, 63.76753507014028, 63.8877755511022, 64.00801603206412, 64.12825651302606, 64.24849699398797, 64.36873747494991, 64.48897795591182, 64.60921843687375, 64.72945891783567, 64.8496993987976, 64.96993987975952, 65.09018036072143, 65.21042084168337, 65.33066132264528, 65.45090180360722, 65.57114228456913, 65.69138276553106, 65.81162324649299, 65.93186372745491, 66.05210420841684, 66.17234468937876, 66.29258517034069, 66.4128256513026, 66.53306613226454, 66.65330661322645, 66.77354709418837, 66.8937875751503, 67.01402805611222, 67.13426853707415, 67.25450901803607, 67.374749498998, 67.49498997995991, 67.61523046092185, 67.73547094188376, 67.8557114228457, 67.97595190380761, 68.09619238476954, 68.21643286573146, 68.33667334669339, 68.45691382765531, 68.57715430861722, 68.69739478957916, 68.81763527054107, 68.93787575150301, 69.05811623246493, 69.17835671342685, 69.29859719438878, 69.4188376753507, 69.53907815631263, 69.65931863727455, 69.77955911823648, 69.89979959919839, 70.02004008016033, 70.14028056112224, 70.26052104208418, 70.38076152304609, 70.50100200400801, 70.62124248496994, 70.74148296593187, 70.86172344689379, 70.9819639278557, 71.10220440881764, 71.22244488977955, 71.34268537074149, 71.4629258517034, 71.58316633266533, 71.70340681362725, 71.82364729458918, 71.9438877755511, 72.06412825651302, 72.18436873747495, 72.30460921843687, 72.4248496993988, 72.54509018036072, 72.66533066132264, 72.78557114228457, 72.90581162324649, 73.02605210420842, 73.14629258517034, 73.26653306613227, 73.38677354709418, 73.50701402805612, 73.62725450901803, 73.74749498997997, 73.86773547094188, 73.9879759519038, 74.10821643286573, 74.22845691382766, 74.34869739478958, 74.4689378757515, 74.58917835671343, 74.70941883767534, 74.82965931863728, 74.9498997995992, 75.07014028056112, 75.19038076152304, 75.31062124248497, 75.4308617234469, 75.55110220440882, 75.67134268537075, 75.79158316633266, 75.9118236472946, 76.03206412825651, 76.15230460921845, 76.27254509018036, 76.39278557114228, 76.51302605210421, 76.63326653306613, 76.75350701402806, 76.87374749498997, 76.99398797595191, 77.11422845691382, 77.23446893787576, 77.35470941883767, 77.4749498997996, 77.59519038076152, 77.71543086172345, 77.83567134268537, 77.95591182364728, 78.07615230460922, 78.19639278557113, 78.31663326653307, 78.43687374749499, 78.55711422845691, 78.67735470941884, 78.79759519038076, 78.91783567134269, 79.03807615230461, 79.15831663326654, 79.27855711422845, 79.39879759519039, 79.5190380761523, 79.63927855711424, 79.75951903807615, 79.87975951903807, 80.0])
+              .range(['#008000ff', '#018100ff', '#028100ff', '#038200ff', '#048200ff', '#058300ff', '#068300ff', '#078400ff', '#088400ff', '#098500ff', '#0a8500ff', '#0b8600ff', '#0c8600ff', '#0d8700ff', '#0e8700ff', '#0f8800ff', '#108800ff', '#118900ff', '#128900ff', '#138a00ff', '#148a00ff', '#158b00ff', '#168b00ff', '#178c00ff', '#188c00ff', '#198d00ff', '#1a8d00ff', '#1b8e00ff', '#1c8e00ff', '#1d8f00ff', '#1e8f00ff', '#1f9000ff', '#209000ff', '#219100ff', '#229100ff', '#239200ff', '#249200ff', '#259300ff', '#269300ff', '#289400ff', '#299400ff', '#2a9500ff', '#2b9500ff', '#2c9600ff', '#2d9600ff', '#2e9700ff', '#2f9800ff', '#309800ff', '#319900ff', '#329900ff', '#339a00ff', '#349a00ff', '#359b00ff', '#369b00ff', '#379c00ff', '#389c00ff', '#399d00ff', '#3a9d00ff', '#3b9e00ff', '#3c9e00ff', '#3d9f00ff', '#3e9f00ff', '#3fa000ff', '#40a000ff', '#41a100ff', '#42a100ff', '#43a200ff', '#44a200ff', '#45a300ff', '#46a300ff', '#47a400ff', '#48a400ff', '#49a500ff', '#4aa500ff', '#4ba600ff', '#4ca600ff', '#4da700ff', '#4fa700ff', '#50a800ff', '#51a800ff', '#52a900ff', '#53a900ff', '#54aa00ff', '#55aa00ff', '#56ab00ff', '#57ab00ff', '#58ac00ff', '#59ac00ff', '#5aad00ff', '#5bad00ff', '#5cae00ff', '#5daf00ff', '#5eaf00ff', '#5fb000ff', '#60b000ff', '#61b100ff', '#62b100ff', '#63b200ff', '#64b200ff', '#65b300ff', '#66b300ff', '#67b400ff', '#68b400ff', '#69b500ff', '#6ab500ff', '#6bb600ff', '#6cb600ff', '#6db700ff', '#6eb700ff', '#6fb800ff', '#70b800ff', '#71b900ff', '#72b900ff', '#73ba00ff', '#74ba00ff', '#75bb00ff', '#77bb00ff', '#78bc00ff', '#79bc00ff', '#7abd00ff', '#7bbd00ff', '#7cbe00ff', '#7dbe00ff', '#7ebf00ff', '#7fbf00ff', '#80c000ff', '#81c000ff', '#82c100ff', '#83c100ff', '#84c200ff', '#85c200ff', '#86c300ff', '#87c300ff', '#88c400ff', '#89c400ff', '#8ac500ff', '#8bc500ff', '#8cc600ff', '#8dc700ff', '#8ec700ff', '#8fc800ff', '#90c800ff', '#91c900ff', '#92c900ff', '#93ca00ff', '#94ca00ff', '#95cb00ff', '#96cb00ff', '#97cc00ff', '#98cc00ff', '#99cd00ff', '#9acd00ff', '#9bce00ff', '#9cce00ff', '#9ecf00ff', '#9fcf00ff', '#a0d000ff', '#a1d000ff', '#a2d100ff', '#a3d100ff', '#a4d200ff', '#a5d200ff', '#a6d300ff', '#a7d300ff', '#a8d400ff', '#a9d400ff', '#aad500ff', '#abd500ff', '#acd600ff', '#add600ff', '#aed700ff', '#afd700ff', '#b0d800ff', '#b1d800ff', '#b2d900ff', '#b3d900ff', '#b4da00ff', '#b5da00ff', '#b6db00ff', '#b7db00ff', '#b8dc00ff', '#b9dc00ff', '#badd00ff', '#bbde00ff', '#bcde00ff', '#bddf00ff', '#bedf00ff', '#bfe000ff', '#c0e000ff', '#c1e100ff', '#c2e100ff', '#c3e200ff', '#c5e200ff', '#c6e300ff', '#c7e300ff', '#c8e400ff', '#c9e400ff', '#cae500ff', '#cbe500ff', '#cce600ff', '#cde600ff', '#cee700ff', '#cfe700ff', '#d0e800ff', '#d1e800ff', '#d2e900ff', '#d3e900ff', '#d4ea00ff', '#d5ea00ff', '#d6eb00ff', '#d7eb00ff', '#d8ec00ff', '#d9ec00ff', '#daed00ff', '#dbed00ff', '#dcee00ff', '#ddee00ff', '#deef00ff', '#dfef00ff', '#e0f000ff', '#e1f000ff', '#e2f100ff', '#e3f100ff', '#e4f200ff', '#e5f200ff', '#e6f300ff', '#e7f300ff', '#e8f400ff', '#e9f500ff', '#eaf500ff', '#ebf600ff', '#edf600ff', '#eef700ff', '#eff700ff', '#f0f800ff', '#f1f800ff', '#f2f900ff', '#f3f900ff', '#f4fa00ff', '#f5fa00ff', '#f6fb00ff', '#f7fb00ff', '#f8fc00ff', '#f9fc00ff', '#fafd00ff', '#fbfd00ff', '#fcfe00ff', '#fdfe00ff', '#feff00ff', '#ffff00ff', '#ffff00ff', '#fffe00ff', '#fffd00ff', '#fffc00ff', '#fffb00ff', '#fffa00ff', '#fff900ff', '#fff800ff', '#fff700ff', '#fff600ff', '#fff500ff', '#fff400ff', '#fff300ff', '#fff200ff', '#fff100ff', '#fff000ff', '#ffef00ff', '#ffee00ff', '#ffed00ff', '#ffeb00ff', '#ffea00ff', '#ffe900ff', '#ffe800ff', '#ffe700ff', '#ffe600ff', '#ffe500ff', '#ffe400ff', '#ffe300ff', '#ffe200ff', '#ffe100ff', '#ffe000ff', '#ffdf00ff', '#ffde00ff', '#ffdd00ff', '#ffdc00ff', '#ffdb00ff', '#ffda00ff', '#ffd900ff', '#ffd800ff', '#ffd700ff', '#ffd600ff', '#ffd500ff', '#ffd400ff', '#ffd300ff', '#ffd200ff', '#ffd100ff', '#ffd000ff', '#ffcf00ff', '#ffce00ff', '#ffcd00ff', '#ffcc00ff', '#ffcb00ff', '#ffca00ff', '#ffc900ff', '#ffc800ff', '#ffc700ff', '#ffc600ff', '#ffc500ff', '#ffc300ff', '#ffc200ff', '#ffc100ff', '#ffc000ff', '#ffbf00ff', '#ffbe00ff', '#ffbd00ff', '#ffbc00ff', '#ffbb00ff', '#ffba00ff', '#ffb900ff', '#ffb800ff', '#ffb700ff', '#ffb600ff', '#ffb500ff', '#ffb400ff', '#ffb300ff', '#ffb200ff', '#ffb100ff', '#ffb000ff', '#ffaf00ff', '#ffae00ff', '#ffad00ff', '#ffac00ff', '#ffab00ff', '#ffaa00ff', '#ffa900ff', '#ffa800ff', '#ffa700ff', '#ffa600ff', '#ffa500ff', '#ffa400ff', '#ffa300ff', '#ffa200ff', '#ffa100ff', '#ffa000ff', '#ff9f00ff', '#ff9e00ff', '#ff9c00ff', '#ff9b00ff', '#ff9a00ff', '#ff9900ff', '#ff9800ff', '#ff9700ff', '#ff9600ff', '#ff9500ff', '#ff9400ff', '#ff9300ff', '#ff9200ff', '#ff9100ff', '#ff9000ff', '#ff8f00ff', '#ff8e00ff', '#ff8d00ff', '#ff8c00ff', '#ff8b00ff', '#ff8a00ff', '#ff8900ff', '#ff8800ff', '#ff8700ff', '#ff8600ff', '#ff8500ff', '#ff8400ff', '#ff8300ff', '#ff8200ff', '#ff8100ff', '#ff8000ff', '#ff7f00ff', '#ff7e00ff', '#ff7d00ff', '#ff7c00ff', '#ff7b00ff', '#ff7a00ff', '#ff7900ff', '#ff7800ff', '#ff7700ff', '#ff7500ff', '#ff7400ff', '#ff7300ff', '#ff7200ff', '#ff7100ff', '#ff7000ff', '#ff6f00ff', '#ff6e00ff', '#ff6d00ff', '#ff6c00ff', '#ff6b00ff', '#ff6a00ff', '#ff6900ff', '#ff6800ff', '#ff6700ff', '#ff6600ff', '#ff6500ff', '#ff6400ff', '#ff6300ff', '#ff6200ff', '#ff6100ff', '#ff6000ff', '#ff5f00ff', '#ff5e00ff', '#ff5d00ff', '#ff5c00ff', '#ff5b00ff', '#ff5a00ff', '#ff5900ff', '#ff5800ff', '#ff5700ff', '#ff5600ff', '#ff5500ff', '#ff5400ff', '#ff5300ff', '#ff5200ff', '#ff5100ff', '#ff5000ff', '#ff4f00ff', '#ff4d00ff', '#ff4c00ff', '#ff4b00ff', '#ff4a00ff', '#ff4900ff', '#ff4800ff', '#ff4700ff', '#ff4600ff', '#ff4500ff', '#ff4400ff', '#ff4300ff', '#ff4200ff', '#ff4100ff', '#ff4000ff', '#ff3f00ff', '#ff3e00ff', '#ff3d00ff', '#ff3c00ff', '#ff3b00ff', '#ff3a00ff', '#ff3900ff', '#ff3800ff', '#ff3700ff', '#ff3600ff', '#ff3500ff', '#ff3400ff', '#ff3300ff', '#ff3200ff', '#ff3100ff', '#ff3000ff', '#ff2f00ff', '#ff2e00ff', '#ff2d00ff', '#ff2c00ff', '#ff2b00ff', '#ff2a00ff', '#ff2900ff', '#ff2800ff', '#ff2600ff', '#ff2500ff', '#ff2400ff', '#ff2300ff', '#ff2200ff', '#ff2100ff', '#ff2000ff', '#ff1f00ff', '#ff1e00ff', '#ff1d00ff', '#ff1c00ff', '#ff1b00ff', '#ff1a00ff', '#ff1900ff', '#ff1800ff', '#ff1700ff', '#ff1600ff', '#ff1500ff', '#ff1400ff', '#ff1300ff', '#ff1200ff', '#ff1100ff', '#ff1000ff', '#ff0f00ff', '#ff0e00ff', '#ff0d00ff', '#ff0c00ff', '#ff0b00ff', '#ff0a00ff', '#ff0900ff', '#ff0800ff', '#ff0700ff', '#ff0600ff', '#ff0500ff', '#ff0400ff', '#ff0300ff', '#ff0200ff', '#ff0100ff', '#ff0000ff']);
+    
+
+    color_map_8e8f46f0517b959d7b6b9dbed8024fcb.x = d3.scale.linear()
+              .domain([20.0, 80.0])
+              .range([0, 450 - 50]);
+
+    color_map_8e8f46f0517b959d7b6b9dbed8024fcb.legend = L.control({position: 'topright'});
+    color_map_8e8f46f0517b959d7b6b9dbed8024fcb.legend.onAdd = function (map) {var div = L.DomUtil.create('div', 'legend'); return div};
+    color_map_8e8f46f0517b959d7b6b9dbed8024fcb.legend.addTo(map_162914c9004f06749bd162c17920f6f8);
+
+    color_map_8e8f46f0517b959d7b6b9dbed8024fcb.xAxis = d3.svg.axis()
+        .scale(color_map_8e8f46f0517b959d7b6b9dbed8024fcb.x)
+        .orient("top")
+        .tickSize(1)
+        .tickValues([20.0, 50.0, 80.0]);
+
+    color_map_8e8f46f0517b959d7b6b9dbed8024fcb.svg = d3.select(".legend.leaflet-control").append("svg")
+        .attr("id", 'legend')
+        .attr("width", 450)
+        .attr("height", 40);
+
+    color_map_8e8f46f0517b959d7b6b9dbed8024fcb.g = color_map_8e8f46f0517b959d7b6b9dbed8024fcb.svg.append("g")
+        .attr("class", "key")
+        .attr("fill", "black")
+        .attr("transform", "translate(25,16)");
+
+    color_map_8e8f46f0517b959d7b6b9dbed8024fcb.g.selectAll("rect")
+        .data(color_map_8e8f46f0517b959d7b6b9dbed8024fcb.color.range().map(function(d, i) {
+          return {
+            x0: i ? color_map_8e8f46f0517b959d7b6b9dbed8024fcb.x(color_map_8e8f46f0517b959d7b6b9dbed8024fcb.color.domain()[i - 1]) : color_map_8e8f46f0517b959d7b6b9dbed8024fcb.x.range()[0],
+            x1: i < color_map_8e8f46f0517b959d7b6b9dbed8024fcb.color.domain().length ? color_map_8e8f46f0517b959d7b6b9dbed8024fcb.x(color_map_8e8f46f0517b959d7b6b9dbed8024fcb.color.domain()[i]) : color_map_8e8f46f0517b959d7b6b9dbed8024fcb.x.range()[1],
+            z: d
+          };
+        }))
+      .enter().append("rect")
+        .attr("height", 40 - 30)
+        .attr("x", function(d) { return d.x0; })
+        .attr("width", function(d) { return d.x1 - d.x0; })
+        .style("fill", function(d) { return d.z; });
+
+    color_map_8e8f46f0517b959d7b6b9dbed8024fcb.g.call(color_map_8e8f46f0517b959d7b6b9dbed8024fcb.xAxis).append("text")
+        .attr("class", "caption")
+        .attr("y", 21)
+        .attr("fill", "black")
+        .text("V85 (24h) \u2014 Carreggiata Laterale Dir. Centro Svincolo Malafede (tutte le ore) (km/h)");
+    
+            var marker_0e2469cdfd4a7ce17e80020e81e61b23 = L.marker(
+                [41.77580694063927, 12.396728447488584],
+                {
+}
+            ).addTo(map_162914c9004f06749bd162c17920f6f8);
+        
+    
+            var div_icon_4bef35bfbcb9f9dd22c49c27a6bdaeeb = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e8.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_0e2469cdfd4a7ce17e80020e81e61b23.setIcon(div_icon_4bef35bfbcb9f9dd22c49c27a6bdaeeb);
+            
+    
+            var marker_b92d6c9f5776eaebd9ec4f7de8a0d45f = L.marker(
+                [41.77443, 12.3954],
+                {
+}
+            ).addTo(map_162914c9004f06749bd162c17920f6f8);
+        
+    
+            var icon_2b76134e54eeee848cfc8928b881e847 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_05993e1c06e0f2180ddb88a02c0c310e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1aa5db367b3246e32d8af2f7938a6aa8 = $(`<div id="html_1aa5db367b3246e32d8af2f7938a6aa8" style="width: 100.0%; height: 100.0%;">Inizio (0 m)</div>`)[0];
+                popup_05993e1c06e0f2180ddb88a02c0c310e.setContent(html_1aa5db367b3246e32d8af2f7938a6aa8);
+            
+        
+
+        marker_b92d6c9f5776eaebd9ec4f7de8a0d45f.bindPopup(popup_05993e1c06e0f2180ddb88a02c0c310e)
+        ;
+
+        
+    
+    
+                marker_b92d6c9f5776eaebd9ec4f7de8a0d45f.setIcon(icon_2b76134e54eeee848cfc8928b881e847);
+            
+    
+            var marker_1d6760e4692d0ed77aa90e1406a3a046 = L.marker(
+                [41.77588, 12.39667],
+                {
+}
+            ).addTo(map_162914c9004f06749bd162c17920f6f8);
+        
+    
+            var icon_dfef27dc952bdd14dcd3c83fe25d4624 = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_0770bd33ab061901bfd235baf4baa236 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_1ebab35c8fca80f53c9ab1eb45f53c8f = $(`<div id="html_1ebab35c8fca80f53c9ab1eb45f53c8f" style="width: 100.0%; height: 100.0%;">Fine (8171 m)</div>`)[0];
+                popup_0770bd33ab061901bfd235baf4baa236.setContent(html_1ebab35c8fca80f53c9ab1eb45f53c8f);
+            
+        
+
+        marker_1d6760e4692d0ed77aa90e1406a3a046.bindPopup(popup_0770bd33ab061901bfd235baf4baa236)
+        ;
+
+        
+    
+    
+                marker_1d6760e4692d0ed77aa90e1406a3a046.setIcon(icon_dfef27dc952bdd14dcd3c83fe25d4624);
+            
+</script>
+</html>
