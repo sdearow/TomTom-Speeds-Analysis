@@ -1,0 +1,3373 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_dc334c42d98d051153acb0f30ce95177 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+</head>
+<body>
+    
+    <div style="position:fixed;bottom:30px;left:10px;z-index:9999;background:white;padding:10px 14px;border-radius:6px;box-shadow:0 2px 8px rgba(0,0,0,.3);font-family:sans-serif;font-size:12px;max-width:320px;line-height:1.5;"><b style="color:#1a237e;">Variabilità — Carreggiata Centrale Dir. Ostia</b><br>Dev. Std.: media=20.7, max=32.2, min=13.1 km/h</div>
+    
+            <div class="folium-map" id="map_dc334c42d98d051153acb0f30ce95177" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_dc334c42d98d051153acb0f30ce95177 = L.map(
+                "map_dc334c42d98d051153acb0f30ce95177",
+                {
+                    center: [41.76650405007739, 12.38951286438419],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 12,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_bfcf22177766bf0f4e205e50faded89d = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_bfcf22177766bf0f4e205e50faded89d.addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var poly_line_054d93612a3caf2c20476391c78a0175 = L.polyline(
+                [[41.81548, 12.46139], [41.81534, 12.46131], [41.81505, 12.46114]],
+                {"bubblingMouseEvents": true, "color": "#93c900ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#93c900ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_0517d65cce66c6c2b99916e749eb5ee2 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_9b71dde7a506791a77a74d98b7fd8531 = $(`<div id="html_9b71dde7a506791a77a74d98b7fd8531" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 0 m<br>Vel. media: 63.6 km/h<br>V85: 80.4 km/h<br>Dev. std: 17.1 km/h<br>Limite: 50 km/h<br>Lungh.: 52 m</div>`)[0];
+                popup_0517d65cce66c6c2b99916e749eb5ee2.setContent(html_9b71dde7a506791a77a74d98b7fd8531);
+            
+        
+
+        poly_line_054d93612a3caf2c20476391c78a0175.bindPopup(popup_0517d65cce66c6c2b99916e749eb5ee2)
+        ;
+
+        
+    
+    
+            var poly_line_abd98562ce9e3477287485220f812951 = L.polyline(
+                [[41.81505, 12.46114], [41.81479, 12.46099]],
+                {"bubblingMouseEvents": true, "color": "#91c900ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#91c900ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_fb1e5eb0098b57ede15cfbb013b0ac17 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_0799d52fdbe779fd6637cec19b1f9d7e = $(`<div id="html_0799d52fdbe779fd6637cec19b1f9d7e" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 52 m<br>Vel. media: 63.9 km/h<br>V85: 80.9 km/h<br>Dev. std: 17.2 km/h<br>Limite: 50 km/h<br>Lungh.: 31 m</div>`)[0];
+                popup_fb1e5eb0098b57ede15cfbb013b0ac17.setContent(html_0799d52fdbe779fd6637cec19b1f9d7e);
+            
+        
+
+        poly_line_abd98562ce9e3477287485220f812951.bindPopup(popup_fb1e5eb0098b57ede15cfbb013b0ac17)
+        ;
+
+        
+    
+    
+            var poly_line_513ab5bfd7658feb70f8c311c836bc2f = L.polyline(
+                [[41.81479, 12.46099], [41.81477, 12.46097], [41.8147, 12.46094], [41.81462, 12.46089]],
+                {"bubblingMouseEvents": true, "color": "#93c900ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#93c900ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_eec05e547a62c52b1b0c3d1c4d81f6dd = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_3bf6867e9e679cd809d86b49f1695526 = $(`<div id="html_3bf6867e9e679cd809d86b49f1695526" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 83 m<br>Vel. media: 64.2 km/h<br>V85: 81.0 km/h<br>Dev. std: 17.1 km/h<br>Limite: 50 km/h<br>Lungh.: 21 m</div>`)[0];
+                popup_eec05e547a62c52b1b0c3d1c4d81f6dd.setContent(html_3bf6867e9e679cd809d86b49f1695526);
+            
+        
+
+        poly_line_513ab5bfd7658feb70f8c311c836bc2f.bindPopup(popup_eec05e547a62c52b1b0c3d1c4d81f6dd)
+        ;
+
+        
+    
+    
+            var poly_line_4f11053273666a4e155989c7630f240f = L.polyline(
+                [[41.81462, 12.46089], [41.81458, 12.46087], [41.81423, 12.46068], [41.81392, 12.46051], [41.81386, 12.46048], [41.81338, 12.46021], [41.81326, 12.46014], [41.8131, 12.46004], [41.81291, 12.45992], [41.81274, 12.45982]],
+                {"bubblingMouseEvents": true, "color": "#a1d000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#a1d000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_690ccfe57ff2a323b742edc6ad4465f0 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_da7ae256e4302ae9104376f6870390d4 = $(`<div id="html_da7ae256e4302ae9104376f6870390d4" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 104 m<br>Vel. media: 65.4 km/h<br>V85: 81.8 km/h<br>Dev. std: 16.6 km/h<br>Limite: 50 km/h<br>Lungh.: 227 m</div>`)[0];
+                popup_690ccfe57ff2a323b742edc6ad4465f0.setContent(html_da7ae256e4302ae9104376f6870390d4);
+            
+        
+
+        poly_line_4f11053273666a4e155989c7630f240f.bindPopup(popup_690ccfe57ff2a323b742edc6ad4465f0)
+        ;
+
+        
+    
+    
+            var poly_line_58871cdb20d19a4baf0d77b7993cadf6 = L.polyline(
+                [[41.81274, 12.45982], [41.81246, 12.45963]],
+                {"bubblingMouseEvents": true, "color": "#9cce00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#9cce00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_5789c0f0152e60056e43d7f61c763d3a = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_73e8d915db0d552f544fd8a64c495870 = $(`<div id="html_73e8d915db0d552f544fd8a64c495870" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 331 m<br>Vel. media: 68.3 km/h<br>V85: 84.6 km/h<br>Dev. std: 16.8 km/h<br>Limite: 50 km/h<br>Lungh.: 35 m</div>`)[0];
+                popup_5789c0f0152e60056e43d7f61c763d3a.setContent(html_73e8d915db0d552f544fd8a64c495870);
+            
+        
+
+        poly_line_58871cdb20d19a4baf0d77b7993cadf6.bindPopup(popup_5789c0f0152e60056e43d7f61c763d3a)
+        ;
+
+        
+    
+    
+            var poly_line_9d073f8308119d9e88ff8cdd0b6a7c24 = L.polyline(
+                [[41.81246, 12.45963], [41.81236, 12.45954], [41.81232, 12.45949], [41.8123, 12.45947], [41.81223, 12.45938], [41.81212, 12.45925], [41.81184, 12.45896], [41.81172, 12.45885], [41.81152, 12.45864], [41.81122, 12.45828], [41.81074, 12.45764], [41.81052, 12.45731], [41.81042, 12.45716], [41.81033, 12.45702], [41.81025, 12.45691]],
+                {"bubblingMouseEvents": true, "color": "#a5d300ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#a5d300ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_aa8aa206c423211516ccda390a869391 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_c62d5db5831b3a2ad31e5f3ef5eec39d = $(`<div id="html_c62d5db5831b3a2ad31e5f3ef5eec39d" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 366 m<br>Vel. media: 73.2 km/h<br>V85: 88.9 km/h<br>Dev. std: 16.5 km/h<br>Limite: 50 km/h<br>Lungh.: 334 m</div>`)[0];
+                popup_aa8aa206c423211516ccda390a869391.setContent(html_c62d5db5831b3a2ad31e5f3ef5eec39d);
+            
+        
+
+        poly_line_9d073f8308119d9e88ff8cdd0b6a7c24.bindPopup(popup_aa8aa206c423211516ccda390a869391)
+        ;
+
+        
+    
+    
+            var poly_line_4b9160c545df3995de45aed7a442b72f = L.polyline(
+                [[41.81025, 12.45691], [41.80995, 12.45647]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_0020ca5ddfb134a7db964931273ad58a = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_74fc6e9832ba2411379ccba994d25ca2 = $(`<div id="html_74fc6e9832ba2411379ccba994d25ca2" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 700 m<br>Vel. media: 73.5 km/h<br>V85: 96.5 km/h<br>Dev. std: 22.4 km/h<br>Limite: 50 km/h<br>Lungh.: 50 m</div>`)[0];
+                popup_0020ca5ddfb134a7db964931273ad58a.setContent(html_74fc6e9832ba2411379ccba994d25ca2);
+            
+        
+
+        poly_line_4b9160c545df3995de45aed7a442b72f.bindPopup(popup_0020ca5ddfb134a7db964931273ad58a)
+        ;
+
+        
+    
+    
+            var poly_line_5b81e937549db5e8d68d941c6f87d54b = L.polyline(
+                [[41.80995, 12.45647], [41.80984, 12.4563], [41.80968, 12.45606]],
+                {"bubblingMouseEvents": true, "color": "#309800ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#309800ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_e0b581609d26e987ae8c299186f92194 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_4d6c37307fdd091ad14d9158f35250dc = $(`<div id="html_4d6c37307fdd091ad14d9158f35250dc" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 750 m<br>Vel. media: 75.9 km/h<br>V85: 97.2 km/h<br>Dev. std: 20.4 km/h<br>Limite: 80 km/h<br>Lungh.: 46 m</div>`)[0];
+                popup_e0b581609d26e987ae8c299186f92194.setContent(html_4d6c37307fdd091ad14d9158f35250dc);
+            
+        
+
+        poly_line_5b81e937549db5e8d68d941c6f87d54b.bindPopup(popup_e0b581609d26e987ae8c299186f92194)
+        ;
+
+        
+    
+    
+            var poly_line_018518b08a2d68d73f7e603a6c69cbc0 = L.polyline(
+                [[41.80968, 12.45606], [41.8093, 12.4555], [41.80924, 12.45541]],
+                {"bubblingMouseEvents": true, "color": "#55ab00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#55ab00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_7713403c97e4ec6ff1798040a95cb804 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_a97fbbd0a36c68c9b382da4ef6561895 = $(`<div id="html_a97fbbd0a36c68c9b382da4ef6561895" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 796 m<br>Vel. media: 77.7 km/h<br>V85: 98.1 km/h<br>Dev. std: 19.1 km/h<br>Limite: 80 km/h<br>Lungh.: 72 m</div>`)[0];
+                popup_7713403c97e4ec6ff1798040a95cb804.setContent(html_a97fbbd0a36c68c9b382da4ef6561895);
+            
+        
+
+        poly_line_018518b08a2d68d73f7e603a6c69cbc0.bindPopup(popup_7713403c97e4ec6ff1798040a95cb804)
+        ;
+
+        
+    
+    
+            var poly_line_6abc4eac7a3a2f22ca7bc62422ab12d3 = L.polyline(
+                [[41.80924, 12.45541], [41.80899, 12.45505], [41.80875, 12.45469]],
+                {"bubblingMouseEvents": true, "color": "#65b200ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#65b200ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_2748551a77d8b94ee60b31103188e3cc = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_3b18db7672e82f5f4d4480157a0b80a0 = $(`<div id="html_3b18db7672e82f5f4d4480157a0b80a0" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 868 m<br>Vel. media: 79.2 km/h<br>V85: 98.5 km/h<br>Dev. std: 18.6 km/h<br>Limite: 80 km/h<br>Lungh.: 81 m</div>`)[0];
+                popup_2748551a77d8b94ee60b31103188e3cc.setContent(html_3b18db7672e82f5f4d4480157a0b80a0);
+            
+        
+
+        poly_line_6abc4eac7a3a2f22ca7bc62422ab12d3.bindPopup(popup_2748551a77d8b94ee60b31103188e3cc)
+        ;
+
+        
+    
+    
+            var poly_line_af6c774fd7d1548587e82b400b1f9c1a = L.polyline(
+                [[41.80875, 12.45469], [41.8084, 12.45419]],
+                {"bubblingMouseEvents": true, "color": "#65b300ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#65b300ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_388fd6ee9d55f19240ca0811158927ec = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_c0129ddd4553bf28de39f871ad0d4eb9 = $(`<div id="html_c0129ddd4553bf28de39f871ad0d4eb9" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 949 m<br>Vel. media: 80.6 km/h<br>V85: 99.9 km/h<br>Dev. std: 18.6 km/h<br>Limite: 80 km/h<br>Lungh.: 57 m</div>`)[0];
+                popup_388fd6ee9d55f19240ca0811158927ec.setContent(html_c0129ddd4553bf28de39f871ad0d4eb9);
+            
+        
+
+        poly_line_af6c774fd7d1548587e82b400b1f9c1a.bindPopup(popup_388fd6ee9d55f19240ca0811158927ec)
+        ;
+
+        
+    
+    
+            var poly_line_12575839d425c392a3dd3bd39ed3c28f = L.polyline(
+                [[41.8084, 12.45419], [41.80827, 12.45399], [41.80812, 12.45377]],
+                {"bubblingMouseEvents": true, "color": "#61b100ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#61b100ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_d3564eb405e14a658c243000a08ac3f7 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_cbd243e4cdba16297071260d884460c9 = $(`<div id="html_cbd243e4cdba16297071260d884460c9" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 1006 m<br>Vel. media: 81.4 km/h<br>V85: 100.7 km/h<br>Dev. std: 18.8 km/h<br>Limite: 80 km/h<br>Lungh.: 46 m</div>`)[0];
+                popup_d3564eb405e14a658c243000a08ac3f7.setContent(html_cbd243e4cdba16297071260d884460c9);
+            
+        
+
+        poly_line_12575839d425c392a3dd3bd39ed3c28f.bindPopup(popup_d3564eb405e14a658c243000a08ac3f7)
+        ;
+
+        
+    
+    
+            var poly_line_37b2ec6c532093b3d1bd418672135bb0 = L.polyline(
+                [[41.80812, 12.45377], [41.80798, 12.45355]],
+                {"bubblingMouseEvents": true, "color": "#60b000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#60b000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_4415e4196a1de60c2b2b65554525d689 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_1b57afbe1b39272074c86ec38d18058f = $(`<div id="html_1b57afbe1b39272074c86ec38d18058f" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 1053 m<br>Vel. media: 81.8 km/h<br>V85: 101.4 km/h<br>Dev. std: 18.8 km/h<br>Limite: 80 km/h<br>Lungh.: 24 m</div>`)[0];
+                popup_4415e4196a1de60c2b2b65554525d689.setContent(html_1b57afbe1b39272074c86ec38d18058f);
+            
+        
+
+        poly_line_37b2ec6c532093b3d1bd418672135bb0.bindPopup(popup_4415e4196a1de60c2b2b65554525d689)
+        ;
+
+        
+    
+    
+            var poly_line_66b5977e11c8fb17400bbe151010c5dd = L.polyline(
+                [[41.80798, 12.45355], [41.8078, 12.4533], [41.80758, 12.45299], [41.80721, 12.45243], [41.80664, 12.4516]],
+                {"bubblingMouseEvents": true, "color": "#3b9e00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#3b9e00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_2c98df0c9ccc8d708f10bf2c927cc4ac = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_18ed64c672aaff7c7062582abe0af217 = $(`<div id="html_18ed64c672aaff7c7062582abe0af217" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 1077 m<br>Vel. media: 80.4 km/h<br>V85: 101.5 km/h<br>Dev. std: 20.0 km/h<br>Limite: 80 km/h<br>Lungh.: 219 m</div>`)[0];
+                popup_2c98df0c9ccc8d708f10bf2c927cc4ac.setContent(html_18ed64c672aaff7c7062582abe0af217);
+            
+        
+
+        poly_line_66b5977e11c8fb17400bbe151010c5dd.bindPopup(popup_2c98df0c9ccc8d708f10bf2c927cc4ac)
+        ;
+
+        
+    
+    
+            var poly_line_7ca91a38db35e9398ef6a359ce21e7a2 = L.polyline(
+                [[41.80664, 12.4516], [41.80598, 12.45062]],
+                {"bubblingMouseEvents": true, "color": "#55ab00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#55ab00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_f83f13ab7d7fa53bdf4178bdbe97c882 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_0633c3a490271fca579fcd9e9d159acc = $(`<div id="html_0633c3a490271fca579fcd9e9d159acc" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 1296 m<br>Vel. media: 82.7 km/h<br>V85: 103.2 km/h<br>Dev. std: 19.2 km/h<br>Limite: 80 km/h<br>Lungh.: 110 m</div>`)[0];
+                popup_f83f13ab7d7fa53bdf4178bdbe97c882.setContent(html_0633c3a490271fca579fcd9e9d159acc);
+            
+        
+
+        poly_line_7ca91a38db35e9398ef6a359ce21e7a2.bindPopup(popup_f83f13ab7d7fa53bdf4178bdbe97c882)
+        ;
+
+        
+    
+    
+            var poly_line_d4396a5a004b3fb7750ac7b1348266fc = L.polyline(
+                [[41.80598, 12.45062], [41.80579, 12.45035]],
+                {"bubblingMouseEvents": true, "color": "#5eaf00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#5eaf00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_f526bb2e256095faf7829a587a270b6d = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_72966ac5eefa1229e869820dd9d244b6 = $(`<div id="html_72966ac5eefa1229e869820dd9d244b6" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 1406 m<br>Vel. media: 83.2 km/h<br>V85: 103.4 km/h<br>Dev. std: 18.9 km/h<br>Limite: 80 km/h<br>Lungh.: 31 m</div>`)[0];
+                popup_f526bb2e256095faf7829a587a270b6d.setContent(html_72966ac5eefa1229e869820dd9d244b6);
+            
+        
+
+        poly_line_d4396a5a004b3fb7750ac7b1348266fc.bindPopup(popup_f526bb2e256095faf7829a587a270b6d)
+        ;
+
+        
+    
+    
+            var poly_line_cfcecc36d5c76b2038ea37a9d7592b87 = L.polyline(
+                [[41.80579, 12.45035], [41.80507, 12.44928]],
+                {"bubblingMouseEvents": true, "color": "#64b200ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#64b200ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_b4017d3afd2cca55bd5e2d4dfc66e984 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_d8a545587aa8b9e21d879e75e0a4afdd = $(`<div id="html_d8a545587aa8b9e21d879e75e0a4afdd" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 1437 m<br>Vel. media: 82.6 km/h<br>V85: 102.7 km/h<br>Dev. std: 18.7 km/h<br>Limite: 80 km/h<br>Lungh.: 120 m</div>`)[0];
+                popup_b4017d3afd2cca55bd5e2d4dfc66e984.setContent(html_d8a545587aa8b9e21d879e75e0a4afdd);
+            
+        
+
+        poly_line_cfcecc36d5c76b2038ea37a9d7592b87.bindPopup(popup_b4017d3afd2cca55bd5e2d4dfc66e984)
+        ;
+
+        
+    
+    
+            var poly_line_300ebf92bd80afffa94d94046b41d764 = L.polyline(
+                [[41.80507, 12.44928], [41.80494, 12.44908], [41.80457, 12.44853], [41.80358, 12.44707]],
+                {"bubblingMouseEvents": true, "color": "#5bae00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#5bae00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_a8ccbfd36d68481fd70b9650d20b62ce = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ada238561b68794f2e75e4f94a848b56 = $(`<div id="html_ada238561b68794f2e75e4f94a848b56" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 1557 m<br>Vel. media: 80.5 km/h<br>V85: 101.2 km/h<br>Dev. std: 19.0 km/h<br>Limite: 80 km/h<br>Lungh.: 247 m</div>`)[0];
+                popup_a8ccbfd36d68481fd70b9650d20b62ce.setContent(html_ada238561b68794f2e75e4f94a848b56);
+            
+        
+
+        poly_line_300ebf92bd80afffa94d94046b41d764.bindPopup(popup_a8ccbfd36d68481fd70b9650d20b62ce)
+        ;
+
+        
+    
+    
+            var poly_line_93065a0ada5202442e9f5234c0365dc4 = L.polyline(
+                [[41.80358, 12.44707], [41.80295, 12.44615]],
+                {"bubblingMouseEvents": true, "color": "#48a400ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#48a400ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_b7833f913fd201a033c18c1f23cc325a = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_7e3669eb38de751c83836c727d3fd279 = $(`<div id="html_7e3669eb38de751c83836c727d3fd279" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 1804 m<br>Vel. media: 86.9 km/h<br>V85: 107.2 km/h<br>Dev. std: 19.6 km/h<br>Limite: 80 km/h<br>Lungh.: 104 m</div>`)[0];
+                popup_b7833f913fd201a033c18c1f23cc325a.setContent(html_7e3669eb38de751c83836c727d3fd279);
+            
+        
+
+        poly_line_93065a0ada5202442e9f5234c0365dc4.bindPopup(popup_b7833f913fd201a033c18c1f23cc325a)
+        ;
+
+        
+    
+    
+            var poly_line_f0078e77ef06d9972b4c07ffe8c9368d = L.polyline(
+                [[41.80295, 12.44615], [41.80243, 12.44538], [41.80205, 12.44481]],
+                {"bubblingMouseEvents": true, "color": "#54aa00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#54aa00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_46b56b51a2f1cc01de93db4d2c3b3f2f = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2b387f585c8d5d1bef8a5c38ec0dbbd4 = $(`<div id="html_2b387f585c8d5d1bef8a5c38ec0dbbd4" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 1908 m<br>Vel. media: 88.3 km/h<br>V85: 108.4 km/h<br>Dev. std: 19.2 km/h<br>Limite: 80 km/h<br>Lungh.: 150 m</div>`)[0];
+                popup_46b56b51a2f1cc01de93db4d2c3b3f2f.setContent(html_2b387f585c8d5d1bef8a5c38ec0dbbd4);
+            
+        
+
+        poly_line_f0078e77ef06d9972b4c07ffe8c9368d.bindPopup(popup_46b56b51a2f1cc01de93db4d2c3b3f2f)
+        ;
+
+        
+    
+    
+            var poly_line_7cc3464e31c4b51c23558bfb10e2c487 = L.polyline(
+                [[41.80205, 12.44481], [41.80199, 12.44473], [41.80193, 12.44464]],
+                {"bubblingMouseEvents": true, "color": "#4ea700ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4ea700ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_d6f4ea06d0b73378152b048cfc1056a4 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_9f1d1f12c4cc3eb8a3ccdd9874bd5a0c = $(`<div id="html_9f1d1f12c4cc3eb8a3ccdd9874bd5a0c" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 2058 m<br>Vel. media: 89.1 km/h<br>V85: 109.2 km/h<br>Dev. std: 19.4 km/h<br>Limite: 80 km/h<br>Lungh.: 19 m</div>`)[0];
+                popup_d6f4ea06d0b73378152b048cfc1056a4.setContent(html_9f1d1f12c4cc3eb8a3ccdd9874bd5a0c);
+            
+        
+
+        poly_line_7cc3464e31c4b51c23558bfb10e2c487.bindPopup(popup_d6f4ea06d0b73378152b048cfc1056a4)
+        ;
+
+        
+    
+    
+            var poly_line_853bff24a4fc15f5d8d6566436d393e8 = L.polyline(
+                [[41.80193, 12.44464], [41.80174, 12.44436]],
+                {"bubblingMouseEvents": true, "color": "#4ca600ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#4ca600ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_3efa3ac35e5d5e23ed35cd929e27c7cc = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_344b7bd6dcbbf68820f1e15f39ba859f = $(`<div id="html_344b7bd6dcbbf68820f1e15f39ba859f" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 2077 m<br>Vel. media: 89.1 km/h<br>V85: 109.3 km/h<br>Dev. std: 19.5 km/h<br>Limite: 80 km/h<br>Lungh.: 31 m</div>`)[0];
+                popup_3efa3ac35e5d5e23ed35cd929e27c7cc.setContent(html_344b7bd6dcbbf68820f1e15f39ba859f);
+            
+        
+
+        poly_line_853bff24a4fc15f5d8d6566436d393e8.bindPopup(popup_3efa3ac35e5d5e23ed35cd929e27c7cc)
+        ;
+
+        
+    
+    
+            var poly_line_78203c089b54f67d0a1e1b69c60be499 = L.polyline(
+                [[41.80174, 12.44436], [41.8017, 12.4443], [41.80101, 12.44328], [41.79956, 12.44113]],
+                {"bubblingMouseEvents": true, "color": "#40a000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#40a000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_7a3c9858507fcef02b0a7164afbe6f2b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_27d163c2577e39855346500e157e7569 = $(`<div id="html_27d163c2577e39855346500e157e7569" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 2108 m<br>Vel. media: 88.8 km/h<br>V85: 109.4 km/h<br>Dev. std: 19.8 km/h<br>Limite: 50 km/h<br>Lungh.: 362 m</div>`)[0];
+                popup_7a3c9858507fcef02b0a7164afbe6f2b.setContent(html_27d163c2577e39855346500e157e7569);
+            
+        
+
+        poly_line_78203c089b54f67d0a1e1b69c60be499.bindPopup(popup_7a3c9858507fcef02b0a7164afbe6f2b)
+        ;
+
+        
+    
+    
+            var poly_line_d7783f64f8500a5a11b3407e5a949ed1 = L.polyline(
+                [[41.79956, 12.44113], [41.79936, 12.44083], [41.79856, 12.43965]],
+                {"bubblingMouseEvents": true, "color": "#299500ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#299500ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_206546d001823aefc469c85ffbee3b61 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_51f5464463e613bda5615c39a97f4439 = $(`<div id="html_51f5464463e613bda5615c39a97f4439" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 2470 m<br>Vel. media: 87.2 km/h<br>V85: 108.6 km/h<br>Dev. std: 20.6 km/h<br>Limite: 50 km/h<br>Lungh.: 165 m</div>`)[0];
+                popup_206546d001823aefc469c85ffbee3b61.setContent(html_51f5464463e613bda5615c39a97f4439);
+            
+        
+
+        poly_line_d7783f64f8500a5a11b3407e5a949ed1.bindPopup(popup_206546d001823aefc469c85ffbee3b61)
+        ;
+
+        
+    
+    
+            var poly_line_8b31c4813dc288a89c0d645aaa775065 = L.polyline(
+                [[41.79856, 12.43965], [41.79787, 12.43862]],
+                {"bubblingMouseEvents": true, "color": "#209000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#209000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_9e380abb0616b9b6be20ae6e6ed50067 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_641d61d5194868122ed5a77d852a589d = $(`<div id="html_641d61d5194868122ed5a77d852a589d" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 2635 m<br>Vel. media: 78.9 km/h<br>V85: 100.9 km/h<br>Dev. std: 20.9 km/h<br>Limite: 50 km/h<br>Lungh.: 115 m</div>`)[0];
+                popup_9e380abb0616b9b6be20ae6e6ed50067.setContent(html_641d61d5194868122ed5a77d852a589d);
+            
+        
+
+        poly_line_8b31c4813dc288a89c0d645aaa775065.bindPopup(popup_9e380abb0616b9b6be20ae6e6ed50067)
+        ;
+
+        
+    
+    
+            var poly_line_01f31df11e260d12ee8d01850859e2af = L.polyline(
+                [[41.79787, 12.43862], [41.7961, 12.43603]],
+                {"bubblingMouseEvents": true, "color": "#48a400ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#48a400ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_f1e356dbaf7b94d3adcf50c0e4ab51fb = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_0cd58d9b11f8056ec16793ec4b1bbb61 = $(`<div id="html_0cd58d9b11f8056ec16793ec4b1bbb61" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 2750 m<br>Vel. media: 81.7 km/h<br>V85: 101.5 km/h<br>Dev. std: 19.6 km/h<br>Limite: 80 km/h<br>Lungh.: 292 m</div>`)[0];
+                popup_f1e356dbaf7b94d3adcf50c0e4ab51fb.setContent(html_0cd58d9b11f8056ec16793ec4b1bbb61);
+            
+        
+
+        poly_line_01f31df11e260d12ee8d01850859e2af.bindPopup(popup_f1e356dbaf7b94d3adcf50c0e4ab51fb)
+        ;
+
+        
+    
+    
+            var poly_line_50efc2a78dc8e3f210707de9712dc30b = L.polyline(
+                [[41.7961, 12.43603], [41.79583, 12.43564]],
+                {"bubblingMouseEvents": true, "color": "#1a8d00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#1a8d00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_f1eb60febadd7b06357327006fb6ed2d = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_83ff39db0e106c6c8d47992810de9952 = $(`<div id="html_83ff39db0e106c6c8d47992810de9952" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 3042 m<br>Vel. media: 82.2 km/h<br>V85: 103.2 km/h<br>Dev. std: 21.1 km/h<br>Limite: 80 km/h<br>Lungh.: 44 m</div>`)[0];
+                popup_f1eb60febadd7b06357327006fb6ed2d.setContent(html_83ff39db0e106c6c8d47992810de9952);
+            
+        
+
+        poly_line_50efc2a78dc8e3f210707de9712dc30b.bindPopup(popup_f1eb60febadd7b06357327006fb6ed2d)
+        ;
+
+        
+    
+    
+            var poly_line_55325565208eab20197ad10f9a55b314 = L.polyline(
+                [[41.79583, 12.43564], [41.79568, 12.43541], [41.79509, 12.43453], [41.79447, 12.43361], [41.79381, 12.43265], [41.79303, 12.43149]],
+                {"bubblingMouseEvents": true, "color": "#3c9e00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#3c9e00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_1f03e97b75abe7eb0af96588d2328090 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2e50cdd9a3b88eeb23ff32f80a3a85a1 = $(`<div id="html_2e50cdd9a3b88eeb23ff32f80a3a85a1" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 3086 m<br>Vel. media: 83.9 km/h<br>V85: 104.6 km/h<br>Dev. std: 20.0 km/h<br>Limite: 80 km/h<br>Lungh.: 464 m</div>`)[0];
+                popup_1f03e97b75abe7eb0af96588d2328090.setContent(html_2e50cdd9a3b88eeb23ff32f80a3a85a1);
+            
+        
+
+        poly_line_55325565208eab20197ad10f9a55b314.bindPopup(popup_1f03e97b75abe7eb0af96588d2328090)
+        ;
+
+        
+    
+    
+            var poly_line_6c50e8c4c7f3e526ff5e6ffccbfad294 = L.polyline(
+                [[41.79303, 12.43149], [41.79276, 12.43111]],
+                {"bubblingMouseEvents": true, "color": "#028100ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#028100ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_ec30ffc7cbc0bd6177e6338950cc72e0 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_7581d21a051db05e95703c0fcb144dd7 = $(`<div id="html_7581d21a051db05e95703c0fcb144dd7" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 3551 m<br>Vel. media: 80.3 km/h<br>V85: 102.7 km/h<br>Dev. std: 21.9 km/h<br>Limite: 80 km/h<br>Lungh.: 43 m</div>`)[0];
+                popup_ec30ffc7cbc0bd6177e6338950cc72e0.setContent(html_7581d21a051db05e95703c0fcb144dd7);
+            
+        
+
+        poly_line_6c50e8c4c7f3e526ff5e6ffccbfad294.bindPopup(popup_ec30ffc7cbc0bd6177e6338950cc72e0)
+        ;
+
+        
+    
+    
+            var poly_line_6800941b4d62e0f9fbb13fb819e311a6 = L.polyline(
+                [[41.79276, 12.43111], [41.79237, 12.43053]],
+                {"bubblingMouseEvents": true, "color": "#128900ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#128900ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_849402d2e7bde7caa59a3c6644afc2b5 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_0641d7b74e29aa2aa3dc79a69483b8ab = $(`<div id="html_0641d7b74e29aa2aa3dc79a69483b8ab" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 3594 m<br>Vel. media: 80.6 km/h<br>V85: 102.6 km/h<br>Dev. std: 21.4 km/h<br>Limite: 80 km/h<br>Lungh.: 65 m</div>`)[0];
+                popup_849402d2e7bde7caa59a3c6644afc2b5.setContent(html_0641d7b74e29aa2aa3dc79a69483b8ab);
+            
+        
+
+        poly_line_6800941b4d62e0f9fbb13fb819e311a6.bindPopup(popup_849402d2e7bde7caa59a3c6644afc2b5)
+        ;
+
+        
+    
+    
+            var poly_line_3c7f3bd4791ccd44fc7d80748f958244 = L.polyline(
+                [[41.79237, 12.43053], [41.79138, 12.42907], [41.79076, 12.42816], [41.79063, 12.42797]],
+                {"bubblingMouseEvents": true, "color": "#229100ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#229100ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_77bc9ca7ac8a6b3e6f64138d247fbee1 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_87a7033878efcd04362b4895066d252c = $(`<div id="html_87a7033878efcd04362b4895066d252c" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 3658 m<br>Vel. media: 82.0 km/h<br>V85: 103.5 km/h<br>Dev. std: 20.9 km/h<br>Limite: 80 km/h<br>Lungh.: 288 m</div>`)[0];
+                popup_77bc9ca7ac8a6b3e6f64138d247fbee1.setContent(html_87a7033878efcd04362b4895066d252c);
+            
+        
+
+        poly_line_3c7f3bd4791ccd44fc7d80748f958244.bindPopup(popup_77bc9ca7ac8a6b3e6f64138d247fbee1)
+        ;
+
+        
+    
+    
+            var poly_line_48df54ee8a40446f713f62d19719850d = L.polyline(
+                [[41.79063, 12.42797], [41.79053, 12.42783], [41.79024, 12.4274]],
+                {"bubblingMouseEvents": true, "color": "#0f8800ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#0f8800ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_88f912ea1ae1fb5f1967a633fed468e8 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_bc099dff82889c67efc3b4ee77d603cc = $(`<div id="html_bc099dff82889c67efc3b4ee77d603cc" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 3947 m<br>Vel. media: 83.8 km/h<br>V85: 106.0 km/h<br>Dev. std: 21.5 km/h<br>Limite: 80 km/h<br>Lungh.: 64 m</div>`)[0];
+                popup_88f912ea1ae1fb5f1967a633fed468e8.setContent(html_bc099dff82889c67efc3b4ee77d603cc);
+            
+        
+
+        poly_line_48df54ee8a40446f713f62d19719850d.bindPopup(popup_88f912ea1ae1fb5f1967a633fed468e8)
+        ;
+
+        
+    
+    
+            var poly_line_f49c633a5b0c301ba2fd5242dd390848 = L.polyline(
+                [[41.79024, 12.4274], [41.79009, 12.42718], [41.78988, 12.42686], [41.78969, 12.42659]],
+                {"bubblingMouseEvents": true, "color": "#048200ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#048200ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_f61aee31a5828b2b5ccf628f43f7ec33 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_5692f256d8731ef7e5bde9cec13152f6 = $(`<div id="html_5692f256d8731ef7e5bde9cec13152f6" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 4011 m<br>Vel. media: 82.4 km/h<br>V85: 105.2 km/h<br>Dev. std: 21.9 km/h<br>Limite: 80 km/h<br>Lungh.: 91 m</div>`)[0];
+                popup_f61aee31a5828b2b5ccf628f43f7ec33.setContent(html_5692f256d8731ef7e5bde9cec13152f6);
+            
+        
+
+        poly_line_f49c633a5b0c301ba2fd5242dd390848.bindPopup(popup_f61aee31a5828b2b5ccf628f43f7ec33)
+        ;
+
+        
+    
+    
+            var poly_line_ede440f4e4f0f8fc6c4607587633b220 = L.polyline(
+                [[41.78969, 12.42659], [41.78914, 12.42579], [41.78883, 12.42533], [41.78854, 12.42491]],
+                {"bubblingMouseEvents": true, "color": "#0d8700ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#0d8700ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_5b05f7b115f52575ceb670d48bf49427 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_70e57e0745b93ee68b5c05025d6cf594 = $(`<div id="html_70e57e0745b93ee68b5c05025d6cf594" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 4102 m<br>Vel. media: 82.2 km/h<br>V85: 104.3 km/h<br>Dev. std: 21.5 km/h<br>Limite: 80 km/h<br>Lungh.: 188 m</div>`)[0];
+                popup_5b05f7b115f52575ceb670d48bf49427.setContent(html_70e57e0745b93ee68b5c05025d6cf594);
+            
+        
+
+        poly_line_ede440f4e4f0f8fc6c4607587633b220.bindPopup(popup_5b05f7b115f52575ceb670d48bf49427)
+        ;
+
+        
+    
+    
+            var poly_line_f29037849d0dad9815ca92c1ffb9cd61 = L.polyline(
+                [[41.78854, 12.42491], [41.78848, 12.42483], [41.78843, 12.42475]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_2c09211786c9c8deef64b5658ce1916f = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_54fc23e711396140a65f5f19a2ba0e59 = $(`<div id="html_54fc23e711396140a65f5f19a2ba0e59" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 4290 m<br>Vel. media: 70.3 km/h<br>V85: 99.4 km/h<br>Dev. std: 28.4 km/h<br>Limite: 80 km/h<br>Lungh.: 19 m</div>`)[0];
+                popup_2c09211786c9c8deef64b5658ce1916f.setContent(html_54fc23e711396140a65f5f19a2ba0e59);
+            
+        
+
+        poly_line_f29037849d0dad9815ca92c1ffb9cd61.bindPopup(popup_2c09211786c9c8deef64b5658ce1916f)
+        ;
+
+        
+    
+    
+            var poly_line_623167fed6a5b0dbb5682007d2a110d1 = L.polyline(
+                [[41.78843, 12.42475], [41.78825, 12.42447]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_a0e893fca93b1911e3db5f02ff254f85 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_6959b1b595c522a15c8578db3f432d5a = $(`<div id="html_6959b1b595c522a15c8578db3f432d5a" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 4309 m<br>Vel. media: 71.8 km/h<br>V85: 99.0 km/h<br>Dev. std: 25.9 km/h<br>Limite: 80 km/h<br>Lungh.: 30 m</div>`)[0];
+                popup_a0e893fca93b1911e3db5f02ff254f85.setContent(html_6959b1b595c522a15c8578db3f432d5a);
+            
+        
+
+        poly_line_623167fed6a5b0dbb5682007d2a110d1.bindPopup(popup_a0e893fca93b1911e3db5f02ff254f85)
+        ;
+
+        
+    
+    
+            var poly_line_fe8eeaa4ae5f3d5a0bdbe6825c110b21 = L.polyline(
+                [[41.78825, 12.42447], [41.78815, 12.42434]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_221459c50d3b3ada7a215d90c628ce12 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_1b9dd0383e1433ff073a1c310416850c = $(`<div id="html_1b9dd0383e1433ff073a1c310416850c" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 4339 m<br>Vel. media: 73.1 km/h<br>V85: 98.7 km/h<br>Dev. std: 24.1 km/h<br>Limite: 60 km/h<br>Lungh.: 15 m</div>`)[0];
+                popup_221459c50d3b3ada7a215d90c628ce12.setContent(html_1b9dd0383e1433ff073a1c310416850c);
+            
+        
+
+        poly_line_fe8eeaa4ae5f3d5a0bdbe6825c110b21.bindPopup(popup_221459c50d3b3ada7a215d90c628ce12)
+        ;
+
+        
+    
+    
+            var poly_line_ed1396b105483c92d4b7c5e3e3473373 = L.polyline(
+                [[41.78815, 12.42434], [41.78788, 12.42394], [41.78772, 12.42364], [41.78758, 12.42335], [41.78739, 12.42289], [41.78721, 12.42243], [41.78711, 12.42216], [41.78701, 12.42186], [41.78695, 12.42169], [41.78691, 12.42158], [41.78681, 12.42114], [41.7867, 12.42047], [41.78662, 12.41998], [41.78656, 12.41949], [41.78645, 12.41879], [41.78636, 12.41814], [41.78632, 12.41783], [41.7863, 12.41763], [41.78629, 12.4173], [41.78629, 12.41713], [41.78629, 12.41703], [41.7863, 12.41683]],
+                {"bubblingMouseEvents": true, "color": "#3b9e00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#3b9e00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_d4ac56086015b1bd79c3fde5ed3d0e6b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_379ca36b06d25117ec91bf5a95aaaa97 = $(`<div id="html_379ca36b06d25117ec91bf5a95aaaa97" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 4355 m<br>Vel. media: 75.2 km/h<br>V85: 96.8 km/h<br>Dev. std: 20.0 km/h<br>Limite: 60 km/h<br>Lungh.: 671 m</div>`)[0];
+                popup_d4ac56086015b1bd79c3fde5ed3d0e6b.setContent(html_379ca36b06d25117ec91bf5a95aaaa97);
+            
+        
+
+        poly_line_ed1396b105483c92d4b7c5e3e3473373.bindPopup(popup_d4ac56086015b1bd79c3fde5ed3d0e6b)
+        ;
+
+        
+    
+    
+            var poly_line_829a2a11265f86fe6e37b03831b8d61d = L.polyline(
+                [[41.7863, 12.41683], [41.78632, 12.41657], [41.78632, 12.41646], [41.78634, 12.41608], [41.78637, 12.41548], [41.78639, 12.415], [41.78638, 12.41475], [41.78636, 12.41431], [41.78632, 12.41371], [41.78622, 12.41306], [41.78617, 12.41284], [41.78607, 12.41241], [41.78601, 12.41219]],
+                {"bubblingMouseEvents": true, "color": "#1c8e00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#1c8e00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_c2eb15a81a2f7ddb489dfa177d9bb355 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_d24739622caf6618c6bf761c44c14f37 = $(`<div id="html_d24739622caf6618c6bf761c44c14f37" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 5026 m<br>Vel. media: 76.3 km/h<br>V85: 98.6 km/h<br>Dev. std: 21.1 km/h<br>Limite: 60 km/h<br>Lungh.: 391 m</div>`)[0];
+                popup_c2eb15a81a2f7ddb489dfa177d9bb355.setContent(html_d24739622caf6618c6bf761c44c14f37);
+            
+        
+
+        poly_line_829a2a11265f86fe6e37b03831b8d61d.bindPopup(popup_c2eb15a81a2f7ddb489dfa177d9bb355)
+        ;
+
+        
+    
+    
+            var poly_line_3f51d02b1492806b930ba15e7488f006 = L.polyline(
+                [[41.78601, 12.41219], [41.78596, 12.41201]],
+                {"bubblingMouseEvents": true, "color": "#1d8f00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#1d8f00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_b90df66d76362f5a33c1f3792fe3aa4d = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_333f3452ee7ad018b8b0631d61661d94 = $(`<div id="html_333f3452ee7ad018b8b0631d61661d94" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 5417 m<br>Vel. media: 76.1 km/h<br>V85: 98.0 km/h<br>Dev. std: 21.0 km/h<br>Limite: 60 km/h<br>Lungh.: 16 m</div>`)[0];
+                popup_b90df66d76362f5a33c1f3792fe3aa4d.setContent(html_333f3452ee7ad018b8b0631d61661d94);
+            
+        
+
+        poly_line_3f51d02b1492806b930ba15e7488f006.bindPopup(popup_b90df66d76362f5a33c1f3792fe3aa4d)
+        ;
+
+        
+    
+    
+            var poly_line_88dbb0f9b41e780829d8828557861510 = L.polyline(
+                [[41.78596, 12.41201], [41.7859, 12.41179], [41.78573, 12.41115], [41.78565, 12.41088], [41.78549, 12.41046], [41.78535, 12.41011], [41.78514, 12.40965], [41.78495, 12.40925], [41.78479, 12.40892], [41.78468, 12.40873], [41.78459, 12.40859], [41.78453, 12.40849], [41.78438, 12.40826], [41.78415, 12.40792], [41.78383, 12.40751]],
+                {"bubblingMouseEvents": true, "color": "#038200ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#038200ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_54b6ee190b0e1ba3e294c13d020d3fc9 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ba90e393930dd96e6eb569065b82cd8b = $(`<div id="html_ba90e393930dd96e6eb569065b82cd8b" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 5433 m<br>Vel. media: 72.5 km/h<br>V85: 95.2 km/h<br>Dev. std: 21.9 km/h<br>Limite: 60 km/h<br>Lungh.: 448 m</div>`)[0];
+                popup_54b6ee190b0e1ba3e294c13d020d3fc9.setContent(html_ba90e393930dd96e6eb569065b82cd8b);
+            
+        
+
+        poly_line_88dbb0f9b41e780829d8828557861510.bindPopup(popup_54b6ee190b0e1ba3e294c13d020d3fc9)
+        ;
+
+        
+    
+    
+            var poly_line_c39595ea77f08429e712b493bcfe1a1f = L.polyline(
+                [[41.78383, 12.40751], [41.78377, 12.40742], [41.78346, 12.40703]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_7ffc60e3d0fc39ef33620a1eb3edd3fc = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_0ba55a0f6ccdb6d9ce9647f1c0739ad9 = $(`<div id="html_0ba55a0f6ccdb6d9ce9647f1c0739ad9" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 5881 m<br>Vel. media: 76.4 km/h<br>V85: 99.7 km/h<br>Dev. std: 22.3 km/h<br>Limite: 60 km/h<br>Lungh.: 57 m</div>`)[0];
+                popup_7ffc60e3d0fc39ef33620a1eb3edd3fc.setContent(html_0ba55a0f6ccdb6d9ce9647f1c0739ad9);
+            
+        
+
+        poly_line_c39595ea77f08429e712b493bcfe1a1f.bindPopup(popup_7ffc60e3d0fc39ef33620a1eb3edd3fc)
+        ;
+
+        
+    
+    
+            var poly_line_2cda2a53ab41608986eb71d1b7e7c987 = L.polyline(
+                [[41.78346, 12.40703], [41.78321, 12.4067], [41.7824, 12.40565], [41.78179, 12.40486], [41.7813, 12.40422]],
+                {"bubblingMouseEvents": true, "color": "#078400ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#078400ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_35fe958ad416692674ce2351cbd0d1d0 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_558d307189edf5ac186b7c7d3812b096 = $(`<div id="html_558d307189edf5ac186b7c7d3812b096" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 5938 m<br>Vel. media: 71.4 km/h<br>V85: 94.4 km/h<br>Dev. std: 21.8 km/h<br>Limite: 60 km/h<br>Lungh.: 335 m</div>`)[0];
+                popup_35fe958ad416692674ce2351cbd0d1d0.setContent(html_558d307189edf5ac186b7c7d3812b096);
+            
+        
+
+        poly_line_2cda2a53ab41608986eb71d1b7e7c987.bindPopup(popup_35fe958ad416692674ce2351cbd0d1d0)
+        ;
+
+        
+    
+    
+            var poly_line_b379e327c6a80bf0db44cf7db86df164 = L.polyline(
+                [[41.7813, 12.40422], [41.77977, 12.40222], [41.77849, 12.40055], [41.778, 12.39991], [41.77759, 12.39939], [41.7774, 12.39914]],
+                {"bubblingMouseEvents": true, "color": "#53aa00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#53aa00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_26e9577debb8425cf7d1ca2954998176 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_7f95dcac17d029906d226bc6c73ec4bb = $(`<div id="html_7f95dcac17d029906d226bc6c73ec4bb" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 6272 m<br>Vel. media: 62.1 km/h<br>V85: 82.4 km/h<br>Dev. std: 19.2 km/h<br>Limite: 80 km/h<br>Lungh.: 606 m</div>`)[0];
+                popup_26e9577debb8425cf7d1ca2954998176.setContent(html_7f95dcac17d029906d226bc6c73ec4bb);
+            
+        
+
+        poly_line_b379e327c6a80bf0db44cf7db86df164.bindPopup(popup_26e9577debb8425cf7d1ca2954998176)
+        ;
+
+        
+    
+    
+            var poly_line_f4ff6c6bf34b574630ae48406cdf0220 = L.polyline(
+                [[41.7774, 12.39914], [41.77722, 12.39891]],
+                {"bubblingMouseEvents": true, "color": "#46a300ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#46a300ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_fabb297077bb01ac26ba729da37cd64d = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_426caf7a3cd6d80d648f1c1c7b6c3a2b = $(`<div id="html_426caf7a3cd6d80d648f1c1c7b6c3a2b" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 6878 m<br>Vel. media: 62.4 km/h<br>V85: 82.2 km/h<br>Dev. std: 19.7 km/h<br>Limite: 80 km/h<br>Lungh.: 27 m</div>`)[0];
+                popup_fabb297077bb01ac26ba729da37cd64d.setContent(html_426caf7a3cd6d80d648f1c1c7b6c3a2b);
+            
+        
+
+        poly_line_f4ff6c6bf34b574630ae48406cdf0220.bindPopup(popup_fabb297077bb01ac26ba729da37cd64d)
+        ;
+
+        
+    
+    
+            var poly_line_118e72bc5c32ffe37e3139dd60b1033c = L.polyline(
+                [[41.77722, 12.39891], [41.77717, 12.39884], [41.77699, 12.39861], [41.77673, 12.39826], [41.77652, 12.39798]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_3a6f74d10d39c501b9a42bcc9e964708 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_21304781a0378487575c8dc1fbed1987 = $(`<div id="html_21304781a0378487575c8dc1fbed1987" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 6905 m<br>Vel. media: 54.6 km/h<br>V85: 77.5 km/h<br>Dev. std: 22.3 km/h<br>Limite: 50 km/h<br>Lungh.: 110 m</div>`)[0];
+                popup_3a6f74d10d39c501b9a42bcc9e964708.setContent(html_21304781a0378487575c8dc1fbed1987);
+            
+        
+
+        poly_line_118e72bc5c32ffe37e3139dd60b1033c.bindPopup(popup_3a6f74d10d39c501b9a42bcc9e964708)
+        ;
+
+        
+    
+    
+            var poly_line_0ea23f3b88d68504fba21e3e5c8bf8e6 = L.polyline(
+                [[41.77652, 12.39798], [41.77636, 12.39777], [41.77609, 12.39739]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_0b12b4e7febec2d78a35bacc231341f6 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_06e42db2f9146894a4f33d4d3f2e410a = $(`<div id="html_06e42db2f9146894a4f33d4d3f2e410a" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 7016 m<br>Vel. media: 52.8 km/h<br>V85: 76.8 km/h<br>Dev. std: 22.8 km/h<br>Limite: 50 km/h<br>Lungh.: 68 m</div>`)[0];
+                popup_0b12b4e7febec2d78a35bacc231341f6.setContent(html_06e42db2f9146894a4f33d4d3f2e410a);
+            
+        
+
+        poly_line_0ea23f3b88d68504fba21e3e5c8bf8e6.bindPopup(popup_0b12b4e7febec2d78a35bacc231341f6)
+        ;
+
+        
+    
+    
+            var poly_line_68111f0da7cd97e6d398cdd12060f496 = L.polyline(
+                [[41.77609, 12.39739], [41.77591, 12.39713]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_c2bbd505f559621f98a5a8334d758ad5 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_6e3e53b0e8df9c0599a9d39a74fc0054 = $(`<div id="html_6e3e53b0e8df9c0599a9d39a74fc0054" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 7083 m<br>Vel. media: 49.0 km/h<br>V85: 76.5 km/h<br>Dev. std: 25.2 km/h<br>Limite: 50 km/h<br>Lungh.: 30 m</div>`)[0];
+                popup_c2bbd505f559621f98a5a8334d758ad5.setContent(html_6e3e53b0e8df9c0599a9d39a74fc0054);
+            
+        
+
+        poly_line_68111f0da7cd97e6d398cdd12060f496.bindPopup(popup_c2bbd505f559621f98a5a8334d758ad5)
+        ;
+
+        
+    
+    
+            var poly_line_e9dc359105deb6ad2dbc75807df9a086 = L.polyline(
+                [[41.77591, 12.39713], [41.77587, 12.39709], [41.77585, 12.39706]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_1e14a1763e10b3127287b73ac64c6d3b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_22a25631fefd30f4e5b5f630d0d7bd1b = $(`<div id="html_22a25631fefd30f4e5b5f630d0d7bd1b" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 7113 m<br>Vel. media: 48.7 km/h<br>V85: 76.3 km/h<br>Dev. std: 25.4 km/h<br>Limite: 50 km/h<br>Lungh.: 9 m</div>`)[0];
+                popup_1e14a1763e10b3127287b73ac64c6d3b.setContent(html_22a25631fefd30f4e5b5f630d0d7bd1b);
+            
+        
+
+        poly_line_e9dc359105deb6ad2dbc75807df9a086.bindPopup(popup_1e14a1763e10b3127287b73ac64c6d3b)
+        ;
+
+        
+    
+    
+            var poly_line_8e311097d6bfe100f90cb3160b2390b7 = L.polyline(
+                [[41.77585, 12.39706], [41.77579, 12.39698], [41.77568, 12.39683]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_453a9a4c5c72ce7102785880e3070bab = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_f2e9dc41042b7a3bad2869ad8f7b7d76 = $(`<div id="html_f2e9dc41042b7a3bad2869ad8f7b7d76" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 7122 m<br>Vel. media: 49.4 km/h<br>V85: 76.9 km/h<br>Dev. std: 26.1 km/h<br>Limite: 50 km/h<br>Lungh.: 27 m</div>`)[0];
+                popup_453a9a4c5c72ce7102785880e3070bab.setContent(html_f2e9dc41042b7a3bad2869ad8f7b7d76);
+            
+        
+
+        poly_line_8e311097d6bfe100f90cb3160b2390b7.bindPopup(popup_453a9a4c5c72ce7102785880e3070bab)
+        ;
+
+        
+    
+    
+            var poly_line_a61f0363cd9a53ab3904e85577acfc6e = L.polyline(
+                [[41.77568, 12.39683], [41.77547, 12.39659]],
+                {"bubblingMouseEvents": true, "color": "#158b00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#158b00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_b22eb90ac14d667c357a3cd1180630b3 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_b6b78fa1857e979ae147f752b0b54a2d = $(`<div id="html_b6b78fa1857e979ae147f752b0b54a2d" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 7149 m<br>Vel. media: 55.0 km/h<br>V85: 78.0 km/h<br>Dev. std: 21.3 km/h<br>Limite: 50 km/h<br>Lungh.: 30 m</div>`)[0];
+                popup_b22eb90ac14d667c357a3cd1180630b3.setContent(html_b6b78fa1857e979ae147f752b0b54a2d);
+            
+        
+
+        poly_line_a61f0363cd9a53ab3904e85577acfc6e.bindPopup(popup_b22eb90ac14d667c357a3cd1180630b3)
+        ;
+
+        
+    
+    
+            var poly_line_cd3bb1ace1f0cfc9c84962722b3efbd0 = L.polyline(
+                [[41.77547, 12.39659], [41.77524, 12.3963]],
+                {"bubblingMouseEvents": true, "color": "#45a300ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#45a300ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_6d971014b01a9d6733a7158185dc6c45 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_78d0d9d297533ff42585b11f1ac3e576 = $(`<div id="html_78d0d9d297533ff42585b11f1ac3e576" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 7179 m<br>Vel. media: 57.6 km/h<br>V85: 78.3 km/h<br>Dev. std: 19.7 km/h<br>Limite: 50 km/h<br>Lungh.: 36 m</div>`)[0];
+                popup_6d971014b01a9d6733a7158185dc6c45.setContent(html_78d0d9d297533ff42585b11f1ac3e576);
+            
+        
+
+        poly_line_cd3bb1ace1f0cfc9c84962722b3efbd0.bindPopup(popup_6d971014b01a9d6733a7158185dc6c45)
+        ;
+
+        
+    
+    
+            var poly_line_4f5dcc9b51692c56a779e36cff054527 = L.polyline(
+                [[41.77524, 12.3963], [41.77521, 12.39626], [41.7751, 12.39612], [41.77508, 12.39608]],
+                {"bubblingMouseEvents": true, "color": "#5fb000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#5fb000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_74202c3b1a63b2ee3b6f910602c65115 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2f675b11ec47c163c5953f921e532aa6 = $(`<div id="html_2f675b11ec47c163c5953f921e532aa6" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 7215 m<br>Vel. media: 60.7 km/h<br>V85: 80.0 km/h<br>Dev. std: 18.8 km/h<br>Limite: 50 km/h<br>Lungh.: 25 m</div>`)[0];
+                popup_74202c3b1a63b2ee3b6f910602c65115.setContent(html_2f675b11ec47c163c5953f921e532aa6);
+            
+        
+
+        poly_line_4f5dcc9b51692c56a779e36cff054527.bindPopup(popup_74202c3b1a63b2ee3b6f910602c65115)
+        ;
+
+        
+    
+    
+            var poly_line_a84a3648115bd971eb51a6e306d37a45 = L.polyline(
+                [[41.77508, 12.39608], [41.77458, 12.39544]],
+                {"bubblingMouseEvents": true, "color": "#6fb800ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#6fb800ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_81833c9ba36639293f0a20db7a08e5bb = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_efbfaa7ff701c5a29995e8e83f12e61e = $(`<div id="html_efbfaa7ff701c5a29995e8e83f12e61e" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 7240 m<br>Vel. media: 63.7 km/h<br>V85: 81.8 km/h<br>Dev. std: 18.3 km/h<br>Limite: 50 km/h<br>Lungh.: 77 m</div>`)[0];
+                popup_81833c9ba36639293f0a20db7a08e5bb.setContent(html_efbfaa7ff701c5a29995e8e83f12e61e);
+            
+        
+
+        poly_line_a84a3648115bd971eb51a6e306d37a45.bindPopup(popup_81833c9ba36639293f0a20db7a08e5bb)
+        ;
+
+        
+    
+    
+            var poly_line_936566b2293cf686547787a73058c2de = L.polyline(
+                [[41.77458, 12.39544], [41.77447, 12.39529]],
+                {"bubblingMouseEvents": true, "color": "#71b900ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#71b900ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_a267f9345dae130dc63d546849010728 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_9e041e093f27f63eed282ef60985cbfb = $(`<div id="html_9e041e093f27f63eed282ef60985cbfb" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 7317 m<br>Vel. media: 66.5 km/h<br>V85: 84.2 km/h<br>Dev. std: 18.2 km/h<br>Limite: 50 km/h<br>Lungh.: 18 m</div>`)[0];
+                popup_a267f9345dae130dc63d546849010728.setContent(html_9e041e093f27f63eed282ef60985cbfb);
+            
+        
+
+        poly_line_936566b2293cf686547787a73058c2de.bindPopup(popup_a267f9345dae130dc63d546849010728)
+        ;
+
+        
+    
+    
+            var poly_line_4ecf320e49c52d8cb823287fd7aca9c1 = L.polyline(
+                [[41.77447, 12.39529], [41.77373, 12.39433], [41.77288, 12.39321], [41.76956, 12.3889], [41.76924, 12.38847], [41.76791, 12.38673], [41.76701, 12.38555], [41.76639, 12.38472], [41.76608, 12.38435]],
+                {"bubblingMouseEvents": true, "color": "#7bbe00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#7bbe00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_1f9159144e94c792473ec407656de972 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_319bb6ff729b9c4f9d73f0fc1a321e5b = $(`<div id="html_319bb6ff729b9c4f9d73f0fc1a321e5b" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 7335 m<br>Vel. media: 65.4 km/h<br>V85: 83.5 km/h<br>Dev. std: 17.9 km/h<br>Limite: 50 km/h<br>Lungh.: 1302 m</div>`)[0];
+                popup_1f9159144e94c792473ec407656de972.setContent(html_319bb6ff729b9c4f9d73f0fc1a321e5b);
+            
+        
+
+        poly_line_4ecf320e49c52d8cb823287fd7aca9c1.bindPopup(popup_1f9159144e94c792473ec407656de972)
+        ;
+
+        
+    
+    
+            var poly_line_b1c8536581808c84f8827722df3d7684 = L.polyline(
+                [[41.76608, 12.38435], [41.76565, 12.38378]],
+                {"bubblingMouseEvents": true, "color": "#138a00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#138a00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_8a5d3c739b94b24e59ada2963832b7c0 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_a5c6dfe0186de16e51de98aa1e05364e = $(`<div id="html_a5c6dfe0186de16e51de98aa1e05364e" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 8637 m<br>Vel. media: 49.6 km/h<br>V85: 71.7 km/h<br>Dev. std: 21.3 km/h<br>Limite: 50 km/h<br>Lungh.: 67 m</div>`)[0];
+                popup_8a5d3c739b94b24e59ada2963832b7c0.setContent(html_a5c6dfe0186de16e51de98aa1e05364e);
+            
+        
+
+        poly_line_b1c8536581808c84f8827722df3d7684.bindPopup(popup_8a5d3c739b94b24e59ada2963832b7c0)
+        ;
+
+        
+    
+    
+            var poly_line_9614c4c0ce68454d511ea1a236e698af = L.polyline(
+                [[41.76565, 12.38378], [41.76536, 12.38339]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_cf01649474f9092cfabda7c172dbec4b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_b794e4e8b3dce17de9fd79c29aabaf75 = $(`<div id="html_b794e4e8b3dce17de9fd79c29aabaf75" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 8703 m<br>Vel. media: 43.4 km/h<br>V85: 68.9 km/h<br>Dev. std: 24.2 km/h<br>Limite: 50 km/h<br>Lungh.: 46 m</div>`)[0];
+                popup_cf01649474f9092cfabda7c172dbec4b.setContent(html_b794e4e8b3dce17de9fd79c29aabaf75);
+            
+        
+
+        poly_line_9614c4c0ce68454d511ea1a236e698af.bindPopup(popup_cf01649474f9092cfabda7c172dbec4b)
+        ;
+
+        
+    
+    
+            var poly_line_2f49f75e9ba06eed84d996b0a2c4567c = L.polyline(
+                [[41.76536, 12.38339], [41.76516, 12.38312]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_c192c9041ccd954147b72e07457c5dc5 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_cef81c9926d3e0caff926bc57105bb7d = $(`<div id="html_cef81c9926d3e0caff926bc57105bb7d" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 8750 m<br>Vel. media: 41.6 km/h<br>V85: 69.5 km/h<br>Dev. std: 26.0 km/h<br>Limite: 50 km/h<br>Lungh.: 32 m</div>`)[0];
+                popup_c192c9041ccd954147b72e07457c5dc5.setContent(html_cef81c9926d3e0caff926bc57105bb7d);
+            
+        
+
+        poly_line_2f49f75e9ba06eed84d996b0a2c4567c.bindPopup(popup_c192c9041ccd954147b72e07457c5dc5)
+        ;
+
+        
+    
+    
+            var poly_line_6e2ffbc8c7ff0215b2b2075e886a0a0c = L.polyline(
+                [[41.76516, 12.38312], [41.76507, 12.38301]],
+                {"bubblingMouseEvents": true, "color": "#0f8800ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#0f8800ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_b301cea3e94a9d4d6633c0f78322e899 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_396755d077bac3b565a3ea042dc6506e = $(`<div id="html_396755d077bac3b565a3ea042dc6506e" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 8781 m<br>Vel. media: 47.9 km/h<br>V85: 71.0 km/h<br>Dev. std: 21.5 km/h<br>Limite: 50 km/h<br>Lungh.: 14 m</div>`)[0];
+                popup_b301cea3e94a9d4d6633c0f78322e899.setContent(html_396755d077bac3b565a3ea042dc6506e);
+            
+        
+
+        poly_line_6e2ffbc8c7ff0215b2b2075e886a0a0c.bindPopup(popup_b301cea3e94a9d4d6633c0f78322e899)
+        ;
+
+        
+    
+    
+            var poly_line_2d714f07eaf15b98c9f8a8e9dec1a7e9 = L.polyline(
+                [[41.76507, 12.38301], [41.76493, 12.38284]],
+                {"bubblingMouseEvents": true, "color": "#2b9600ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#2b9600ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_aaf3f21f8603173b0c1b6badcc14a673 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_6bdb41df2401aa4422c93848ab059c0d = $(`<div id="html_6bdb41df2401aa4422c93848ab059c0d" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 8795 m<br>Vel. media: 54.1 km/h<br>V85: 76.3 km/h<br>Dev. std: 20.5 km/h<br>Limite: 50 km/h<br>Lungh.: 20 m</div>`)[0];
+                popup_aaf3f21f8603173b0c1b6badcc14a673.setContent(html_6bdb41df2401aa4422c93848ab059c0d);
+            
+        
+
+        poly_line_2d714f07eaf15b98c9f8a8e9dec1a7e9.bindPopup(popup_aaf3f21f8603173b0c1b6badcc14a673)
+        ;
+
+        
+    
+    
+            var poly_line_f98a7ae62f7bd50912584270c1cb2873 = L.polyline(
+                [[41.76493, 12.38284], [41.76439, 12.38215]],
+                {"bubblingMouseEvents": true, "color": "#69b400ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#69b400ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_1b062a415770c68eea62d8f8feb79e76 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_d54bf957c3edec332fd541dff96f95ef = $(`<div id="html_d54bf957c3edec332fd541dff96f95ef" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 8815 m<br>Vel. media: 61.0 km/h<br>V85: 79.0 km/h<br>Dev. std: 18.5 km/h<br>Limite: 50 km/h<br>Lungh.: 83 m</div>`)[0];
+                popup_1b062a415770c68eea62d8f8feb79e76.setContent(html_d54bf957c3edec332fd541dff96f95ef);
+            
+        
+
+        poly_line_f98a7ae62f7bd50912584270c1cb2873.bindPopup(popup_1b062a415770c68eea62d8f8feb79e76)
+        ;
+
+        
+    
+    
+            var poly_line_555ea08210e6a3595ddc64d7decc80c4 = L.polyline(
+                [[41.76439, 12.38215], [41.76392, 12.38151]],
+                {"bubblingMouseEvents": true, "color": "#5aad00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#5aad00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_7b19d6b41f5ee963d669402f48063300 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_fc6986daa191c9dc8b7ab9fd8e467075 = $(`<div id="html_fc6986daa191c9dc8b7ab9fd8e467075" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 8898 m<br>Vel. media: 69.8 km/h<br>V85: 86.9 km/h<br>Dev. std: 19.0 km/h<br>Limite: 50 km/h<br>Lungh.: 75 m</div>`)[0];
+                popup_7b19d6b41f5ee963d669402f48063300.setContent(html_fc6986daa191c9dc8b7ab9fd8e467075);
+            
+        
+
+        poly_line_555ea08210e6a3595ddc64d7decc80c4.bindPopup(popup_7b19d6b41f5ee963d669402f48063300)
+        ;
+
+        
+    
+    
+            var poly_line_03f2f19a593bd4fa0dd337ef4450e171 = L.polyline(
+                [[41.76392, 12.38151], [41.76387, 12.38145], [41.76374, 12.38128], [41.76369, 12.38122], [41.76295, 12.38027], [41.7625, 12.37968], [41.76236, 12.37949], [41.76184, 12.37882], [41.75941, 12.37564], [41.75929, 12.37548], [41.75844, 12.37438]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_dfd8f56f072918d976f6c81c188a9ed4 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_f3c4cb5f24d9fc1e056101d14ffe5257 = $(`<div id="html_f3c4cb5f24d9fc1e056101d14ffe5257" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 8974 m<br>Vel. media: 80.7 km/h<br>V85: 102.2 km/h<br>Dev. std: 22.2 km/h<br>Limite: 50 km/h<br>Lungh.: 849 m</div>`)[0];
+                popup_dfd8f56f072918d976f6c81c188a9ed4.setContent(html_f3c4cb5f24d9fc1e056101d14ffe5257);
+            
+        
+
+        poly_line_03f2f19a593bd4fa0dd337ef4450e171.bindPopup(popup_dfd8f56f072918d976f6c81c188a9ed4)
+        ;
+
+        
+    
+    
+            var poly_line_6be4064ad4457ea987e555031d5804cf = L.polyline(
+                [[41.75844, 12.37438], [41.75826, 12.37415]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_edb74a04312a7e53f65e3a8789e2852d = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_77f139ca65507b71b03d33c80dbf63f7 = $(`<div id="html_77f139ca65507b71b03d33c80dbf63f7" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 9823 m<br>Vel. media: 77.9 km/h<br>V85: 100.6 km/h<br>Dev. std: 23.0 km/h<br>Limite: 50 km/h<br>Lungh.: 27 m</div>`)[0];
+                popup_edb74a04312a7e53f65e3a8789e2852d.setContent(html_77f139ca65507b71b03d33c80dbf63f7);
+            
+        
+
+        poly_line_6be4064ad4457ea987e555031d5804cf.bindPopup(popup_edb74a04312a7e53f65e3a8789e2852d)
+        ;
+
+        
+    
+    
+            var poly_line_739a481558f778cc80dcd9182b97a15b = L.polyline(
+                [[41.75826, 12.37415], [41.75734, 12.37295], [41.75644, 12.37176], [41.75641, 12.37172], [41.75613, 12.37135], [41.75597, 12.37114]],
+                {"bubblingMouseEvents": true, "color": "#279400ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#279400ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_0a5f1144faff3ee9e4d1d7d271011d53 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_fc0de9815b2c3e69c4bcf5b107b35856 = $(`<div id="html_fc0de9815b2c3e69c4bcf5b107b35856" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 9850 m<br>Vel. media: 64.8 km/h<br>V85: 85.0 km/h<br>Dev. std: 20.7 km/h<br>Limite: 50 km/h<br>Lungh.: 357 m</div>`)[0];
+                popup_0a5f1144faff3ee9e4d1d7d271011d53.setContent(html_fc0de9815b2c3e69c4bcf5b107b35856);
+            
+        
+
+        poly_line_739a481558f778cc80dcd9182b97a15b.bindPopup(popup_0a5f1144faff3ee9e4d1d7d271011d53)
+        ;
+
+        
+    
+    
+            var poly_line_1f3c0cd358fcc9c12dff815e8840b896 = L.polyline(
+                [[41.75597, 12.37114], [41.75558, 12.37062], [41.7554, 12.37038], [41.75532, 12.37028]],
+                {"bubblingMouseEvents": true, "color": "#229100ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#229100ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_8698136aa8d83b76c5725616574ee811 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_7dedccd2dd0a2a8f76b34b5d37917554 = $(`<div id="html_7dedccd2dd0a2a8f76b34b5d37917554" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 10208 m<br>Vel. media: 48.1 km/h<br>V85: 68.1 km/h<br>Dev. std: 20.9 km/h<br>Limite: 50 km/h<br>Lungh.: 102 m</div>`)[0];
+                popup_8698136aa8d83b76c5725616574ee811.setContent(html_7dedccd2dd0a2a8f76b34b5d37917554);
+            
+        
+
+        poly_line_1f3c0cd358fcc9c12dff815e8840b896.bindPopup(popup_8698136aa8d83b76c5725616574ee811)
+        ;
+
+        
+    
+    
+            var poly_line_31f2ecafe02af5e74b52198bfe686663 = L.polyline(
+                [[41.75532, 12.37028], [41.75483, 12.36965]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_61f5373898fedf00745828284365d9be = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_4475bde7c6e25577763c2ea91ff8d38e = $(`<div id="html_4475bde7c6e25577763c2ea91ff8d38e" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 10309 m<br>Vel. media: 26.9 km/h<br>V85: 59.7 km/h<br>Dev. std: 28.0 km/h<br>Limite: 50 km/h<br>Lungh.: 75 m</div>`)[0];
+                popup_61f5373898fedf00745828284365d9be.setContent(html_4475bde7c6e25577763c2ea91ff8d38e);
+            
+        
+
+        poly_line_31f2ecafe02af5e74b52198bfe686663.bindPopup(popup_61f5373898fedf00745828284365d9be)
+        ;
+
+        
+    
+    
+            var poly_line_d5c3c5cefb2aed1c8f13bd367a748d59 = L.polyline(
+                [[41.75483, 12.36965], [41.7545, 12.36923], [41.75434, 12.36903], [41.75374, 12.36823]],
+                {"bubblingMouseEvents": true, "color": "#6cb600ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#6cb600ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_b388e303d1720f92ef9bd3783e8a178b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_8f38af9ad46619cfa1ce1af685fea822 = $(`<div id="html_8f38af9ad46619cfa1ce1af685fea822" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 10384 m<br>Vel. media: 52.6 km/h<br>V85: 68.3 km/h<br>Dev. std: 18.4 km/h<br>Limite: 50 km/h<br>Lungh.: 169 m</div>`)[0];
+                popup_b388e303d1720f92ef9bd3783e8a178b.setContent(html_8f38af9ad46619cfa1ce1af685fea822);
+            
+        
+
+        poly_line_d5c3c5cefb2aed1c8f13bd367a748d59.bindPopup(popup_b388e303d1720f92ef9bd3783e8a178b)
+        ;
+
+        
+    
+    
+            var poly_line_99f0072b7743dfa1763273d3ecb6fd7f = L.polyline(
+                [[41.75374, 12.36823], [41.75346, 12.36787], [41.75344, 12.36784], [41.75262, 12.36678], [41.748, 12.36074], [41.74698, 12.35942]],
+                {"bubblingMouseEvents": true, "color": "#299500ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#299500ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_71847cde084e08a3982cc2c6fd3f7e89 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_55d7abf35e48f93cca52eaad41fed494 = $(`<div id="html_55d7abf35e48f93cca52eaad41fed494" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 10554 m<br>Vel. media: 69.8 km/h<br>V85: 91.0 km/h<br>Dev. std: 20.6 km/h<br>Limite: 50 km/h<br>Lungh.: 1049 m</div>`)[0];
+                popup_71847cde084e08a3982cc2c6fd3f7e89.setContent(html_55d7abf35e48f93cca52eaad41fed494);
+            
+        
+
+        poly_line_99f0072b7743dfa1763273d3ecb6fd7f.bindPopup(popup_71847cde084e08a3982cc2c6fd3f7e89)
+        ;
+
+        
+    
+    
+            var poly_line_23858e78ade3924beb5dbee08e711b24 = L.polyline(
+                [[41.74698, 12.35942], [41.74669, 12.35904], [41.74653, 12.35883], [41.74646, 12.35874]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_d94661d0c524e69ccdacef95587fee0e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_78e57621aa658ea2883576b3acbebc10 = $(`<div id="html_78e57621aa658ea2883576b3acbebc10" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 11603 m<br>Vel. media: 58.0 km/h<br>V85: 80.0 km/h<br>Dev. std: 22.0 km/h<br>Limite: 50 km/h<br>Lungh.: 81 m</div>`)[0];
+                popup_d94661d0c524e69ccdacef95587fee0e.setContent(html_78e57621aa658ea2883576b3acbebc10);
+            
+        
+
+        poly_line_23858e78ade3924beb5dbee08e711b24.bindPopup(popup_d94661d0c524e69ccdacef95587fee0e)
+        ;
+
+        
+    
+    
+            var poly_line_dfc9a0f49340eb289f260554420f8633 = L.polyline(
+                [[41.74646, 12.35874], [41.74619, 12.35838]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_05c18ecb7b5a49aa9986b02d03c93b2e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2183fdbd25c318590aec7af3e661e313 = $(`<div id="html_2183fdbd25c318590aec7af3e661e313" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 11684 m<br>Vel. media: 50.3 km/h<br>V85: 73.9 km/h<br>Dev. std: 22.8 km/h<br>Limite: 50 km/h<br>Lungh.: 42 m</div>`)[0];
+                popup_05c18ecb7b5a49aa9986b02d03c93b2e.setContent(html_2183fdbd25c318590aec7af3e661e313);
+            
+        
+
+        poly_line_dfc9a0f49340eb289f260554420f8633.bindPopup(popup_05c18ecb7b5a49aa9986b02d03c93b2e)
+        ;
+
+        
+    
+    
+            var poly_line_f724f068c1d89a3105a2be7e078338b1 = L.polyline(
+                [[41.74619, 12.35838], [41.74567, 12.3577]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_e34e61894542f20e181061be02908158 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_e3e56f61538721bf8d8393d75b7f8323 = $(`<div id="html_e3e56f61538721bf8d8393d75b7f8323" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 11726 m<br>Vel. media: 34.7 km/h<br>V85: 71.9 km/h<br>Dev. std: 31.2 km/h<br>Limite: 50 km/h<br>Lungh.: 81 m</div>`)[0];
+                popup_e34e61894542f20e181061be02908158.setContent(html_e3e56f61538721bf8d8393d75b7f8323);
+            
+        
+
+        poly_line_f724f068c1d89a3105a2be7e078338b1.bindPopup(popup_e34e61894542f20e181061be02908158)
+        ;
+
+        
+    
+    
+            var poly_line_1a40a5fe5bc4fbcd617ae6ecf4cf3441 = L.polyline(
+                [[41.74567, 12.3577], [41.74549, 12.35747], [41.74525, 12.35715]],
+                {"bubblingMouseEvents": true, "color": "#2c9600ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#2c9600ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_a10c0ab8a0745ee189a675b99f0d257d = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_dc1564f9774005b406c5172aded964ce = $(`<div id="html_dc1564f9774005b406c5172aded964ce" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 11807 m<br>Vel. media: 52.3 km/h<br>V85: 72.2 km/h<br>Dev. std: 20.5 km/h<br>Limite: 50 km/h<br>Lungh.: 66 m</div>`)[0];
+                popup_a10c0ab8a0745ee189a675b99f0d257d.setContent(html_dc1564f9774005b406c5172aded964ce);
+            
+        
+
+        poly_line_1a40a5fe5bc4fbcd617ae6ecf4cf3441.bindPopup(popup_a10c0ab8a0745ee189a675b99f0d257d)
+        ;
+
+        
+    
+    
+            var poly_line_20cf383386fb24d1aafd75ac1964d2e3 = L.polyline(
+                [[41.74525, 12.35715], [41.74455, 12.35625]],
+                {"bubblingMouseEvents": true, "color": "#50a800ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#50a800ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_67a8b13aad9172cf53781ac9d16864de = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_5a2ba1affeee01beea7386c4c7788fbf = $(`<div id="html_5a2ba1affeee01beea7386c4c7788fbf" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 11873 m<br>Vel. media: 61.8 km/h<br>V85: 79.7 km/h<br>Dev. std: 19.3 km/h<br>Limite: 50 km/h<br>Lungh.: 107 m</div>`)[0];
+                popup_67a8b13aad9172cf53781ac9d16864de.setContent(html_5a2ba1affeee01beea7386c4c7788fbf);
+            
+        
+
+        poly_line_20cf383386fb24d1aafd75ac1964d2e3.bindPopup(popup_67a8b13aad9172cf53781ac9d16864de)
+        ;
+
+        
+    
+    
+            var poly_line_d379f3c3c886076477b62f011dc2db36 = L.polyline(
+                [[41.74455, 12.35625], [41.74332, 12.35464], [41.74239, 12.35343], [41.74217, 12.35313], [41.74191, 12.35281]],
+                {"bubblingMouseEvents": true, "color": "#0c8600ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#0c8600ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_fa65a812cae0f30f3a5a7daf696a922d = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_9d93fcdc52718a268fcb71df35520df8 = $(`<div id="html_9d93fcdc52718a268fcb71df35520df8" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 11980 m<br>Vel. media: 71.8 km/h<br>V85: 93.1 km/h<br>Dev. std: 21.6 km/h<br>Limite: 50 km/h<br>Lungh.: 410 m</div>`)[0];
+                popup_fa65a812cae0f30f3a5a7daf696a922d.setContent(html_9d93fcdc52718a268fcb71df35520df8);
+            
+        
+
+        poly_line_d379f3c3c886076477b62f011dc2db36.bindPopup(popup_fa65a812cae0f30f3a5a7daf696a922d)
+        ;
+
+        
+    
+    
+            var poly_line_1f1ada096a21360878437ee174276326 = L.polyline(
+                [[41.74191, 12.35281], [41.74178, 12.35263], [41.74143, 12.35218], [41.74116, 12.35183], [41.73986, 12.35013]],
+                {"bubblingMouseEvents": true, "color": "#038200ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#038200ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_a0f84cec721b90ee521bff5f0fef8519 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_a9bef1a36267a15804fb493bfcdb6dd3 = $(`<div id="html_a9bef1a36267a15804fb493bfcdb6dd3" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 12390 m<br>Vel. media: 72.0 km/h<br>V85: 93.7 km/h<br>Dev. std: 21.9 km/h<br>Limite: 50 km/h<br>Lungh.: 320 m</div>`)[0];
+                popup_a0f84cec721b90ee521bff5f0fef8519.setContent(html_a9bef1a36267a15804fb493bfcdb6dd3);
+            
+        
+
+        poly_line_1f1ada096a21360878437ee174276326.bindPopup(popup_a0f84cec721b90ee521bff5f0fef8519)
+        ;
+
+        
+    
+    
+            var poly_line_a1950aceafd27c639a580db9d69e2219 = L.polyline(
+                [[41.73986, 12.35013], [41.73898, 12.34899], [41.73821, 12.34799], [41.73747, 12.34703]],
+                {"bubblingMouseEvents": true, "color": "#038200ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#038200ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_d3b62d85c0e49079c0dfa450451f8eb0 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_e5e21ef6c0873e2ba17ecb2cb48f8c3f = $(`<div id="html_e5e21ef6c0873e2ba17ecb2cb48f8c3f" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 12709 m<br>Vel. media: 48.6 km/h<br>V85: 72.7 km/h<br>Dev. std: 21.9 km/h<br>Limite: 50 km/h<br>Lungh.: 369 m</div>`)[0];
+                popup_d3b62d85c0e49079c0dfa450451f8eb0.setContent(html_e5e21ef6c0873e2ba17ecb2cb48f8c3f);
+            
+        
+
+        poly_line_a1950aceafd27c639a580db9d69e2219.bindPopup(popup_d3b62d85c0e49079c0dfa450451f8eb0)
+        ;
+
+        
+    
+    
+            var poly_line_aa508443a5ec31b27e8da2b61b171f9a = L.polyline(
+                [[41.73747, 12.34703], [41.73742, 12.34696], [41.73705, 12.34648]],
+                {"bubblingMouseEvents": true, "color": "#82c100ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#82c100ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_95b60b827956103b1443e322cf319f9a = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_b0074ad0baa908b3115f860f47735f1f = $(`<div id="html_b0074ad0baa908b3115f860f47735f1f" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 13078 m<br>Vel. media: 51.8 km/h<br>V85: 68.8 km/h<br>Dev. std: 17.7 km/h<br>Limite: 60 km/h<br>Lungh.: 65 m</div>`)[0];
+                popup_95b60b827956103b1443e322cf319f9a.setContent(html_b0074ad0baa908b3115f860f47735f1f);
+            
+        
+
+        poly_line_aa508443a5ec31b27e8da2b61b171f9a.bindPopup(popup_95b60b827956103b1443e322cf319f9a)
+        ;
+
+        
+    
+    
+            var poly_line_65b81808099cef9532d11ca4ed88dea8 = L.polyline(
+                [[41.73705, 12.34648], [41.73642, 12.34564]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_4ad0890a116f24557c88012b73fad3a7 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_4a484e964398e8789da4895593099a63 = $(`<div id="html_4a484e964398e8789da4895593099a63" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 13144 m<br>Vel. media: 39.2 km/h<br>V85: 66.4 km/h<br>Dev. std: 24.6 km/h<br>Limite: 60 km/h<br>Lungh.: 99 m</div>`)[0];
+                popup_4ad0890a116f24557c88012b73fad3a7.setContent(html_4a484e964398e8789da4895593099a63);
+            
+        
+
+        poly_line_65b81808099cef9532d11ca4ed88dea8.bindPopup(popup_4ad0890a116f24557c88012b73fad3a7)
+        ;
+
+        
+    
+    
+            var poly_line_e707806b0bdac9b4f6f35e103ebd7a79 = L.polyline(
+                [[41.73642, 12.34564], [41.7362, 12.34536], [41.73595, 12.34504], [41.73588, 12.34496]],
+                {"bubblingMouseEvents": true, "color": "#71b900ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#71b900ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_426e13e87f51ec596e7cf9d9693bc187 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_54a3aa4ef18101b2de0c17d20c5c3cd5 = $(`<div id="html_54a3aa4ef18101b2de0c17d20c5c3cd5" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 13243 m<br>Vel. media: 52.7 km/h<br>V85: 71.3 km/h<br>Dev. std: 18.2 km/h<br>Limite: 60 km/h<br>Lungh.: 83 m</div>`)[0];
+                popup_426e13e87f51ec596e7cf9d9693bc187.setContent(html_54a3aa4ef18101b2de0c17d20c5c3cd5);
+            
+        
+
+        poly_line_e707806b0bdac9b4f6f35e103ebd7a79.bindPopup(popup_426e13e87f51ec596e7cf9d9693bc187)
+        ;
+
+        
+    
+    
+            var poly_line_5932952394da9648e06e274d36b2f01c = L.polyline(
+                [[41.73588, 12.34496], [41.73579, 12.34483], [41.73532, 12.34423]],
+                {"bubblingMouseEvents": true, "color": "#89c500ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#89c500ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_06ff42dd21881ee6788b9ca1cdb16c44 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_cfaaf3f3470fea63811892cfde0e97ce = $(`<div id="html_cfaaf3f3470fea63811892cfde0e97ce" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 13325 m<br>Vel. media: 62.5 km/h<br>V85: 79.3 km/h<br>Dev. std: 17.4 km/h<br>Limite: 80 km/h<br>Lungh.: 87 m</div>`)[0];
+                popup_06ff42dd21881ee6788b9ca1cdb16c44.setContent(html_cfaaf3f3470fea63811892cfde0e97ce);
+            
+        
+
+        poly_line_5932952394da9648e06e274d36b2f01c.bindPopup(popup_06ff42dd21881ee6788b9ca1cdb16c44)
+        ;
+
+        
+    
+    
+            var poly_line_d4159bdfcdc71e3a255d1b8825bda268 = L.polyline(
+                [[41.73532, 12.34423], [41.73486, 12.34363], [41.73241, 12.34043]],
+                {"bubblingMouseEvents": true, "color": "#55aa00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#55aa00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_5e0ee1daab3d085df3845ddcef6e43c7 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ea72b13d3304aa0502e0a3de0593c440 = $(`<div id="html_ea72b13d3304aa0502e0a3de0593c440" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 13412 m<br>Vel. media: 70.8 km/h<br>V85: 90.3 km/h<br>Dev. std: 19.2 km/h<br>Limite: 80 km/h<br>Lungh.: 452 m</div>`)[0];
+                popup_5e0ee1daab3d085df3845ddcef6e43c7.setContent(html_ea72b13d3304aa0502e0a3de0593c440);
+            
+        
+
+        poly_line_d4159bdfcdc71e3a255d1b8825bda268.bindPopup(popup_5e0ee1daab3d085df3845ddcef6e43c7)
+        ;
+
+        
+    
+    
+            var poly_line_abc43becb2db1c770983cc122c1120bb = L.polyline(
+                [[41.73241, 12.34043], [41.73225, 12.34023]],
+                {"bubblingMouseEvents": true, "color": "#40a000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#40a000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_a8f4370523d33e6a1d1c6c2f92fcba77 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_d3aa07744b798a6995873da0af95fd9e = $(`<div id="html_d3aa07744b798a6995873da0af95fd9e" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 13864 m<br>Vel. media: 70.8 km/h<br>V85: 91.3 km/h<br>Dev. std: 19.8 km/h<br>Limite: 80 km/h<br>Lungh.: 24 m</div>`)[0];
+                popup_a8f4370523d33e6a1d1c6c2f92fcba77.setContent(html_d3aa07744b798a6995873da0af95fd9e);
+            
+        
+
+        poly_line_abc43becb2db1c770983cc122c1120bb.bindPopup(popup_a8f4370523d33e6a1d1c6c2f92fcba77)
+        ;
+
+        
+    
+    
+            var poly_line_ee12abfeb79b286c6bbf6af797354ce3 = L.polyline(
+                [[41.73225, 12.34023], [41.73209, 12.34003]],
+                {"bubblingMouseEvents": true, "color": "#48a400ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#48a400ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_2d57a1522018998bc6f14719e2e3bf42 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_249c0fdcdab6502bc049f0652c4c84f8 = $(`<div id="html_249c0fdcdab6502bc049f0652c4c84f8" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 13889 m<br>Vel. media: 70.8 km/h<br>V85: 90.8 km/h<br>Dev. std: 19.6 km/h<br>Limite: 80 km/h<br>Lungh.: 24 m</div>`)[0];
+                popup_2d57a1522018998bc6f14719e2e3bf42.setContent(html_249c0fdcdab6502bc049f0652c4c84f8);
+            
+        
+
+        poly_line_ee12abfeb79b286c6bbf6af797354ce3.bindPopup(popup_2d57a1522018998bc6f14719e2e3bf42)
+        ;
+
+        
+    
+    
+            var poly_line_b18bb9c27eb4c9072148f5395ea35380 = L.polyline(
+                [[41.73209, 12.34003], [41.73146, 12.33921]],
+                {"bubblingMouseEvents": true, "color": "#47a400ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#47a400ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_745d50af01ce8d83b55b4e372288c0ff = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_dac1780d76e399540b69b2926a14109d = $(`<div id="html_dac1780d76e399540b69b2926a14109d" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 13913 m<br>Vel. media: 67.4 km/h<br>V85: 87.3 km/h<br>Dev. std: 19.6 km/h<br>Limite: 80 km/h<br>Lungh.: 97 m</div>`)[0];
+                popup_745d50af01ce8d83b55b4e372288c0ff.setContent(html_dac1780d76e399540b69b2926a14109d);
+            
+        
+
+        poly_line_b18bb9c27eb4c9072148f5395ea35380.bindPopup(popup_745d50af01ce8d83b55b4e372288c0ff)
+        ;
+
+        
+    
+    
+            var poly_line_d745662ec1a697119ca2dce282c1de54 = L.polyline(
+                [[41.73146, 12.33921], [41.7314, 12.33913]],
+                {"bubblingMouseEvents": true, "color": "#1c8e00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#1c8e00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_ef5c11d5ea6792f466a60515ea9cb2d6 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_290361c5a597585b6ede20cc7dbb6ff5 = $(`<div id="html_290361c5a597585b6ede20cc7dbb6ff5" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 14010 m<br>Vel. media: 65.7 km/h<br>V85: 86.7 km/h<br>Dev. std: 21.1 km/h<br>Limite: 50 km/h<br>Lungh.: 10 m</div>`)[0];
+                popup_ef5c11d5ea6792f466a60515ea9cb2d6.setContent(html_290361c5a597585b6ede20cc7dbb6ff5);
+            
+        
+
+        poly_line_d745662ec1a697119ca2dce282c1de54.bindPopup(popup_ef5c11d5ea6792f466a60515ea9cb2d6)
+        ;
+
+        
+    
+    
+            var poly_line_3376777a99d396902e21189d538a1d6c = L.polyline(
+                [[41.7314, 12.33913], [41.73097, 12.33857], [41.73081, 12.33836], [41.73075, 12.33829], [41.73066, 12.33816]],
+                {"bubblingMouseEvents": true, "color": "#2a9500ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#2a9500ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_a4b4ddd34c41e5ad05cd0e125b106f0b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_8b3c2b133a9609f5a27a963e90b6288a = $(`<div id="html_8b3c2b133a9609f5a27a963e90b6288a" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 14020 m<br>Vel. media: 62.3 km/h<br>V85: 83.5 km/h<br>Dev. std: 20.6 km/h<br>Limite: 60 km/h<br>Lungh.: 115 m</div>`)[0];
+                popup_a4b4ddd34c41e5ad05cd0e125b106f0b.setContent(html_8b3c2b133a9609f5a27a963e90b6288a);
+            
+        
+
+        poly_line_3376777a99d396902e21189d538a1d6c.bindPopup(popup_a4b4ddd34c41e5ad05cd0e125b106f0b)
+        ;
+
+        
+    
+    
+            var poly_line_e59bf7574bb5e638b0c1ccb0a22538c5 = L.polyline(
+                [[41.73066, 12.33816], [41.73056, 12.33803]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_d822d6f6b484d1178c8c4cfb7313f522 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_63d7a4bd064b50444f531d813060dba3 = $(`<div id="html_63d7a4bd064b50444f531d813060dba3" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 14136 m<br>Vel. media: 60.2 km/h<br>V85: 84.2 km/h<br>Dev. std: 24.0 km/h<br>Limite: 60 km/h<br>Lungh.: 15 m</div>`)[0];
+                popup_d822d6f6b484d1178c8c4cfb7313f522.setContent(html_63d7a4bd064b50444f531d813060dba3);
+            
+        
+
+        poly_line_e59bf7574bb5e638b0c1ccb0a22538c5.bindPopup(popup_d822d6f6b484d1178c8c4cfb7313f522)
+        ;
+
+        
+    
+    
+            var poly_line_991c8c4502db1e340a3b24457c737e57 = L.polyline(
+                [[41.73056, 12.33803], [41.73029, 12.33766]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_9693fe992f31b5b0d1770bf34716e3d2 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_bfd6df928a3d1d7c38e9c3658e7bd064 = $(`<div id="html_bfd6df928a3d1d7c38e9c3658e7bd064" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 14151 m<br>Vel. media: 56.3 km/h<br>V85: 84.3 km/h<br>Dev. std: 29.4 km/h<br>Limite: 60 km/h<br>Lungh.: 43 m</div>`)[0];
+                popup_9693fe992f31b5b0d1770bf34716e3d2.setContent(html_bfd6df928a3d1d7c38e9c3658e7bd064);
+            
+        
+
+        poly_line_991c8c4502db1e340a3b24457c737e57.bindPopup(popup_9693fe992f31b5b0d1770bf34716e3d2)
+        ;
+
+        
+    
+    
+            var poly_line_f1c8f53cf6091b9e103bb59bdae728f5 = L.polyline(
+                [[41.73029, 12.33766], [41.73022, 12.33757]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_2ce541de23458fb07d4cff4907319521 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_d3d39d68910564d0b57d981007d95108 = $(`<div id="html_d3d39d68910564d0b57d981007d95108" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 14194 m<br>Vel. media: 54.5 km/h<br>V85: 80.1 km/h<br>Dev. std: 23.6 km/h<br>Limite: 60 km/h<br>Lungh.: 11 m</div>`)[0];
+                popup_2ce541de23458fb07d4cff4907319521.setContent(html_d3d39d68910564d0b57d981007d95108);
+            
+        
+
+        poly_line_f1c8f53cf6091b9e103bb59bdae728f5.bindPopup(popup_2ce541de23458fb07d4cff4907319521)
+        ;
+
+        
+    
+    
+            var poly_line_77586cc372db94572196fb4a8bd7c503 = L.polyline(
+                [[41.73022, 12.33757], [41.73008, 12.33741], [41.72943, 12.33657]],
+                {"bubblingMouseEvents": true, "color": "#2e9700ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#2e9700ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_6a9a7d8ef3c2235b9939996ae450373c = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_60f2f1c8004efee1e94722fa79f49890 = $(`<div id="html_60f2f1c8004efee1e94722fa79f49890" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 14205 m<br>Vel. media: 60.4 km/h<br>V85: 81.8 km/h<br>Dev. std: 20.4 km/h<br>Limite: 60 km/h<br>Lungh.: 120 m</div>`)[0];
+                popup_6a9a7d8ef3c2235b9939996ae450373c.setContent(html_60f2f1c8004efee1e94722fa79f49890);
+            
+        
+
+        poly_line_77586cc372db94572196fb4a8bd7c503.bindPopup(popup_6a9a7d8ef3c2235b9939996ae450373c)
+        ;
+
+        
+    
+    
+            var poly_line_3637a2550ec0b6fb52976fef49273a3a = L.polyline(
+                [[41.72943, 12.33657], [41.72904, 12.33605]],
+                {"bubblingMouseEvents": true, "color": "#52a900ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#52a900ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_f1df98d2a8f87a639a8b84edb2205c75 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_dce1ad99f50aac2a4861158b4a860bb2 = $(`<div id="html_dce1ad99f50aac2a4861158b4a860bb2" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 14326 m<br>Vel. media: 68.4 km/h<br>V85: 87.3 km/h<br>Dev. std: 19.2 km/h<br>Limite: 80 km/h<br>Lungh.: 61 m</div>`)[0];
+                popup_f1df98d2a8f87a639a8b84edb2205c75.setContent(html_dce1ad99f50aac2a4861158b4a860bb2);
+            
+        
+
+        poly_line_3637a2550ec0b6fb52976fef49273a3a.bindPopup(popup_f1df98d2a8f87a639a8b84edb2205c75)
+        ;
+
+        
+    
+    
+            var poly_line_4b5848115c8f38ea6edf8dd636c9de73 = L.polyline(
+                [[41.72904, 12.33605], [41.72783, 12.33449], [41.7261, 12.33225], [41.72513, 12.33099], [41.7246, 12.33029], [41.72427, 12.32985]],
+                {"bubblingMouseEvents": true, "color": "#57ac00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#57ac00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_d1f41b581908abf92e414c17f21105cc = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_d513cd209e77cc25fb4b688ebdbed259 = $(`<div id="html_d513cd209e77cc25fb4b688ebdbed259" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 14387 m<br>Vel. media: 73.2 km/h<br>V85: 92.8 km/h<br>Dev. std: 19.1 km/h<br>Limite: 80 km/h<br>Lungh.: 740 m</div>`)[0];
+                popup_d1f41b581908abf92e414c17f21105cc.setContent(html_d513cd209e77cc25fb4b688ebdbed259);
+            
+        
+
+        poly_line_4b5848115c8f38ea6edf8dd636c9de73.bindPopup(popup_d1f41b581908abf92e414c17f21105cc)
+        ;
+
+        
+    
+    
+            var poly_line_26665ecc8eb1ac50b4288216c959c9a0 = L.polyline(
+                [[41.72427, 12.32985], [41.72395, 12.32945]],
+                {"bubblingMouseEvents": true, "color": "#41a000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#41a000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_b8a6a82c860e4633abf0acaed41b68fa = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_e89d411ff03d1c60260165265940408a = $(`<div id="html_e89d411ff03d1c60260165265940408a" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 15126 m<br>Vel. media: 62.5 km/h<br>V85: 82.8 km/h<br>Dev. std: 19.8 km/h<br>Limite: 60 km/h<br>Lungh.: 49 m</div>`)[0];
+                popup_b8a6a82c860e4633abf0acaed41b68fa.setContent(html_e89d411ff03d1c60260165265940408a);
+            
+        
+
+        poly_line_26665ecc8eb1ac50b4288216c959c9a0.bindPopup(popup_b8a6a82c860e4633abf0acaed41b68fa)
+        ;
+
+        
+    
+    
+            var poly_line_edf488c26b74afca5833c7f31477d988 = L.polyline(
+                [[41.72395, 12.32945], [41.72389, 12.32936]],
+                {"bubblingMouseEvents": true, "color": "#2a9500ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#2a9500ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_408f83e649574101f39ce8c43580d33f = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_a70c6bcb69e66ca8445dfd4aa53e79ed = $(`<div id="html_a70c6bcb69e66ca8445dfd4aa53e79ed" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 15175 m<br>Vel. media: 66.7 km/h<br>V85: 87.0 km/h<br>Dev. std: 20.6 km/h<br>Limite: 60 km/h<br>Lungh.: 11 m</div>`)[0];
+                popup_408f83e649574101f39ce8c43580d33f.setContent(html_a70c6bcb69e66ca8445dfd4aa53e79ed);
+            
+        
+
+        poly_line_edf488c26b74afca5833c7f31477d988.bindPopup(popup_408f83e649574101f39ce8c43580d33f)
+        ;
+
+        
+    
+    
+            var poly_line_712fdc3c7db8dcd0acd69a27463c5aa8 = L.polyline(
+                [[41.72389, 12.32936], [41.72359, 12.32898]],
+                {"bubblingMouseEvents": true, "color": "#2b9600ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#2b9600ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_78e0d6a500f4491d8f446d39fb708454 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_dbb20f3bf2342709ee222c4e0e272b6d = $(`<div id="html_dbb20f3bf2342709ee222c4e0e272b6d" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 15186 m<br>Vel. media: 64.2 km/h<br>V85: 84.8 km/h<br>Dev. std: 20.6 km/h<br>Limite: 60 km/h<br>Lungh.: 45 m</div>`)[0];
+                popup_78e0d6a500f4491d8f446d39fb708454.setContent(html_dbb20f3bf2342709ee222c4e0e272b6d);
+            
+        
+
+        poly_line_712fdc3c7db8dcd0acd69a27463c5aa8.bindPopup(popup_78e0d6a500f4491d8f446d39fb708454)
+        ;
+
+        
+    
+    
+            var poly_line_4002aa0fcbe4221d8cc30a1052d7526e = L.polyline(
+                [[41.72359, 12.32898], [41.72324, 12.32852]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_a234edcf9a4ec72f8e8175b0c23bc061 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_75ac809e4b99b362cb18e58698368850 = $(`<div id="html_75ac809e4b99b362cb18e58698368850" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 15231 m<br>Vel. media: 57.8 km/h<br>V85: 81.8 km/h<br>Dev. std: 22.8 km/h<br>Limite: 60 km/h<br>Lungh.: 54 m</div>`)[0];
+                popup_a234edcf9a4ec72f8e8175b0c23bc061.setContent(html_75ac809e4b99b362cb18e58698368850);
+            
+        
+
+        poly_line_4002aa0fcbe4221d8cc30a1052d7526e.bindPopup(popup_a234edcf9a4ec72f8e8175b0c23bc061)
+        ;
+
+        
+    
+    
+            var poly_line_22a27e9fb7218854dd75e79f68c87255 = L.polyline(
+                [[41.72324, 12.32852], [41.72298, 12.32819], [41.72286, 12.32804]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_1b379a94e99cc3bc4dd87f8c0292860b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_6b7b56e0795f76da2684958585a7347c = $(`<div id="html_6b7b56e0795f76da2684958585a7347c" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 15285 m<br>Vel. media: 46.5 km/h<br>V85: 80.8 km/h<br>Dev. std: 32.2 km/h<br>Limite: 60 km/h<br>Lungh.: 58 m</div>`)[0];
+                popup_1b379a94e99cc3bc4dd87f8c0292860b.setContent(html_6b7b56e0795f76da2684958585a7347c);
+            
+        
+
+        poly_line_22a27e9fb7218854dd75e79f68c87255.bindPopup(popup_1b379a94e99cc3bc4dd87f8c0292860b)
+        ;
+
+        
+    
+    
+            var poly_line_6741653e3fbbadab340025ec5b7e6506 = L.polyline(
+                [[41.72286, 12.32804], [41.72271, 12.32783]],
+                {"bubblingMouseEvents": true, "color": "#008000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#008000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_008b58bafc9f86bd514662cffaa4ea57 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_0e0218aa81f6cdb2177ec49f6cf128b5 = $(`<div id="html_0e0218aa81f6cdb2177ec49f6cf128b5" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 15344 m<br>Vel. media: 56.8 km/h<br>V85: 82.8 km/h<br>Dev. std: 24.0 km/h<br>Limite: 60 km/h<br>Lungh.: 24 m</div>`)[0];
+                popup_008b58bafc9f86bd514662cffaa4ea57.setContent(html_0e0218aa81f6cdb2177ec49f6cf128b5);
+            
+        
+
+        poly_line_6741653e3fbbadab340025ec5b7e6506.bindPopup(popup_008b58bafc9f86bd514662cffaa4ea57)
+        ;
+
+        
+    
+    
+            var poly_line_ba7fb117fe7e8e5c5a2db5908fdf06dc = L.polyline(
+                [[41.72271, 12.32783], [41.72252, 12.32758], [41.72225, 12.32723]],
+                {"bubblingMouseEvents": true, "color": "#1f9000ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#1f9000ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_dbe60150f997552a7258c0cf0e56e575 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_bc9eb2cd7a4e58c338e19b5dab8f5b61 = $(`<div id="html_bc9eb2cd7a4e58c338e19b5dab8f5b61" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 15367 m<br>Vel. media: 60.8 km/h<br>V85: 82.7 km/h<br>Dev. std: 20.9 km/h<br>Limite: 60 km/h<br>Lungh.: 72 m</div>`)[0];
+                popup_dbe60150f997552a7258c0cf0e56e575.setContent(html_bc9eb2cd7a4e58c338e19b5dab8f5b61);
+            
+        
+
+        poly_line_ba7fb117fe7e8e5c5a2db5908fdf06dc.bindPopup(popup_dbe60150f997552a7258c0cf0e56e575)
+        ;
+
+        
+    
+    
+            var poly_line_44ed3637eb96f1e7e7203787a3fd7af2 = L.polyline(
+                [[41.72225, 12.32723], [41.72219, 12.32715], [41.72209, 12.32702]],
+                {"bubblingMouseEvents": true, "color": "#359b00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#359b00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_82b7f23d2530e45244ac4ac67912853f = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_c9deda92a2ac532e579e41cdbf3a8e26 = $(`<div id="html_c9deda92a2ac532e579e41cdbf3a8e26" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 15439 m<br>Vel. media: 65.8 km/h<br>V85: 85.9 km/h<br>Dev. std: 20.2 km/h<br>Limite: 60 km/h<br>Lungh.: 25 m</div>`)[0];
+                popup_82b7f23d2530e45244ac4ac67912853f.setContent(html_c9deda92a2ac532e579e41cdbf3a8e26);
+            
+        
+
+        poly_line_44ed3637eb96f1e7e7203787a3fd7af2.bindPopup(popup_82b7f23d2530e45244ac4ac67912853f)
+        ;
+
+        
+    
+    
+            var poly_line_6aef4faac0a84b812117cab0795ad5f1 = L.polyline(
+                [[41.72209, 12.32702], [41.72208, 12.327], [41.72184, 12.3267]],
+                {"bubblingMouseEvents": true, "color": "#3c9e00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#3c9e00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_4a404ae6f873310bb38d4a6ed1787a5c = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_d04901b9cac8e462cc141389a4435f84 = $(`<div id="html_d04901b9cac8e462cc141389a4435f84" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 15464 m<br>Vel. media: 67.8 km/h<br>V85: 87.5 km/h<br>Dev. std: 20.0 km/h<br>Limite: 80 km/h<br>Lungh.: 39 m</div>`)[0];
+                popup_4a404ae6f873310bb38d4a6ed1787a5c.setContent(html_d04901b9cac8e462cc141389a4435f84);
+            
+        
+
+        poly_line_6aef4faac0a84b812117cab0795ad5f1.bindPopup(popup_4a404ae6f873310bb38d4a6ed1787a5c)
+        ;
+
+        
+    
+    
+            var poly_line_624109f02ff919e27afbe5bd4a0aaf26 = L.polyline(
+                [[41.72184, 12.3267], [41.72164, 12.32643]],
+                {"bubblingMouseEvents": true, "color": "#3d9f00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#3d9f00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_1e85ed12c30b4230545f398f2aa3f12b = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_0b1e2a7ae85e72cf1eec92235098c6d4 = $(`<div id="html_0b1e2a7ae85e72cf1eec92235098c6d4" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 15503 m<br>Vel. media: 69.7 km/h<br>V85: 89.5 km/h<br>Dev. std: 20.0 km/h<br>Limite: 80 km/h<br>Lungh.: 31 m</div>`)[0];
+                popup_1e85ed12c30b4230545f398f2aa3f12b.setContent(html_0b1e2a7ae85e72cf1eec92235098c6d4);
+            
+        
+
+        poly_line_624109f02ff919e27afbe5bd4a0aaf26.bindPopup(popup_1e85ed12c30b4230545f398f2aa3f12b)
+        ;
+
+        
+    
+    
+            var poly_line_8caae55536266540d71cd232cb555022 = L.polyline(
+                [[41.72164, 12.32643], [41.72074, 12.32526], [41.71963, 12.32382], [41.71917, 12.32322], [41.71821, 12.32199], [41.71766, 12.32126], [41.71657, 12.31984], [41.71612, 12.31926], [41.71606, 12.31918]],
+                {"bubblingMouseEvents": true, "color": "#379c00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#379c00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_f617f3dae28285d9dea03485ac274e9e = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ba60eff31d7e6539e1cd3f5cce4c4d67 = $(`<div id="html_ba60eff31d7e6539e1cd3f5cce4c4d67" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 15534 m<br>Vel. media: 75.7 km/h<br>V85: 96.8 km/h<br>Dev. std: 20.2 km/h<br>Limite: 80 km/h<br>Lungh.: 865 m</div>`)[0];
+                popup_f617f3dae28285d9dea03485ac274e9e.setContent(html_ba60eff31d7e6539e1cd3f5cce4c4d67);
+            
+        
+
+        poly_line_8caae55536266540d71cd232cb555022.bindPopup(popup_f617f3dae28285d9dea03485ac274e9e)
+        ;
+
+        
+    
+    
+            var poly_line_b91c9809753221547909e24eda80f1b7 = L.polyline(
+                [[41.71606, 12.31918], [41.71603, 12.31913], [41.71595, 12.31904]],
+                {"bubblingMouseEvents": true, "color": "#abd500ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#abd500ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_fe9d9091519a1772a1485beb63c16510 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_b30fcdb771327b22c650ad50b96e201e = $(`<div id="html_b30fcdb771327b22c650ad50b96e201e" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 16399 m<br>Vel. media: 67.5 km/h<br>V85: 84.3 km/h<br>Dev. std: 16.3 km/h<br>Limite: 80 km/h<br>Lungh.: 17 m</div>`)[0];
+                popup_fe9d9091519a1772a1485beb63c16510.setContent(html_b30fcdb771327b22c650ad50b96e201e);
+            
+        
+
+        poly_line_b91c9809753221547909e24eda80f1b7.bindPopup(popup_fe9d9091519a1772a1485beb63c16510)
+        ;
+
+        
+    
+    
+            var poly_line_d50486983aa4f50f9fefcaef324d2d92 = L.polyline(
+                [[41.71595, 12.31904], [41.71544, 12.31834]],
+                {"bubblingMouseEvents": true, "color": "#f3f900ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#f3f900ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_e7b1fe38a498423dae9ecfeb2a14dae4 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_ff721e62ff0539f08ee2127be0ff805f = $(`<div id="html_ff721e62ff0539f08ee2127be0ff805f" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 16416 m<br>Vel. media: 61.7 km/h<br>V85: 75.7 km/h<br>Dev. std: 13.9 km/h<br>Limite: 80 km/h<br>Lungh.: 81 m</div>`)[0];
+                popup_e7b1fe38a498423dae9ecfeb2a14dae4.setContent(html_ff721e62ff0539f08ee2127be0ff805f);
+            
+        
+
+        poly_line_d50486983aa4f50f9fefcaef324d2d92.bindPopup(popup_e7b1fe38a498423dae9ecfeb2a14dae4)
+        ;
+
+        
+    
+    
+            var poly_line_75715a65e7bc508e3cdbbe9bfbfc4a3b = L.polyline(
+                [[41.71544, 12.31834], [41.71528, 12.31809]],
+                {"bubblingMouseEvents": true, "color": "#fafd00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#fafd00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_a12b6fb62d6a028d11a6465ddafc9328 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_6f0cc0679f84076197dc360576ab4d48 = $(`<div id="html_6f0cc0679f84076197dc360576ab4d48" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 16497 m<br>Vel. media: 54.9 km/h<br>V85: 68.5 km/h<br>Dev. std: 13.7 km/h<br>Limite: 80 km/h<br>Lungh.: 28 m</div>`)[0];
+                popup_a12b6fb62d6a028d11a6465ddafc9328.setContent(html_6f0cc0679f84076197dc360576ab4d48);
+            
+        
+
+        poly_line_75715a65e7bc508e3cdbbe9bfbfc4a3b.bindPopup(popup_a12b6fb62d6a028d11a6465ddafc9328)
+        ;
+
+        
+    
+    
+            var poly_line_a122f2f57629c2bcafa70da6a4d66c4b = L.polyline(
+                [[41.71528, 12.31809], [41.71514, 12.31783]],
+                {"bubblingMouseEvents": true, "color": "#fffd00ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#fffd00ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_505d1f62ebcc3332e05efdf49f99dba0 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_2735552c45e8a1ffcde5d3298306cf44 = $(`<div id="html_2735552c45e8a1ffcde5d3298306cf44" style="width: 100.0%; height: 100.0%;"><b>Via Cristoforo Colombo</b><br>Progr.: 16525 m<br>Vel. media: 53.8 km/h<br>V85: 67.2 km/h<br>Dev. std: 13.4 km/h<br>Limite: 80 km/h<br>Lungh.: 26 m</div>`)[0];
+                popup_505d1f62ebcc3332e05efdf49f99dba0.setContent(html_2735552c45e8a1ffcde5d3298306cf44);
+            
+        
+
+        poly_line_a122f2f57629c2bcafa70da6a4d66c4b.bindPopup(popup_505d1f62ebcc3332e05efdf49f99dba0)
+        ;
+
+        
+    
+    
+            var poly_line_a401850c9cbb526f39531a978007373b = L.polyline(
+                [[41.71514, 12.31783], [41.71503, 12.31768]],
+                {"bubblingMouseEvents": true, "color": "#fff400ff", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "#fff400ff", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.9, "smoothFactor": 1.0, "stroke": true, "weight": 10}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+        var popup_7686e2b15613411dbb86b1f766ce8de5 = L.popup({
+  "maxWidth": 280,
+});
+
+        
+            
+                var html_5331445a73428d6b2127c0ae69ea24df = $(`<div id="html_5331445a73428d6b2127c0ae69ea24df" style="width: 100.0%; height: 100.0%;"><b>Piazzale Cristoforo Colombo</b><br>Progr.: 16551 m<br>Vel. media: 53.4 km/h<br>V85: 66.1 km/h<br>Dev. std: 13.1 km/h<br>Limite: 80 km/h<br>Lungh.: 17 m</div>`)[0];
+                popup_7686e2b15613411dbb86b1f766ce8de5.setContent(html_5331445a73428d6b2127c0ae69ea24df);
+            
+        
+
+        poly_line_a401850c9cbb526f39531a978007373b.bindPopup(popup_7686e2b15613411dbb86b1f766ce8de5)
+        ;
+
+        
+    
+    
+    var color_map_337ed1c03acbfb86623129321c65b97c = {};
+
+    
+    color_map_337ed1c03acbfb86623129321c65b97c.color = d3.scale.threshold()
+              .domain([5.0, 5.034068136272545, 5.0681362725450905, 5.102204408817635, 5.13627254509018, 5.170340681362726, 5.2044088176352705, 5.238476953907815, 5.272545090180361, 5.306613226452906, 5.340681362725451, 5.374749498997996, 5.408817635270541, 5.442885771543086, 5.4769539078156315, 5.511022044088176, 5.545090180360721, 5.579158316633267, 5.613226452905812, 5.647294589178356, 5.681362725450902, 5.715430861723447, 5.749498997995992, 5.783567134268537, 5.817635270541082, 5.851703406813627, 5.885771543086173, 5.919839679358717, 5.953907815631262, 5.987975951903808, 6.022044088176353, 6.056112224448897, 6.090180360721443, 6.124248496993988, 6.158316633266534, 6.192384769539078, 6.226452905811623, 6.260521042084168, 6.294589178356714, 6.328657314629258, 6.362725450901804, 6.396793587174349, 6.430861723446894, 6.4649298597194385, 6.498997995991984, 6.533066132264529, 6.567134268537075, 6.601202404809619, 6.635270541082164, 6.669338677354709, 6.703406813627255, 6.7374749498997994, 6.771543086172345, 6.80561122244489, 6.839679358717435, 6.8737474949899795, 6.907815631262525, 6.94188376753507, 6.975951903807616, 7.01002004008016, 7.044088176352705, 7.07815631262525, 7.112224448897796, 7.1462925851703405, 7.180360721442886, 7.214428857715431, 7.248496993987976, 7.2825651302605205, 7.316633266533066, 7.350701402805611, 7.384769539078157, 7.4188376753507015, 7.452905811623246, 7.486973947895791, 7.521042084168337, 7.555110220440882, 7.589178356713427, 7.623246492985972, 7.657314629258517, 7.691382765531062, 7.725450901803607, 7.759519038076153, 7.793587174348698, 7.8276553106212425, 7.861723446893787, 7.895791583166332, 7.929859719438878, 7.9639278557114235, 7.997995991983968, 8.032064128256513, 8.066132264529058, 8.100200400801603, 8.13426853707415, 8.168336673346694, 8.202404809619239, 8.236472945891784, 8.270541082164328, 8.304609218436873, 8.338677354709418, 8.372745490981965, 8.40681362725451, 8.440881763527054, 8.474949899799599, 8.509018036072144, 8.54308617234469, 8.577154308617235, 8.61122244488978, 8.645290581162325, 8.67935871743487, 8.713426853707414, 8.747494989979959, 8.781563126252506, 8.81563126252505, 8.849699398797595, 8.88376753507014, 8.917835671342685, 8.951903807615231, 8.985971943887776, 9.02004008016032, 9.054108216432866, 9.08817635270541, 9.122244488977955, 9.1563126252505, 9.190380761523045, 9.224448897795591, 9.258517034068136, 9.292585170340681, 9.326653306613228, 9.360721442885772, 9.394789579158317, 9.428857715430862, 9.462925851703407, 9.496993987975952, 9.531062124248496, 9.565130260521041, 9.599198396793586, 9.633266533066132, 9.667334669338677, 9.701402805611222, 9.735470941883769, 9.769539078156313, 9.803607214428858, 9.837675350701403, 9.871743486973948, 9.905811623246493, 9.939879759519037, 9.973947895791582, 10.008016032064127, 10.042084168336673, 10.076152304609218, 10.110220440881765, 10.14428857715431, 10.178356713426854, 10.2124248496994, 10.246492985971944, 10.280561122244489, 10.314629258517034, 10.348697394789578, 10.382765531062123, 10.41683366733467, 10.450901803607215, 10.48496993987976, 10.519038076152306, 10.55310621242485, 10.587174348697395, 10.62124248496994, 10.655310621242485, 10.68937875751503, 10.723446893787575, 10.75751503006012, 10.791583166332664, 10.82565130260521, 10.859719438877756, 10.8937875751503, 10.927855711422847, 10.961923847695392, 10.995991983967937, 11.030060120240481, 11.064128256513026, 11.098196392785571, 11.132264529058116, 11.16633266533066, 11.200400801603205, 11.234468937875752, 11.268537074148297, 11.302605210420841, 11.336673346693388, 11.370741482965933, 11.404809619238478, 11.438877755511022, 11.472945891783567, 11.507014028056112, 11.541082164328657, 11.575150300601202, 11.609218436873746, 11.643286573146293, 11.677354709418838, 11.711422845691382, 11.745490981963929, 11.779559118236474, 11.813627254509019, 11.847695390781563, 11.881763527054108, 11.915831663326653, 11.949899799599198, 11.983967935871743, 12.018036072144287, 12.052104208416834, 12.086172344689379, 12.120240480961924, 12.15430861723447, 12.188376753507015, 12.22244488977956, 12.256513026052104, 12.29058116232465, 12.324649298597194, 12.358717434869739, 12.392785571142284, 12.426853707414828, 12.460921843687375, 12.49498997995992, 12.529058116232465, 12.563126252505011, 12.597194388777556, 12.6312625250501, 12.665330661322646, 12.69939879759519, 12.733466933867735, 12.76753507014028, 12.801603206412825, 12.83567134268537, 12.869739478957916, 12.90380761523046, 12.937875751503006, 12.971943887775552, 13.006012024048097, 13.040080160320642, 13.074148296593187, 13.108216432865731, 13.142284569138276, 13.176352705410821, 13.210420841683367, 13.244488977955912, 13.278557114228457, 13.312625250501002, 13.346693386773547, 13.380761523046091, 13.414829659318638, 13.448897795591183, 13.482965931863728, 13.517034068136272, 13.551102204408817, 13.585170340681362, 13.619238476953909, 13.653306613226453, 13.687374749498998, 13.721442885771543, 13.755511022044088, 13.789579158316633, 13.823647294589179, 13.857715430861724, 13.891783567134269, 13.925851703406813, 13.959919839679358, 13.993987975951903, 14.02805611222445, 14.062124248496994, 14.09619238476954, 14.130260521042084, 14.164328657314629, 14.198396793587174, 14.23246492985972, 14.266533066132265, 14.30060120240481, 14.334669338677354, 14.3687374749499, 14.402805611222444, 14.43687374749499, 14.470941883767535, 14.50501002004008, 14.539078156312625, 14.57314629258517, 14.607214428857715, 14.641282565130261, 14.675350701402806, 14.70941883767535, 14.743486973947896, 14.77755511022044, 14.811623246492985, 14.845691382765532, 14.879759519038076, 14.913827655310621, 14.947895791583166, 14.98196392785571, 15.016032064128256, 15.050100200400802, 15.084168336673347, 15.118236472945892, 15.152304609218437, 15.186372745490981, 15.220440881763528, 15.254509018036073, 15.288577154308618, 15.322645290581162, 15.356713426853707, 15.390781563126252, 15.424849699398798, 15.458917835671343, 15.492985971943888, 15.527054108216433, 15.561122244488978, 15.595190380761522, 15.629258517034069, 15.663326653306614, 15.697394789579159, 15.731462925851703, 15.765531062124248, 15.799599198396793, 15.83366733466934, 15.867735470941884, 15.901803607214429, 15.935871743486974, 15.969939879759519, 16.004008016032063, 16.038076152304612, 16.072144288577157, 16.1062124248497, 16.140280561122246, 16.17434869739479, 16.208416833667336, 16.24248496993988, 16.276553106212425, 16.31062124248497, 16.344689378757515, 16.37875751503006, 16.412825651302605, 16.44689378757515, 16.480961923847694, 16.51503006012024, 16.549098196392784, 16.58316633266533, 16.617234468937873, 16.65130260521042, 16.685370741482966, 16.71943887775551, 16.753507014028056, 16.7875751503006, 16.821643286573146, 16.855711422845694, 16.88977955911824, 16.923847695390783, 16.95791583166333, 16.991983967935873, 17.026052104208418, 17.060120240480963, 17.094188376753507, 17.128256513026052, 17.162324649298597, 17.196392785571142, 17.230460921843687, 17.26452905811623, 17.298597194388776, 17.33266533066132, 17.366733466933866, 17.40080160320641, 17.434869739478955, 17.468937875751504, 17.50300601202405, 17.537074148296593, 17.571142284569138, 17.605210420841683, 17.639278557114228, 17.673346693386776, 17.70741482965932, 17.741482965931866, 17.77555110220441, 17.809619238476955, 17.8436873747495, 17.877755511022045, 17.91182364729459, 17.945891783567134, 17.97995991983968, 18.014028056112224, 18.04809619238477, 18.082164328657313, 18.11623246492986, 18.150300601202403, 18.184368737474948, 18.218436873747493, 18.252505010020037, 18.286573146292586, 18.32064128256513, 18.354709418837675, 18.38877755511022, 18.422845691382765, 18.45691382765531, 18.490981963927858, 18.525050100200403, 18.559118236472948, 18.593186372745492, 18.627254509018037, 18.661322645290582, 18.695390781563127, 18.72945891783567, 18.763527054108216, 18.79759519038076, 18.831663326653306, 18.86573146292585, 18.899799599198396, 18.93386773547094, 18.967935871743485, 19.00200400801603, 19.036072144288575, 19.070140280561123, 19.104208416833668, 19.138276553106213, 19.172344689378757, 19.206412825651302, 19.240480961923847, 19.274549098196395, 19.30861723446894, 19.342685370741485, 19.37675350701403, 19.410821643286575, 19.44488977955912, 19.478957915831664, 19.51302605210421, 19.547094188376754, 19.5811623246493, 19.615230460921843, 19.649298597194388, 19.683366733466933, 19.717434869739478, 19.751503006012022, 19.785571142284567, 19.819639278557112, 19.853707414829657, 19.887775551102205, 19.92184368737475, 19.955911823647295, 19.98997995991984, 20.024048096192384, 20.05811623246493, 20.092184368737477, 20.126252505010022, 20.160320641282567, 20.194388777555112, 20.228456913827657, 20.2625250501002, 20.296593186372746, 20.33066132264529, 20.364729458917836, 20.39879759519038, 20.432865731462925, 20.46693386773547, 20.501002004008015, 20.53507014028056, 20.569138276553105, 20.60320641282565, 20.637274549098194, 20.67134268537074, 20.705410821643287, 20.739478957915832, 20.773547094188377, 20.80761523046092, 20.841683366733466, 20.87575150300601, 20.90981963927856, 20.943887775551104, 20.97795591182365, 21.012024048096194, 21.04609218436874, 21.080160320641284, 21.11422845691383, 21.148296593186373, 21.182364729458918, 21.216432865731463, 21.250501002004007, 21.284569138276552, 21.318637274549097, 21.352705410821642, 21.386773547094187, 21.420841683366735, 21.45490981963928, 21.488977955911825, 21.52304609218437, 21.557114228456914, 21.59118236472946, 21.625250501002004, 21.65931863727455, 21.693386773547093, 21.727454909819638, 21.761523046092183, 21.795591182364728, 21.829659318637276, 21.86372745490982, 21.897795591182366, 21.93186372745491, 21.965931863727455, 22.0])
+              .range(['#ff0000ff', '#ff0100ff', '#ff0200ff', '#ff0300ff', '#ff0400ff', '#ff0500ff', '#ff0600ff', '#ff0700ff', '#ff0800ff', '#ff0900ff', '#ff0a00ff', '#ff0b00ff', '#ff0c00ff', '#ff0d00ff', '#ff0e00ff', '#ff0f00ff', '#ff1000ff', '#ff1100ff', '#ff1200ff', '#ff1300ff', '#ff1400ff', '#ff1500ff', '#ff1600ff', '#ff1700ff', '#ff1800ff', '#ff1900ff', '#ff1a00ff', '#ff1b00ff', '#ff1c00ff', '#ff1d00ff', '#ff1e00ff', '#ff1f00ff', '#ff2000ff', '#ff2100ff', '#ff2200ff', '#ff2300ff', '#ff2400ff', '#ff2500ff', '#ff2600ff', '#ff2800ff', '#ff2900ff', '#ff2a00ff', '#ff2b00ff', '#ff2c00ff', '#ff2d00ff', '#ff2e00ff', '#ff2f00ff', '#ff3000ff', '#ff3100ff', '#ff3200ff', '#ff3300ff', '#ff3400ff', '#ff3500ff', '#ff3600ff', '#ff3700ff', '#ff3800ff', '#ff3900ff', '#ff3a00ff', '#ff3b00ff', '#ff3c00ff', '#ff3d00ff', '#ff3e00ff', '#ff3f00ff', '#ff4000ff', '#ff4100ff', '#ff4200ff', '#ff4300ff', '#ff4400ff', '#ff4500ff', '#ff4600ff', '#ff4700ff', '#ff4800ff', '#ff4900ff', '#ff4a00ff', '#ff4b00ff', '#ff4c00ff', '#ff4d00ff', '#ff4f00ff', '#ff5000ff', '#ff5100ff', '#ff5200ff', '#ff5300ff', '#ff5400ff', '#ff5500ff', '#ff5600ff', '#ff5700ff', '#ff5800ff', '#ff5900ff', '#ff5a00ff', '#ff5b00ff', '#ff5c00ff', '#ff5d00ff', '#ff5e00ff', '#ff5f00ff', '#ff6000ff', '#ff6100ff', '#ff6200ff', '#ff6300ff', '#ff6400ff', '#ff6500ff', '#ff6600ff', '#ff6700ff', '#ff6800ff', '#ff6900ff', '#ff6a00ff', '#ff6b00ff', '#ff6c00ff', '#ff6d00ff', '#ff6e00ff', '#ff6f00ff', '#ff7000ff', '#ff7100ff', '#ff7200ff', '#ff7300ff', '#ff7400ff', '#ff7500ff', '#ff7700ff', '#ff7800ff', '#ff7900ff', '#ff7a00ff', '#ff7b00ff', '#ff7c00ff', '#ff7d00ff', '#ff7e00ff', '#ff7f00ff', '#ff8000ff', '#ff8100ff', '#ff8200ff', '#ff8300ff', '#ff8400ff', '#ff8500ff', '#ff8600ff', '#ff8700ff', '#ff8800ff', '#ff8900ff', '#ff8a00ff', '#ff8b00ff', '#ff8c00ff', '#ff8d00ff', '#ff8e00ff', '#ff8f00ff', '#ff9000ff', '#ff9100ff', '#ff9200ff', '#ff9300ff', '#ff9400ff', '#ff9500ff', '#ff9600ff', '#ff9700ff', '#ff9800ff', '#ff9900ff', '#ff9a00ff', '#ff9b00ff', '#ff9c00ff', '#ff9e00ff', '#ff9f00ff', '#ffa000ff', '#ffa100ff', '#ffa200ff', '#ffa300ff', '#ffa400ff', '#ffa500ff', '#ffa600ff', '#ffa700ff', '#ffa800ff', '#ffa900ff', '#ffaa00ff', '#ffab00ff', '#ffac00ff', '#ffad00ff', '#ffae00ff', '#ffaf00ff', '#ffb000ff', '#ffb100ff', '#ffb200ff', '#ffb300ff', '#ffb400ff', '#ffb500ff', '#ffb600ff', '#ffb700ff', '#ffb800ff', '#ffb900ff', '#ffba00ff', '#ffbb00ff', '#ffbc00ff', '#ffbd00ff', '#ffbe00ff', '#ffbf00ff', '#ffc000ff', '#ffc100ff', '#ffc200ff', '#ffc300ff', '#ffc500ff', '#ffc600ff', '#ffc700ff', '#ffc800ff', '#ffc900ff', '#ffca00ff', '#ffcb00ff', '#ffcc00ff', '#ffcd00ff', '#ffce00ff', '#ffcf00ff', '#ffd000ff', '#ffd100ff', '#ffd200ff', '#ffd300ff', '#ffd400ff', '#ffd500ff', '#ffd600ff', '#ffd700ff', '#ffd800ff', '#ffd900ff', '#ffda00ff', '#ffdb00ff', '#ffdc00ff', '#ffdd00ff', '#ffde00ff', '#ffdf00ff', '#ffe000ff', '#ffe100ff', '#ffe200ff', '#ffe300ff', '#ffe400ff', '#ffe500ff', '#ffe600ff', '#ffe700ff', '#ffe800ff', '#ffe900ff', '#ffea00ff', '#ffeb00ff', '#ffed00ff', '#ffee00ff', '#ffef00ff', '#fff000ff', '#fff100ff', '#fff200ff', '#fff300ff', '#fff400ff', '#fff500ff', '#fff600ff', '#fff700ff', '#fff800ff', '#fff900ff', '#fffa00ff', '#fffb00ff', '#fffc00ff', '#fffd00ff', '#fffe00ff', '#ffff00ff', '#ffff00ff', '#feff00ff', '#fdfe00ff', '#fcfe00ff', '#fbfd00ff', '#fafd00ff', '#f9fc00ff', '#f8fc00ff', '#f7fb00ff', '#f6fb00ff', '#f5fa00ff', '#f4fa00ff', '#f3f900ff', '#f2f900ff', '#f1f800ff', '#f0f800ff', '#eff700ff', '#eef700ff', '#edf600ff', '#ebf600ff', '#eaf500ff', '#e9f500ff', '#e8f400ff', '#e7f300ff', '#e6f300ff', '#e5f200ff', '#e4f200ff', '#e3f100ff', '#e2f100ff', '#e1f000ff', '#e0f000ff', '#dfef00ff', '#deef00ff', '#ddee00ff', '#dcee00ff', '#dbed00ff', '#daed00ff', '#d9ec00ff', '#d8ec00ff', '#d7eb00ff', '#d6eb00ff', '#d5ea00ff', '#d4ea00ff', '#d3e900ff', '#d2e900ff', '#d1e800ff', '#d0e800ff', '#cfe700ff', '#cee700ff', '#cde600ff', '#cce600ff', '#cbe500ff', '#cae500ff', '#c9e400ff', '#c8e400ff', '#c7e300ff', '#c6e300ff', '#c5e200ff', '#c3e200ff', '#c2e100ff', '#c1e100ff', '#c0e000ff', '#bfe000ff', '#bedf00ff', '#bddf00ff', '#bcde00ff', '#bbde00ff', '#badd00ff', '#b9dc00ff', '#b8dc00ff', '#b7db00ff', '#b6db00ff', '#b5da00ff', '#b4da00ff', '#b3d900ff', '#b2d900ff', '#b1d800ff', '#b0d800ff', '#afd700ff', '#aed700ff', '#add600ff', '#acd600ff', '#abd500ff', '#aad500ff', '#a9d400ff', '#a8d400ff', '#a7d300ff', '#a6d300ff', '#a5d200ff', '#a4d200ff', '#a3d100ff', '#a2d100ff', '#a1d000ff', '#a0d000ff', '#9fcf00ff', '#9ecf00ff', '#9cce00ff', '#9bce00ff', '#9acd00ff', '#99cd00ff', '#98cc00ff', '#97cc00ff', '#96cb00ff', '#95cb00ff', '#94ca00ff', '#93ca00ff', '#92c900ff', '#91c900ff', '#90c800ff', '#8fc800ff', '#8ec700ff', '#8dc700ff', '#8cc600ff', '#8bc500ff', '#8ac500ff', '#89c400ff', '#88c400ff', '#87c300ff', '#86c300ff', '#85c200ff', '#84c200ff', '#83c100ff', '#82c100ff', '#81c000ff', '#80c000ff', '#7fbf00ff', '#7ebf00ff', '#7dbe00ff', '#7cbe00ff', '#7bbd00ff', '#7abd00ff', '#79bc00ff', '#78bc00ff', '#77bb00ff', '#75bb00ff', '#74ba00ff', '#73ba00ff', '#72b900ff', '#71b900ff', '#70b800ff', '#6fb800ff', '#6eb700ff', '#6db700ff', '#6cb600ff', '#6bb600ff', '#6ab500ff', '#69b500ff', '#68b400ff', '#67b400ff', '#66b300ff', '#65b300ff', '#64b200ff', '#63b200ff', '#62b100ff', '#61b100ff', '#60b000ff', '#5fb000ff', '#5eaf00ff', '#5daf00ff', '#5cae00ff', '#5bad00ff', '#5aad00ff', '#59ac00ff', '#58ac00ff', '#57ab00ff', '#56ab00ff', '#55aa00ff', '#54aa00ff', '#53a900ff', '#52a900ff', '#51a800ff', '#50a800ff', '#4fa700ff', '#4da700ff', '#4ca600ff', '#4ba600ff', '#4aa500ff', '#49a500ff', '#48a400ff', '#47a400ff', '#46a300ff', '#45a300ff', '#44a200ff', '#43a200ff', '#42a100ff', '#41a100ff', '#40a000ff', '#3fa000ff', '#3e9f00ff', '#3d9f00ff', '#3c9e00ff', '#3b9e00ff', '#3a9d00ff', '#399d00ff', '#389c00ff', '#379c00ff', '#369b00ff', '#359b00ff', '#349a00ff', '#339a00ff', '#329900ff', '#319900ff', '#309800ff', '#2f9800ff', '#2e9700ff', '#2d9600ff', '#2c9600ff', '#2b9500ff', '#2a9500ff', '#299400ff', '#289400ff', '#269300ff', '#259300ff', '#249200ff', '#239200ff', '#229100ff', '#219100ff', '#209000ff', '#1f9000ff', '#1e8f00ff', '#1d8f00ff', '#1c8e00ff', '#1b8e00ff', '#1a8d00ff', '#198d00ff', '#188c00ff', '#178c00ff', '#168b00ff', '#158b00ff', '#148a00ff', '#138a00ff', '#128900ff', '#118900ff', '#108800ff', '#0f8800ff', '#0e8700ff', '#0d8700ff', '#0c8600ff', '#0b8600ff', '#0a8500ff', '#098500ff', '#088400ff', '#078400ff', '#068300ff', '#058300ff', '#048200ff', '#038200ff', '#028100ff', '#018100ff', '#008000ff']);
+    
+
+    color_map_337ed1c03acbfb86623129321c65b97c.x = d3.scale.linear()
+              .domain([5.0, 22.0])
+              .range([0, 450 - 50]);
+
+    color_map_337ed1c03acbfb86623129321c65b97c.legend = L.control({position: 'topright'});
+    color_map_337ed1c03acbfb86623129321c65b97c.legend.onAdd = function (map) {var div = L.DomUtil.create('div', 'legend'); return div};
+    color_map_337ed1c03acbfb86623129321c65b97c.legend.addTo(map_dc334c42d98d051153acb0f30ce95177);
+
+    color_map_337ed1c03acbfb86623129321c65b97c.xAxis = d3.svg.axis()
+        .scale(color_map_337ed1c03acbfb86623129321c65b97c.x)
+        .orient("top")
+        .tickSize(1)
+        .tickValues([5.0, 13.5, 22.0]);
+
+    color_map_337ed1c03acbfb86623129321c65b97c.svg = d3.select(".legend.leaflet-control").append("svg")
+        .attr("id", 'legend')
+        .attr("width", 450)
+        .attr("height", 40);
+
+    color_map_337ed1c03acbfb86623129321c65b97c.g = color_map_337ed1c03acbfb86623129321c65b97c.svg.append("g")
+        .attr("class", "key")
+        .attr("fill", "black")
+        .attr("transform", "translate(25,16)");
+
+    color_map_337ed1c03acbfb86623129321c65b97c.g.selectAll("rect")
+        .data(color_map_337ed1c03acbfb86623129321c65b97c.color.range().map(function(d, i) {
+          return {
+            x0: i ? color_map_337ed1c03acbfb86623129321c65b97c.x(color_map_337ed1c03acbfb86623129321c65b97c.color.domain()[i - 1]) : color_map_337ed1c03acbfb86623129321c65b97c.x.range()[0],
+            x1: i < color_map_337ed1c03acbfb86623129321c65b97c.color.domain().length ? color_map_337ed1c03acbfb86623129321c65b97c.x(color_map_337ed1c03acbfb86623129321c65b97c.color.domain()[i]) : color_map_337ed1c03acbfb86623129321c65b97c.x.range()[1],
+            z: d
+          };
+        }))
+      .enter().append("rect")
+        .attr("height", 40 - 30)
+        .attr("x", function(d) { return d.x0; })
+        .attr("width", function(d) { return d.x1 - d.x0; })
+        .style("fill", function(d) { return d.z; });
+
+    color_map_337ed1c03acbfb86623129321c65b97c.g.call(color_map_337ed1c03acbfb86623129321c65b97c.xAxis).append("text")
+        .attr("class", "caption")
+        .attr("y", 21)
+        .attr("fill", "black")
+        .text("Variabilit\u00e0 \u2014 Carreggiata Centrale Dir. Ostia (km/h)");
+    
+            var marker_2b3a587699694d28fdee18fef4520ebc = L.marker(
+                [41.81548, 12.46139],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_12a9e66225905887f44965bdc9881464 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e0 m\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_2b3a587699694d28fdee18fef4520ebc.setIcon(div_icon_12a9e66225905887f44965bdc9881464);
+            
+    
+            var marker_ccbe383b2b10364047466e03b1224950 = L.marker(
+                [41.81149344164253, 12.458608129971037],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_6ac1341154555be1ec357555de44822c = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e500 m\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_ccbe383b2b10364047466e03b1224950.setIcon(div_icon_6ac1341154555be1ec357555de44822c);
+            
+    
+            var marker_2eac2c6c3f96f2259b10ca67545c5ae8 = L.marker(
+                [41.8084384407194, 12.454244915313428],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_21df4bc6e56febe798a13e1d887686f1 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e1.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_2eac2c6c3f96f2259b10ca67545c5ae8.setIcon(div_icon_21df4bc6e56febe798a13e1d887686f1);
+            
+    
+            var marker_f2cfe66698a52aea085f5b6cb3f54e30 = L.marker(
+                [41.80541219367754, 12.449788537826342],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_8194b5532cbb7bb652fa5df58d3d4b24 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e1.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_f2cfe66698a52aea085f5b6cb3f54e30.setIcon(div_icon_8194b5532cbb7bb652fa5df58d3d4b24);
+            
+    
+            var marker_3e88b9d7f936b30aefdefe4f08487076 = L.marker(
+                [41.80239529544375, 12.445327943165626],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_3a9446966dd36dc0d34e4ba1ae2e2278 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e2.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_3e88b9d7f936b30aefdefe4f08487076.setIcon(div_icon_3a9446966dd36dc0d34e4ba1ae2e2278);
+            
+    
+            var marker_ad7a7e5e9789eb70f1012e7338de1abb = L.marker(
+                [41.799381350080154, 12.440862025120234],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_b8a6484a3cd1921bf30c9ab0dbc45a30 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e2.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_ad7a7e5e9789eb70f1012e7338de1abb.setIcon(div_icon_b8a6484a3cd1921bf30c9ab0dbc45a30);
+            
+    
+            var marker_2e6fedf76f9c1279cdabb751fc9c3ad9 = L.marker(
+                [41.79635440107025, 12.436402259193194],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_633af71568aa52377c8bb9fa636fa524 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e3.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_2e6fedf76f9c1279cdabb751fc9c3ad9.setIcon(div_icon_633af71568aa52377c8bb9fa636fa524);
+            
+    
+            var marker_0b8e6b2e5586927316dabf990ea801f7 = L.marker(
+                [41.79333402145299, 12.431942134468553],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_8ad5157494a9e9cfc8b5140e5be5a832 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e3.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_0b8e6b2e5586927316dabf990ea801f7.setIcon(div_icon_8ad5157494a9e9cfc8b5140e5be5a832);
+            
+    
+            var marker_eabf5127ff1b5235e1fa9864a710a90a = L.marker(
+                [41.790306561045554, 12.427498693964102],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_7c90cf6b2bec0be7189887dc3a4d32f5 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e4.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_eabf5127ff1b5235e1fa9864a710a90a.setIcon(div_icon_7c90cf6b2bec0be7189887dc3a4d32f5);
+            
+    
+            var marker_5fd6ddae838029a794c598574c6fabaf = L.marker(
+                [41.78736980521627, 12.422838391108254],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_4e270f05d67a9d91f8aec024742d3a72 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e4.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_5fd6ddae838029a794c598574c6fabaf.setIcon(div_icon_4e270f05d67a9d91f8aec024742d3a72);
+            
+    
+            var marker_bac28c7e8367853a03ef31e8320ebb10 = L.marker(
+                [41.78629, 12.417132316975708],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_aac843a3d54215368ebb0965f36647aa = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e5.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_bac28c7e8367853a03ef31e8320ebb10.setIcon(div_icon_aac843a3d54215368ebb0965f36647aa);
+            
+    
+            var marker_631cacfb5e10ac61e7b72d5eea04f787 = L.marker(
+                [41.78576490240081, 12.411281397273612],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_4863724da3cfc4567276dec42b7b71b6 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e5.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_631cacfb5e10ac61e7b72d5eea04f787.setIcon(div_icon_4863724da3cfc4567276dec42b7b71b6);
+            
+    
+            var marker_fd49f79a4c443882cff810bc37231272 = L.marker(
+                [41.78305949757, 12.40650490425741],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_6bda13596a397278da22ae4fe9b96494 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e6.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_fd49f79a4c443882cff810bc37231272.setIcon(div_icon_6bda13596a397278da22ae4fe9b96494);
+            
+    
+            var marker_6594ccaf4f0f499f7b60201e9c3a2b1b = L.marker(
+                [41.77983660300839, 12.40230706275607],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_41604912e347768eda31a97388213a3c = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e6.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_6594ccaf4f0f499f7b60201e9c3a2b1b.setIcon(div_icon_41604912e347768eda31a97388213a3c);
+            
+    
+            var marker_50a04f81aa7ab39b13d7945e532bf1c4 = L.marker(
+                [41.77661837732516, 12.398111169766878],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_4d0e725fdcb382f244f8f74ed28db362 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e7.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_50a04f81aa7ab39b13d7945e532bf1c4.setIcon(div_icon_4d0e725fdcb382f244f8f74ed28db362);
+            
+    
+            var marker_df15e780d67c80677b18414ff46401e5 = L.marker(
+                [41.77340576310147, 12.393902770204294],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_bcb13d9d420dd4c446357fc0a717f7e8 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e7.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_df15e780d67c80677b18414ff46401e5.setIcon(div_icon_bcb13d9d420dd4c446357fc0a717f7e8);
+            
+    
+            var marker_1cf8ce957b15e9420ad86f18dd2cfe36 = L.marker(
+                [41.77017864090363, 12.389703115148992],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_8de93c79f3396865ab0269e36b1d0ec4 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e8.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_1cf8ce957b15e9420ad86f18dd2cfe36.setIcon(div_icon_8de93c79f3396865ab0269e36b1d0ec4);
+            
+    
+            var marker_f05dcfd85548cac0df5d51fc1ccd7c64 = L.marker(
+                [41.766966627774934, 12.385491937182579],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_7bbe5076bd9583dda57a48682ac143bf = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e8.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_f05dcfd85548cac0df5d51fc1ccd7c64.setIcon(div_icon_7bbe5076bd9583dda57a48682ac143bf);
+            
+    
+            var marker_0e7ecafa6051ae3215c22dcd41bf2f16 = L.marker(
+                [41.7637471133, 12.38128930200769],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_49e5ccbbd78b5f75b43b2e99991ebac5 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e9.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_0e7ecafa6051ae3215c22dcd41bf2f16.setIcon(div_icon_49e5ccbbd78b5f75b43b2e99991ebac5);
+            
+    
+            var marker_7c548eaa6f2438aaffb611b561219280 = L.marker(
+                [41.7605197455134, 12.377092259560742],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_cf8c9f763d6771a0cfb62c6c8fd07e99 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e9.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_7c548eaa6f2438aaffb611b561219280.setIcon(div_icon_cf8c9f763d6771a0cfb62c6c8fd07e99);
+            
+    
+            var marker_239077bc2c4d1aff82e814c02a44c57e = L.marker(
+                [41.75729647698806, 12.372892452906436],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_91c4ced2d768b3562de7b53e72ef84f0 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e10.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_239077bc2c4d1aff82e814c02a44c57e.setIcon(div_icon_91c4ced2d768b3562de7b53e72ef84f0);
+            
+    
+            var marker_b7f33a0c18ffa6646c7cdef24fb21fbb = L.marker(
+                [41.7540804497807, 12.36868393304094],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_adc82b7750c456f1beacd0ce297bcc19 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e10.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_b7f33a0c18ffa6646c7cdef24fb21fbb.setIcon(div_icon_adc82b7750c456f1beacd0ce297bcc19);
+            
+    
+            var marker_42fa1109a22a7e04bfec339e1083edd9 = L.marker(
+                [41.75086279386389, 12.364482700203006],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_bb46296d30ef3cfff869f565f36934e3 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e11.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_42fa1109a22a7e04bfec339e1083edd9.setIcon(div_icon_bb46296d30ef3cfff869f565f36934e3);
+            
+    
+            var marker_eb787d999d57a9fb7f8c82d07510603e = L.marker(
+                [41.747645188345764, 12.360280831976876],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_f443e484797373eb3fe6bd947585804e = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e11.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_eb787d999d57a9fb7f8c82d07510603e.setIcon(div_icon_f443e484797373eb3fe6bd947585804e);
+            
+    
+            var marker_4694c79c81e4329e518e60735197e3e3 = L.marker(
+                [41.74442122799564, 12.356081444774778],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_355c97df10608bb677e8b0d6fdc899ed = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e12.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_4694c79c81e4329e518e60735197e3e3.setIcon(div_icon_355c97df10608bb677e8b0d6fdc899ed);
+            
+    
+            var marker_e61723e369beb72779fb88f608158eae = L.marker(
+                [41.741202102869146, 12.351884577793333],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_73e721a47c6e0fc2b1462339326135dd = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e12.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_e61723e369beb72779fb88f608158eae.setIcon(div_icon_73e721a47c6e0fc2b1462339326135dd);
+            
+    
+            var marker_aa18570c1c3771b4963be824b62d9341 = L.marker(
+                [41.737977792832524, 12.347688758269218],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_2ebdc6e111cc61d3a92721930a2c4c51 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e13.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_aa18570c1c3771b4963be824b62d9341.setIcon(div_icon_2ebdc6e111cc61d3a92721930a2c4c51);
+            
+    
+            var marker_53394ee039a6db899d8d578c1e0d84fe = L.marker(
+                [41.73475428543986, 12.343491923839823],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_0d9642ab3323b87ee8bf79363269cebe = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e13.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_53394ee039a6db899d8d578c1e0d84fe.setIcon(div_icon_0d9642ab3323b87ee8bf79363269cebe);
+            
+    
+            var marker_c7b0bc5ba8e62b38df259c2ae28ace9d = L.marker(
+                [41.73152721554116, 12.33929748689485],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_6e937ad3e6fe2a2f4ecc623f62d2c94d = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e14.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_c7b0bc5ba8e62b38df259c2ae28ace9d.setIcon(div_icon_6e937ad3e6fe2a2f4ecc623f62d2c94d);
+            
+    
+            var marker_7557409db1504c537a38ea745fac7794 = L.marker(
+                [41.728306495453, 12.335104324716262],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_f4ac6ede4ace3aa6339abd44bba9d91c = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e14.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_7557409db1504c537a38ea745fac7794.setIcon(div_icon_f4ac6ede4ace3aa6339abd44bba9d91c);
+            
+    
+            var marker_621632d644fbe852f04ffbc4e18b8f66 = L.marker(
+                [41.72507497498117, 12.330917325446825],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_7a0919d0c9d88a4bbaa7760ba3146fdc = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e15.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_621632d644fbe852f04ffbc4e18b8f66.setIcon(div_icon_7a0919d0c9d88a4bbaa7760ba3146fdc);
+            
+    
+            var marker_869869dfaa0e6d6aad2a496439254093 = L.marker(
+                [41.72185967269771, 12.326724590872141],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_400c832b0343475c13e4b80025805c95 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e15.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_869869dfaa0e6d6aad2a496439254093.setIcon(div_icon_400c832b0343475c13e4b80025805c95);
+            
+    
+            var marker_9f0665c6d81d65f383aec4d34bab5904 = L.marker(
+                [41.7186312651215, 12.322529745936928],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_647692e183a2bf3768909e532570f5ed = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e16.0 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_9f0665c6d81d65f383aec4d34bab5904.setIcon(div_icon_647692e183a2bf3768909e532570f5ed);
+            
+    
+            var marker_9702dae6d58cbdcb3a9a215578016eaf = L.marker(
+                [41.715423948220064, 12.31831491909385],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var div_icon_1831655bae9e6cfa4005fe4647823529 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:10px;font-weight:bold;background:white;padding:2px 5px;border:1px solid #1a237e;border-radius:3px;white-space:nowrap;box-shadow:1px 1px 3px rgba(0,0,0,.3);color:#1a237e;\"\u003e16.5 km\u003c/div\u003e",
+  "iconSize": [70, 22],
+  "iconAnchor": [35, 11],
+  "className": "empty",
+});
+        
+    
+                marker_9702dae6d58cbdcb3a9a215578016eaf.setIcon(div_icon_1831655bae9e6cfa4005fe4647823529);
+            
+    
+            var marker_802e78c43d1a96c8691619e5bad8a84f = L.marker(
+                [41.81548, 12.46139],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var icon_a41d5d574ff35415b1f902b06158e9ae = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "green",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_4b41e52115085cd533339394c433f6ca = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_7ad406d2f2615ac988e1f4ba4374fcba = $(`<div id="html_7ad406d2f2615ac988e1f4ba4374fcba" style="width: 100.0%; height: 100.0%;">Inizio (0 m)</div>`)[0];
+                popup_4b41e52115085cd533339394c433f6ca.setContent(html_7ad406d2f2615ac988e1f4ba4374fcba);
+            
+        
+
+        marker_802e78c43d1a96c8691619e5bad8a84f.bindPopup(popup_4b41e52115085cd533339394c433f6ca)
+        ;
+
+        
+    
+    
+                marker_802e78c43d1a96c8691619e5bad8a84f.setIcon(icon_a41d5d574ff35415b1f902b06158e9ae);
+            
+    
+            var marker_9c299c1bed47393842db7c9360780877 = L.marker(
+                [41.71503, 12.31768],
+                {
+}
+            ).addTo(map_dc334c42d98d051153acb0f30ce95177);
+        
+    
+            var icon_fd18a94dd0860aa2f1c8c456d462946a = L.AwesomeMarkers.icon(
+                {
+  "markerColor": "red",
+  "iconColor": "white",
+  "icon": "info-sign",
+  "prefix": "glyphicon",
+  "extraClasses": "fa-rotate-0",
+}
+            );
+        
+    
+        var popup_65726b45877fd1cead9329cf14510a1b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_594cccea955e91f87a795140eb347a4d = $(`<div id="html_594cccea955e91f87a795140eb347a4d" style="width: 100.0%; height: 100.0%;">Fine (17853 m)</div>`)[0];
+                popup_65726b45877fd1cead9329cf14510a1b.setContent(html_594cccea955e91f87a795140eb347a4d);
+            
+        
+
+        marker_9c299c1bed47393842db7c9360780877.bindPopup(popup_65726b45877fd1cead9329cf14510a1b)
+        ;
+
+        
+    
+    
+                marker_9c299c1bed47393842db7c9360780877.setIcon(icon_fd18a94dd0860aa2f1c8c456d462946a);
+            
+</script>
+</html>
