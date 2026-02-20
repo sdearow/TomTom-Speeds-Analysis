@@ -976,7 +976,8 @@ def _build_speed_gdf(segments, carriage, direction, day_type, value_col,
         value_col: agg_func, "geometry": "first",
         "cum_dist_start": "first", "cum_dist_mid": "first",
         "seg_distance": "first", "streetName": "first",
-        "speedLimit": "first",
+        "speedLimit": "first", "avg_speed": "mean",
+        "p85": "mean", "std_speed": "mean",
     }).reset_index()
     return gpd.GeoDataFrame(agg, geometry="geometry", crs="EPSG:4326")
 
