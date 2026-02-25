@@ -209,8 +209,6 @@ def chart_speed_by_hour(summaries):
                             & (summaries["direction"] == direction)].sort_values("hour")
             ax.plot(sub["hour"], sub["harm_avg_speed"], color=COLORS[key],
                     label=f"Dir. {direction}", linewidth=2, marker="o", markersize=3)
-        ax.axhline(SPEED_LIMIT, color="red", ls="--", lw=1, alpha=.7,
-                    label=f"Limite {SPEED_LIMIT} km/h")
         ax.set_xlabel("Ora")
         ax.set_title(f"Velocit\u00e0 Media Armonica \u2014 {day_type}")
         ax.set_xticks(range(24)); ax.set_xticklabels(HOUR_SHORT, fontsize=7)
@@ -232,8 +230,6 @@ def chart_v85_by_hour(segments):
                          & (hmeans["direction"] == direction)].sort_values("hour")
             ax.plot(sub["hour"], sub["p85"], color=COLORS[key],
                     label=f"Dir. {direction}", linewidth=2, marker="o", markersize=3)
-        ax.axhline(SPEED_LIMIT, color="red", ls="--", lw=1, alpha=.7,
-                    label=f"Limite {SPEED_LIMIT} km/h")
         ax.set_xlabel("Ora")
         ax.set_title(f"V85 Medio \u2014 {day_type}")
         ax.set_xticks(range(24)); ax.set_xticklabels(HOUR_SHORT, fontsize=7)
@@ -351,7 +347,6 @@ def chart_v85_spatial(segments):
             ).sort_values("dist")
             ax.plot(prof["dist"] / 1000, prof["v85"], color=pcol,
                     label=pname, linewidth=1.8)
-        ax.axhline(SPEED_LIMIT, color="red", ls="--", lw=1, alpha=.7)
         ax.set_xlabel("Progressiva (km)")
         ax.set_ylabel("V85 (km/h)")
         ax.set_title(f"Profilo Spaziale V85 \u2014 Feriali Dir. {direction}")
