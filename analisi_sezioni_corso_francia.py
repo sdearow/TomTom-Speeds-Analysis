@@ -138,14 +138,12 @@ def make_chart(section_name, feriali_speeds, festivi_speeds, output_path):
         ax.plot(hours, v85,  marker="s", markersize=4, linewidth=2,
                 color=color_85, label="V85")
 
-        # speed limit reference
-        ax.axhline(y=50, color="red", linestyle="--", linewidth=1, alpha=0.6, label="Limite 50 km/h")
-
         ax.set_title(day_label, fontsize=11)
         ax.set_xlabel("Ora del giorno")
         ax.set_xticks(hours)
         ax.set_xticklabels([f"{h}" for h in hours], fontsize=7)
         ax.set_xlim(-0.5, 23.5)
+        ax.set_ylim(0, 100)
         ax.grid(True, alpha=0.3)
         ax.legend(fontsize=8, loc="lower left")
 
