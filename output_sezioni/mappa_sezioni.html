@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_382bffdace03c376ecaec2add36e03ef {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_382bffdace03c376ecaec2add36e03ef" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_382bffdace03c376ecaec2add36e03ef = L.map(
+                "map_382bffdace03c376ecaec2add36e03ef",
+                {
+                    center: [41.94159882352942, 12.470452941176472],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 15,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_c78e9bc9cac24750a0d1c1d11243c9c3 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_c78e9bc9cac24750a0d1c1d11243c9c3.addTo(map_382bffdace03c376ecaec2add36e03ef);
+        
+    
+            var feature_group_a375fa9598bd037dac63ad00ea858812 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_57e1f9ca51038a4ed25e5976f361ffe1 = L.polyline(
+                [[41.93658, 12.4717], [41.93708, 12.47162]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_a375fa9598bd037dac63ad00ea858812);
+        
+    
+        var popup_148129e4d592f559f1d8f42984f2036e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0b1ec75a5b2687217bf0b71494fe9625 = $(`<div id="html_0b1ec75a5b2687217bf0b71494fe9625" style="width: 100.0%; height: 100.0%;">Sezione A (prog. 1.2–1.3 km)<br>Arco: -13800012257373<br>Via: Ponte Flaminio<br>Lunghezza: 56 m<br>Prog.: 1.145 – 1.201 km</div>`)[0];
+                popup_148129e4d592f559f1d8f42984f2036e.setContent(html_0b1ec75a5b2687217bf0b71494fe9625);
+            
+        
+
+        poly_line_57e1f9ca51038a4ed25e5976f361ffe1.bindPopup(popup_148129e4d592f559f1d8f42984f2036e)
+        ;
+
+        
+    
+    
+            var poly_line_b008bf00063a647e71f428a46919c8cc = L.polyline(
+                [[41.93708, 12.47162], [41.93721, 12.4716], [41.93727, 12.47158]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_a375fa9598bd037dac63ad00ea858812);
+        
+    
+        var popup_e331594ea2abf57555d3fa0f47262d51 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_87013c93f1827765271edded6e0b9909 = $(`<div id="html_87013c93f1827765271edded6e0b9909" style="width: 100.0%; height: 100.0%;">Sezione A (prog. 1.2–1.3 km)<br>Arco: -13800006791426<br>Via: Corso di Francia<br>Lunghezza: 22 m<br>Prog.: 1.201 – 1.222 km</div>`)[0];
+                popup_e331594ea2abf57555d3fa0f47262d51.setContent(html_87013c93f1827765271edded6e0b9909);
+            
+        
+
+        poly_line_b008bf00063a647e71f428a46919c8cc.bindPopup(popup_e331594ea2abf57555d3fa0f47262d51)
+        ;
+
+        
+    
+    
+            var poly_line_12deb3789107e8e0d5b86d85995f8140 = L.polyline(
+                [[41.93727, 12.47158], [41.93759, 12.47153]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_a375fa9598bd037dac63ad00ea858812);
+        
+    
+        var popup_09da5f7b76c784c26d1d8adea965519b = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_fc73dfcf7332e614387aee10bbfbd24f = $(`<div id="html_fc73dfcf7332e614387aee10bbfbd24f" style="width: 100.0%; height: 100.0%;">Sezione A (prog. 1.2–1.3 km)<br>Arco: -13800011256680<br>Via: Corso di Francia<br>Lunghezza: 36 m<br>Prog.: 1.222 – 1.258 km</div>`)[0];
+                popup_09da5f7b76c784c26d1d8adea965519b.setContent(html_fc73dfcf7332e614387aee10bbfbd24f);
+            
+        
+
+        poly_line_12deb3789107e8e0d5b86d85995f8140.bindPopup(popup_09da5f7b76c784c26d1d8adea965519b)
+        ;
+
+        
+    
+    
+            var poly_line_986b915454b6682b49a7f07d24011846 = L.polyline(
+                [[41.93759, 12.47153], [41.93787, 12.47148]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_a375fa9598bd037dac63ad00ea858812);
+        
+    
+        var popup_bc02e489c881e11671483204125a4a7e = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_240362ba343efce061a4ee968a4687b3 = $(`<div id="html_240362ba343efce061a4ee968a4687b3" style="width: 100.0%; height: 100.0%;">Sezione A (prog. 1.2–1.3 km)<br>Arco: -13800011256681<br>Via: Corso di Francia<br>Lunghezza: 31 m<br>Prog.: 1.258 – 1.289 km</div>`)[0];
+                popup_bc02e489c881e11671483204125a4a7e.setContent(html_240362ba343efce061a4ee968a4687b3);
+            
+        
+
+        poly_line_986b915454b6682b49a7f07d24011846.bindPopup(popup_bc02e489c881e11671483204125a4a7e)
+        ;
+
+        
+    
+    
+            var poly_line_e28c486b9325331971bedc2a840ae429 = L.polyline(
+                [[41.93787, 12.47148], [41.93851, 12.47138]],
+                {"bubblingMouseEvents": true, "color": "blue", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "blue", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_a375fa9598bd037dac63ad00ea858812);
+        
+    
+        var popup_8052e956edee3c7ba68b6c6b061f1caa = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_28ba70e65bd946fa24fb9b837d535024 = $(`<div id="html_28ba70e65bd946fa24fb9b837d535024" style="width: 100.0%; height: 100.0%;">Sezione A (prog. 1.2–1.3 km)<br>Arco: -13800010858709<br>Via: Corso di Francia<br>Lunghezza: 72 m<br>Prog.: 1.289 – 1.361 km</div>`)[0];
+                popup_8052e956edee3c7ba68b6c6b061f1caa.setContent(html_28ba70e65bd946fa24fb9b837d535024);
+            
+        
+
+        poly_line_e28c486b9325331971bedc2a840ae429.bindPopup(popup_8052e956edee3c7ba68b6c6b061f1caa)
+        ;
+
+        
+    
+    
+            var marker_7c610a396326dfbe16d562ac572301ac = L.marker(
+                [41.93759, 12.47153],
+                {
+}
+            ).addTo(feature_group_a375fa9598bd037dac63ad00ea858812);
+        
+    
+            var div_icon_874f29899b46c00a09af099dc327cc8b = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:11px;font-weight:bold;color:blue;background:white;padding:2px 6px;border:2px solid blue;border-radius:4px;white-space:nowrap;\"\u003eSezione A (prog. 1.2\u20131.3 km)\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_7c610a396326dfbe16d562ac572301ac.setIcon(div_icon_874f29899b46c00a09af099dc327cc8b);
+            
+    
+            feature_group_a375fa9598bd037dac63ad00ea858812.addTo(map_382bffdace03c376ecaec2add36e03ef);
+        
+    
+            var feature_group_afa27935ef6dde875be7e02efcb9fba7 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_74dd3760352c2edea481ca990db75e9e = L.polyline(
+                [[41.9392, 12.47125], [41.93997, 12.47111]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "green", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_afa27935ef6dde875be7e02efcb9fba7);
+        
+    
+        var popup_3d69eb9f1fe4d5832af6ad4270e17ad2 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_593ece29444dcaf8fa91726a44eb5822 = $(`<div id="html_593ece29444dcaf8fa91726a44eb5822" style="width: 100.0%; height: 100.0%;">Sezione B (prog. 1.5–1.6 km)<br>Arco: -13800014505221<br>Via: Corso di Francia<br>Lunghezza: 87 m<br>Prog.: 1.438 – 1.525 km</div>`)[0];
+                popup_3d69eb9f1fe4d5832af6ad4270e17ad2.setContent(html_593ece29444dcaf8fa91726a44eb5822);
+            
+        
+
+        poly_line_74dd3760352c2edea481ca990db75e9e.bindPopup(popup_3d69eb9f1fe4d5832af6ad4270e17ad2)
+        ;
+
+        
+    
+    
+            var poly_line_ad934f808758cfb694e54e7d79f06ae4 = L.polyline(
+                [[41.93997, 12.47111], [41.94018, 12.47108]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "green", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_afa27935ef6dde875be7e02efcb9fba7);
+        
+    
+        var popup_46ab36f40211dcd8dd24f3a2b4d7fcdc = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_0a3a2ec7a6f4240dd5ec63d20dca3eae = $(`<div id="html_0a3a2ec7a6f4240dd5ec63d20dca3eae" style="width: 100.0%; height: 100.0%;">Sezione B (prog. 1.5–1.6 km)<br>Arco: -13800014505222<br>Via: Corso di Francia<br>Lunghezza: 23 m<br>Prog.: 1.525 – 1.547 km</div>`)[0];
+                popup_46ab36f40211dcd8dd24f3a2b4d7fcdc.setContent(html_0a3a2ec7a6f4240dd5ec63d20dca3eae);
+            
+        
+
+        poly_line_ad934f808758cfb694e54e7d79f06ae4.bindPopup(popup_46ab36f40211dcd8dd24f3a2b4d7fcdc)
+        ;
+
+        
+    
+    
+            var poly_line_d62e4eb02dcfe2f22a93c6a67f070954 = L.polyline(
+                [[41.94018, 12.47108], [41.94037, 12.47104]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "green", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_afa27935ef6dde875be7e02efcb9fba7);
+        
+    
+        var popup_79a1e89ef2ee9edcc4043f887dae81a2 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_2ccbecd359596787bd56dd9114348493 = $(`<div id="html_2ccbecd359596787bd56dd9114348493" style="width: 100.0%; height: 100.0%;">Sezione B (prog. 1.5–1.6 km)<br>Arco: -13800007290272<br>Via: Corso di Francia<br>Lunghezza: 22 m<br>Prog.: 1.547 – 1.569 km</div>`)[0];
+                popup_79a1e89ef2ee9edcc4043f887dae81a2.setContent(html_2ccbecd359596787bd56dd9114348493);
+            
+        
+
+        poly_line_d62e4eb02dcfe2f22a93c6a67f070954.bindPopup(popup_79a1e89ef2ee9edcc4043f887dae81a2)
+        ;
+
+        
+    
+    
+            var poly_line_6821ae5a81f401beec87b4e7d93d9269 = L.polyline(
+                [[41.94037, 12.47104], [41.94065, 12.47099]],
+                {"bubblingMouseEvents": true, "color": "green", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "green", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_afa27935ef6dde875be7e02efcb9fba7);
+        
+    
+        var popup_123ea3b1dfb28e837d7b64bce5be1f05 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_8b922bd0e395a0cd397eba3f28fd91ae = $(`<div id="html_8b922bd0e395a0cd397eba3f28fd91ae" style="width: 100.0%; height: 100.0%;">Sezione B (prog. 1.5–1.6 km)<br>Arco: -13800006851951<br>Via: Corso di Francia<br>Lunghezza: 31 m<br>Prog.: 1.569 – 1.600 km</div>`)[0];
+                popup_123ea3b1dfb28e837d7b64bce5be1f05.setContent(html_8b922bd0e395a0cd397eba3f28fd91ae);
+            
+        
+
+        poly_line_6821ae5a81f401beec87b4e7d93d9269.bindPopup(popup_123ea3b1dfb28e837d7b64bce5be1f05)
+        ;
+
+        
+    
+    
+            var marker_ff940bc426562a23fb8133a852ac5907 = L.marker(
+                [41.94037, 12.47104],
+                {
+}
+            ).addTo(feature_group_afa27935ef6dde875be7e02efcb9fba7);
+        
+    
+            var div_icon_dd6ead702ad8cb41da0bc43a159da5dd = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:11px;font-weight:bold;color:green;background:white;padding:2px 6px;border:2px solid green;border-radius:4px;white-space:nowrap;\"\u003eSezione B (prog. 1.5\u20131.6 km)\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_ff940bc426562a23fb8133a852ac5907.setIcon(div_icon_dd6ead702ad8cb41da0bc43a159da5dd);
+            
+    
+            feature_group_afa27935ef6dde875be7e02efcb9fba7.addTo(map_382bffdace03c376ecaec2add36e03ef);
+        
+    
+            var feature_group_a849941c2cf529546db0fcea9c7a713a = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var poly_line_ffe2f8fa1ab98033b4cd78026f122d23 = L.polyline(
+                [[41.94475, 12.46927], [41.94486, 12.46927], [41.94496, 12.46925]],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_a849941c2cf529546db0fcea9c7a713a);
+        
+    
+        var popup_c01616895f7cda0678aba9fa3c46cf4d = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_9312a7d571c04096c9b0dac422498a84 = $(`<div id="html_9312a7d571c04096c9b0dac422498a84" style="width: 100.0%; height: 100.0%;">Sezione C (prog. ~2.2 km)<br>Arco: 13800006562927<br>Via: Corso di Francia<br>Lunghezza: 23 m<br>Prog.: 2.082 – 2.105 km</div>`)[0];
+                popup_c01616895f7cda0678aba9fa3c46cf4d.setContent(html_9312a7d571c04096c9b0dac422498a84);
+            
+        
+
+        poly_line_ffe2f8fa1ab98033b4cd78026f122d23.bindPopup(popup_c01616895f7cda0678aba9fa3c46cf4d)
+        ;
+
+        
+    
+    
+            var poly_line_fc365b684c9371afb06d1916731245ea = L.polyline(
+                [[41.94496, 12.46925], [41.94513, 12.46925], [41.94523, 12.46926], [41.94534, 12.46926], [41.94548, 12.46928], [41.94559, 12.46929], [41.94572, 12.46932], [41.9458, 12.46934]],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_a849941c2cf529546db0fcea9c7a713a);
+        
+    
+        var popup_eb8367c25ebbe39a2666e7f61f7c7bdc = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_4255941292a2c9a9be6b25dee94473a3 = $(`<div id="html_4255941292a2c9a9be6b25dee94473a3" style="width: 100.0%; height: 100.0%;">Sezione C (prog. ~2.2 km)<br>Arco: 13800006578242<br>Via: Corso di Francia<br>Lunghezza: 94 m<br>Prog.: 2.105 – 2.199 km</div>`)[0];
+                popup_eb8367c25ebbe39a2666e7f61f7c7bdc.setContent(html_4255941292a2c9a9be6b25dee94473a3);
+            
+        
+
+        poly_line_fc365b684c9371afb06d1916731245ea.bindPopup(popup_eb8367c25ebbe39a2666e7f61f7c7bdc)
+        ;
+
+        
+    
+    
+            var poly_line_f36d2b58d865b20b56fdd6f42cfb1e17 = L.polyline(
+                [[41.9458, 12.46934], [41.94594, 12.46939]],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_a849941c2cf529546db0fcea9c7a713a);
+        
+    
+        var popup_8f7fce3b60df236876f048436428eb54 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_909f0a764fa1631565ef0181d8d9b4bf = $(`<div id="html_909f0a764fa1631565ef0181d8d9b4bf" style="width: 100.0%; height: 100.0%;">Sezione C (prog. ~2.2 km)<br>Arco: 13800006907411<br>Via: Corso di Francia<br>Lunghezza: 15 m<br>Prog.: 2.199 – 2.215 km</div>`)[0];
+                popup_8f7fce3b60df236876f048436428eb54.setContent(html_909f0a764fa1631565ef0181d8d9b4bf);
+            
+        
+
+        poly_line_f36d2b58d865b20b56fdd6f42cfb1e17.bindPopup(popup_8f7fce3b60df236876f048436428eb54)
+        ;
+
+        
+    
+    
+            var poly_line_3cab9cd563d3fbb4801f87122f467231 = L.polyline(
+                [[41.94594, 12.46939], [41.94605, 12.46944]],
+                {"bubblingMouseEvents": true, "color": "red", "dashArray": null, "dashOffset": null, "fill": false, "fillColor": "red", "fillOpacity": 0.2, "fillRule": "evenodd", "lineCap": "round", "lineJoin": "round", "noClip": false, "opacity": 0.8, "smoothFactor": 1.0, "stroke": true, "weight": 6}
+            ).addTo(feature_group_a849941c2cf529546db0fcea9c7a713a);
+        
+    
+        var popup_54caf650d483fd2bf57226614244f555 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_6942dc39ceb6b9f3ba30b24daad4eac2 = $(`<div id="html_6942dc39ceb6b9f3ba30b24daad4eac2" style="width: 100.0%; height: 100.0%;">Sezione C (prog. ~2.2 km)<br>Arco: 13800007410723<br>Via: Corso di Francia<br>Lunghezza: 13 m<br>Prog.: 2.215 – 2.227 km</div>`)[0];
+                popup_54caf650d483fd2bf57226614244f555.setContent(html_6942dc39ceb6b9f3ba30b24daad4eac2);
+            
+        
+
+        poly_line_3cab9cd563d3fbb4801f87122f467231.bindPopup(popup_54caf650d483fd2bf57226614244f555)
+        ;
+
+        
+    
+    
+            var marker_49cf3a8c5e21494ca09adc8a3dd67999 = L.marker(
+                [41.94594, 12.46939],
+                {
+}
+            ).addTo(feature_group_a849941c2cf529546db0fcea9c7a713a);
+        
+    
+            var div_icon_6b7e14d3e0752d4e764d288cea93f4b9 = L.divIcon({
+  "html": "\u003cdiv style=\"font-size:11px;font-weight:bold;color:red;background:white;padding:2px 6px;border:2px solid red;border-radius:4px;white-space:nowrap;\"\u003eSezione C (prog. ~2.2 km)\u003c/div\u003e",
+  "className": "empty",
+});
+        
+    
+                marker_49cf3a8c5e21494ca09adc8a3dd67999.setIcon(div_icon_6b7e14d3e0752d4e764d288cea93f4b9);
+            
+    
+            feature_group_a849941c2cf529546db0fcea9c7a713a.addTo(map_382bffdace03c376ecaec2add36e03ef);
+        
+    
+            var layer_control_567884f20e0584ad0d691023a32ae70e_layers = {
+                base_layers : {
+                    "cartodbpositron" : tile_layer_c78e9bc9cac24750a0d1c1d11243c9c3,
+                },
+                overlays :  {
+                    "Sezione A (prog. 1.2\u20131.3 km)" : feature_group_a375fa9598bd037dac63ad00ea858812,
+                    "Sezione B (prog. 1.5\u20131.6 km)" : feature_group_afa27935ef6dde875be7e02efcb9fba7,
+                    "Sezione C (prog. ~2.2 km)" : feature_group_a849941c2cf529546db0fcea9c7a713a,
+                },
+            };
+            let layer_control_567884f20e0584ad0d691023a32ae70e = L.control.layers(
+                layer_control_567884f20e0584ad0d691023a32ae70e_layers.base_layers,
+                layer_control_567884f20e0584ad0d691023a32ae70e_layers.overlays,
+                {
+  "position": "topright",
+  "collapsed": true,
+  "autoZIndex": true,
+}
+            ).addTo(map_382bffdace03c376ecaec2add36e03ef);
+
+        
+</script>
+</html>
